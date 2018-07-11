@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:id="@+id/main"
+    android:layout_height="match_parent"
+    tools:context="com.dfwr.zhuanke.zhuanke.MainActivity">
+
+    <LinearLayout
+        android:id="@+id/linear_main_tab"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@color/CN7"
+            android:orientation="horizontal">
+
+
+            <RelativeLayout
+                android:id="@+id/rl_main_me"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center">
+
+                <TextView
+                    style="@style/RbMainTab"
+                    android:layout_centerVertical="true"
+                    android:drawableTop="@drawable/selector_mine_bottom"
+                    android:text="我的" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center">
+
+                <TextView
+                    style="@style/RbMainTab"
+                    android:layout_centerVertical="true"
+                    android:drawableTop="@drawable/selector_mine_bottom"
+                    android:paddingRight="10dp"
+                    android:text="我的" />
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center">
+
+                <TextView
+                    style="@style/RbMainTab"
+                    android:layout_centerVertical="true"
+                    android:drawableTop="@drawable/selector_mine_bottom"
+                    android:paddingRight="10dp"
+                    android:text="我的" />
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center">
+
+                <TextView
+                    style="@style/RbMainTab"
+                    android:layout_centerVertical="true"
+                    android:drawableTop="@drawable/selector_mine_bottom"
+                    android:paddingRight="10dp"
+                    android:text="我的" />
+
+            </RelativeLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/linear_main_tab"
+        />
+
+</RelativeLayout>
