@@ -15,6 +15,8 @@ import com.dfwr.zhuanke.zhuanke.R;
 
 import org.greenrobot.eventbus.EventBus;
 
+import butterknife.ButterKnife;
+
 
 /**
  * Fragment预加载问题的解决方案：
@@ -38,11 +40,13 @@ public abstract class LazyLoadFragment<V, T extends BasePresenter<V>> extends Fr
     public String fragmentTitle;
 
 
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         baseActivity = (BaseActivity) context;
     }
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -108,25 +112,11 @@ public abstract class LazyLoadFragment<V, T extends BasePresenter<V>> extends Fr
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(setContentView(), container, false);
+        ButterKnife.bind(getActivity());
         isInit = true;
         /**初始化的时候去加载数据**/
         isCanLoadData();
@@ -218,6 +208,7 @@ public abstract class LazyLoadFragment<V, T extends BasePresenter<V>> extends Fr
      * 当视图已经对用户不可见并且加载过数据，如果需要在切换到其他页面时停止加载数据，可以调用此方法
      */
     protected void stopLoad() {
+
     }
 
     public String getTitle() {
