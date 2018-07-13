@@ -13,9 +13,8 @@ import android.widget.Toast;
 
 import com.dfwr.zhuanke.zhuanke.R;
 
-import org.greenrobot.eventbus.EventBus;
-
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 
 /**
@@ -38,7 +37,7 @@ public abstract class LazyLoadFragment<V, T extends BasePresenter<V>> extends Fr
     private Dialog progressDialog;
     private BaseActivity baseActivity;
     public String fragmentTitle;
-
+    private Unbinder unbinder;
 
 
     @Override
@@ -53,8 +52,36 @@ public abstract class LazyLoadFragment<V, T extends BasePresenter<V>> extends Fr
         super.onCreate(savedInstanceState);
         mPresent = createPresent();
         mPresent.attachView((V) this);
-        EventBus.getDefault().register(this);
     }
+
+//    @Nullable
+//    @Override
+//    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+//        view = inflater.inflate(setContentView(), container, false);
+//        isInit = true;
+//        /**初始化的时候去加载数据**/
+//        isCanLoadData();
+//        return view;
+//    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        view = inflater.inflate(setLayoutId(), container, false);
+        isInit = true;
+        /**初始化的时候去加载数据**/
+        isCanLoadData();
+        return view;
+    }
+
+    protected abstract int setLayoutId();
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        unbinder = ButterKnife.bind(this, view);
+    }
+
 
 
 
@@ -72,7 +99,9 @@ public abstract class LazyLoadFragment<V, T extends BasePresenter<V>> extends Fr
     public void onDestroy() {
         mPresent.detach();
         super.onDestroy();
-        EventBus.getDefault().unregister(this);//反注册EventBus
+        if (unbinder!=null) {
+            unbinder.unbind();
+        }
     }
 
     /**
@@ -112,16 +141,7 @@ public abstract class LazyLoadFragment<V, T extends BasePresenter<V>> extends Fr
 
 
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(setContentView(), container, false);
-        ButterKnife.bind(getActivity());
-        isInit = true;
-        /**初始化的时候去加载数据**/
-        isCanLoadData();
-        return view;
-    }
+
 
     /**
      * 视图是否已经对用户可见，系统的方法
@@ -170,13 +190,6 @@ public abstract class LazyLoadFragment<V, T extends BasePresenter<V>> extends Fr
         }
 
     }
-
-    /**
-     * 设置Fragment要显示的布局
-     *
-     * @return 布局的layoutId
-     */
-    protected abstract int setContentView();
 
     /**
      * 获取设置的布局

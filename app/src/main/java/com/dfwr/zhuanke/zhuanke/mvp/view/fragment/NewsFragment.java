@@ -1,20 +1,21 @@
 package com.dfwr.zhuanke.zhuanke.mvp.view.fragment;
 
-import android.content.Intent;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.dfwr.zhuanke.zhuanke.R;
 import com.dfwr.zhuanke.zhuanke.base.BaseTwoFragment;
+import com.dfwr.zhuanke.zhuanke.base.LazyLoadFragment;
 import com.dfwr.zhuanke.zhuanke.bean.ProjectClassifyData;
+import com.dfwr.zhuanke.zhuanke.mvp.contract.NewsView;
+import com.dfwr.zhuanke.zhuanke.mvp.presenter.NewsPresent;
 import com.dfwr.zhuanke.zhuanke.widget.Systems;
 import com.flyco.tablayout.SlidingTabLayout;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
@@ -23,7 +24,8 @@ import butterknife.BindView;
  * Created by ckx on 2018/7/12.
  */
 
-public class NewsFragment extends BaseTwoFragment {
+public class NewsFragment extends BaseTwoFragment<NewsView, NewsPresent<NewsView>>
+        implements NewsView {
 
 
     @BindView(R.id.add_channel_iv)
@@ -34,10 +36,12 @@ public class NewsFragment extends BaseTwoFragment {
     @BindView(R.id.tl_5)
     SlidingTabLayout mTabLayout;
     private List<ProjectClassifyData> mData;
+//    private int currentPage;
 
-    private MyPagerAdapter mAdapter;
+    private ArrayList<LazyLoadFragment> mFragments = new ArrayList<>();
 
-    private ArrayList<Fragment> mFragments = new ArrayList<>();
+
+
 
     private final String[] mTitles = {
             "全部", "审核中", "审核失败"
@@ -52,46 +56,88 @@ public class NewsFragment extends BaseTwoFragment {
     }
 
 
+
+
+
     @Override
     protected void initData() {
         super.initData();
-        mAdapter = new MyPagerAdapter(getActivity().getSupportFragmentManager());
-        viewPager.setAdapter(mAdapter);
-        viewPager.setOffscreenPageLimit(0);
+//        Intent intent = getActivity().getIntent();
+//        String newsType = intent.getStringExtra(Systems.newsType);
+//
+//        if (newsType!=null) {
+//            int positon = Arrays.binarySearch(mTitles, newsType);
+//            viewPager.setCurrentItem(positon);
+//        }else{
+//            viewPager.setCurrentItem(0);
+//        }
+        mPresent.getProjectClassifyData();
+    }
+
+    @Override
+    protected NewsPresent createPresent() {
+        return new NewsPresent<>(this);
+    }
+
+    @Override
+    public void showLoading() {
+
+    }
+
+    @Override
+    public void hideLoading() {
+
+    }
+
+    @Override
+    public void getProjectClassifyDataSuccess(List<ProjectClassifyData> projectClassifyDatas) {
+        mData = projectClassifyDatas;
+        initViewPagerAndTabLayout();
+    }
+
+
+
+    private void initViewPagerAndTabLayout() {
+        Log.d("okgo", "接收到了数据");
+        for (ProjectClassifyData data : mData) {
+            NewsListFragment projectListFragment = NewsListFragment.getInstance(data.getId(), null);
+            mFragments.add(projectListFragment);
+        }
+        viewPager.setAdapter(new FragmentStatePagerAdapter(getChildFragmentManager()) {
+            @Override
+            public Fragment getItem(int position) {
+                return mFragments.get(position);
+            }
+
+            @Override
+            public int getCount() {
+                return mData == null? 0 : mData.size();
+            }
+
+            @Override
+            public CharSequence getPageTitle(int position) {
+                return mData.get(position).getName();
+            }
+        });
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                currentPage = position;
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
         mTabLayout.setViewPager(viewPager);
-
-        Intent intent = getActivity().getIntent();
-        String newsType = intent.getStringExtra(Systems.newsType);
-
-        if (newsType!=null) {
-            int positon = Arrays.binarySearch(mTitles, newsType);
-            viewPager.setCurrentItem(positon);
-        }else{
-            viewPager.setCurrentItem(0);
-        }
+        viewPager.setCurrentItem(Systems.TAB_ONE);
     }
 
 
-
-
-    private class MyPagerAdapter extends FragmentPagerAdapter {
-        public MyPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public int getCount() {
-            return mFragments.size();
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mTitles[position];
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return mFragments.get(position);
-        }
-    }
 }

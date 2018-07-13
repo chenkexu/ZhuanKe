@@ -1,6 +1,7 @@
 package com.dfwr.zhuanke.zhuanke.mvp.view.fragment;
 
 import com.dfwr.zhuanke.zhuanke.R;
+import com.dfwr.zhuanke.zhuanke.base.BasePresenter;
 import com.dfwr.zhuanke.zhuanke.base.BaseTwoFragment;
 
 /**
@@ -22,5 +23,15 @@ public class WithDrawFragment extends BaseTwoFragment {
         super.initData();
 
 
+    }
+
+    @Override
+    protected BasePresenter createPresent() {
+        return new BasePresenter() {
+            @Override
+            public void fecth() {
+
+            }
+        };
     }
 }

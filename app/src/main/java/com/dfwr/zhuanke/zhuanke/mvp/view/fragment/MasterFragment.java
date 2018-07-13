@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 
 import com.dfwr.zhuanke.zhuanke.R;
 import com.dfwr.zhuanke.zhuanke.adapter.HomeAdapter;
+import com.dfwr.zhuanke.zhuanke.base.BasePresenter;
 import com.dfwr.zhuanke.zhuanke.base.BaseTwoFragment;
 import com.dfwr.zhuanke.zhuanke.bean.HomeBean;
 
@@ -47,5 +48,15 @@ public class MasterFragment extends BaseTwoFragment {
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 4));
         taskAdapter = new HomeAdapter(imagesAndTitles);
         recyclerView.setAdapter(taskAdapter);
+    }
+
+    @Override
+    protected BasePresenter createPresent() {
+        return new BasePresenter() {
+            @Override
+            public void fecth() {
+
+            }
+        };
     }
 }

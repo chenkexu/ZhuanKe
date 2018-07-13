@@ -1,4 +1,4 @@
-package com.dfwr.zhuanke.zhuanke.api;
+package com.dfwr.zhuanke.zhuanke.api.response;
 
 /**
  * @author quchao

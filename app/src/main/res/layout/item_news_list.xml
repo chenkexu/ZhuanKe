@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="5dp"
-    android:layout_marginTop="10dp"
     android:clickable="true"
     android:focusable="true"
+    android:layout_marginBottom="1dp"
     android:foreground="?android:attr/selectableItemBackground"
     app:cardBackgroundColor="@color/bg_white"
     app:cardCornerRadius="3dp"
@@ -20,6 +20,7 @@
         android:padding="10dp">
 
         <ImageView
+            android:scaleType="centerCrop"
             android:id="@+id/item_project_list_iv"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -28,13 +29,14 @@
             android:src="@mipmap/ic_launcher" />
 
         <RelativeLayout
+            android:layout_marginLeft="10dp"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="5">
 
             <TextView
                 android:textColor="@color/black"
-                android:id="@+id/tv_title"
+                android:id="@+id/item_project_list_title_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
@@ -44,6 +46,7 @@
                 tools:text="【开源完整项目】diycode客户端" />
 
             <TextView
+                android:id="@+id/tv_price"
                 android:layout_alignParentBottom="true"
                 android:textColor="@color/bg_red"
                 android:layout_width="wrap_content"
@@ -55,6 +58,7 @@
                 tools:text="点击分享赚1.5毛" />
 
             <TextView
+                android:id="@+id/tv_watch_sum"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentBottom="true"
                 android:layout_width="wrap_content"
@@ -64,7 +68,7 @@
                 android:maxLines="1"
                 android:textSize="@dimen/sp_12"
                 tools:text="123456" />
-
         </RelativeLayout>
     </LinearLayout>
+
 </android.support.v7.widget.CardView>

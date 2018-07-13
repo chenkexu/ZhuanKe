@@ -21,18 +21,11 @@ public class GuideActivity extends BasePermissionActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        boolean isfirstenter = SharedPreferencesTool.getInstance().getBooleanValue(SharedPreferencesTool.ISFIRSTENTER, true);
-        if (isfirstenter) {
-            //进入引导页面
-            startActivity(new Intent(GuideActivity.this, LaunchActivity.class));
-            finish();
-        } else {
             //取消标题栏
             requestWindowFeature(Window.FEATURE_NO_TITLE);
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                     WindowManager.LayoutParams.FLAG_FULLSCREEN);
             setContentView(R.layout.activity_login);
-
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -65,4 +58,3 @@ public class GuideActivity extends BasePermissionActivity {
         }
 
     }
-}

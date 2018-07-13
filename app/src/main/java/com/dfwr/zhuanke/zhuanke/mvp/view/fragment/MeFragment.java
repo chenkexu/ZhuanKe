@@ -7,8 +7,8 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.dfwr.zhuanke.zhuanke.R;
-import com.dfwr.zhuanke.zhuanke.ShareMananger;
 import com.dfwr.zhuanke.zhuanke.adapter.HomeAdapter;
+import com.dfwr.zhuanke.zhuanke.base.BasePresenter;
 import com.dfwr.zhuanke.zhuanke.base.BaseTwoFragment;
 import com.dfwr.zhuanke.zhuanke.bean.HomeBean;
 
@@ -73,13 +73,23 @@ public class MeFragment extends BaseTwoFragment {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 if (position == 0) {
-                    ShareMananger.oneKeyShareQQImage(getActivity(),"");
+
                 }else{
-                    ShareMananger.oneKeyShareWechat(getActivity(),"");
+
                 }
 
             }
         });
+    }
+
+    @Override
+    protected BasePresenter createPresent() {
+        return new BasePresenter() {
+            @Override
+            public void fecth() {
+
+            }
+        };
     }
 
 

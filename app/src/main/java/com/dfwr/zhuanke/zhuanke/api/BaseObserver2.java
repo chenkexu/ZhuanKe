@@ -1,11 +1,17 @@
 package com.dfwr.zhuanke.zhuanke.api;
 
-import android.text.TextUtils;
+import android.accounts.NetworkErrorException;
+import android.content.Context;
 
-import com.dfwr.zhuanke.zhuanke.mvp.contract.AbstractView;
+import com.dfwr.zhuanke.zhuanke.api.response.BaseResponse;
 
-import io.reactivex.observers.ResourceObserver;
-import retrofit2.HttpException;
+import java.net.ConnectException;
+import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
+import java.util.concurrent.TimeoutException;
+
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 
 /**
  * @author quchao
@@ -14,53 +20,57 @@ import retrofit2.HttpException;
  * @param <T>
  */
 
-public abstract class BaseObserver2<T> extends ResourceObserver<T> {
+public abstract class BaseObserver2<T> implements Observer<BaseResponse<T>> {
 
-    private AbstractView mView;
-    private String mErrorMsg;
-    private boolean isShowError = true;
+    protected Context mContext;
 
-    protected BaseObserver2(AbstractView view){
-        this.mView = view;
+    public BaseObserver2(Context context) {
+        this.mContext = context;
     }
 
-    protected BaseObserver2(AbstractView view, String errorMsg){
-        this.mView = view;
-        this.mErrorMsg = errorMsg;
-    }
-
-    protected BaseObserver2(AbstractView view, boolean isShowError){
-        this.mView = view;
-        this.isShowError = isShowError;
-    }
-
-    protected BaseObserver2(AbstractView view, String errorMsg, boolean isShowError){
-        this.mView = view;
-        this.mErrorMsg = errorMsg;
-        this.isShowError = isShowError;
+    public BaseObserver2() {
     }
 
     @Override
-    public void onComplete() {
+    public void onSubscribe(Disposable d) {
+    }
 
+    @Override
+    public void onNext(BaseResponse<T> tApiResponse) {
+        if (tApiResponse.getErrorCode() == 0) {
+            onSuccees(tApiResponse);
+        } else {
+            onCodeError(tApiResponse);
+        }
     }
 
     @Override
     public void onError(Throwable e) {
-        if (mView == null) {
-            return;
-        }
-        if (mErrorMsg != null && !TextUtils.isEmpty(mErrorMsg)) {
-            mView.showErrorMsg(mErrorMsg);
-        } else if (e instanceof ServerException) {
-            mView.showErrorMsg(e.toString());
-        } else if (e instanceof HttpException) {
-                mView.showErrorMsg("网络异常");
+        if (e instanceof ConnectException
+                || e instanceof TimeoutException
+                || e instanceof NetworkErrorException
+                || e instanceof UnknownHostException
+                || e instanceof SocketTimeoutException) {
+            onFailure("网络异常",true);
         } else {
-            mView.showErrorMsg("网络异常");
-        }
-        if (isShowError) {
-            mView.showError();
+            onFailure("网络异常",false);
         }
     }
+
+    @Override
+    public void onComplete() {
+    }
+
+
+    // 返回成功了,但是code错误
+    protected void onCodeError(BaseResponse<T> t){
+        onFailure(t.getErrorMsg()+"",false);
+
+    }
+
+    //返回成功
+    protected abstract void onSuccees(BaseResponse<T> t);
+
+    //返回失败
+    protected abstract void onFailure(String errorInfo, boolean isNetWorkError);
 }

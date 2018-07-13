@@ -6,5 +6,5 @@ package com.dfwr.zhuanke.zhuanke.api;
 
 public class HttpContants {
     //正式环境
-    public static final String HOST_URL = "http://wra.xunkevip.cn/netrun-app/";
+    public static final String HOST_URL = "http://www.wanandroid.com/";
 }

@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.dfwr.zhuanke.zhuanke.base.BaseActivity;
 import com.dfwr.zhuanke.zhuanke.mvp.contract.IMsgView;
 import com.dfwr.zhuanke.zhuanke.mvp.presenter.MsgPresent;
@@ -13,6 +14,7 @@ import com.dfwr.zhuanke.zhuanke.mvp.view.fragment.MasterFragment;
 import com.dfwr.zhuanke.zhuanke.mvp.view.fragment.MeFragment;
 import com.dfwr.zhuanke.zhuanke.mvp.view.fragment.NewsFragment;
 import com.dfwr.zhuanke.zhuanke.mvp.view.fragment.WithDrawFragment;
+import com.dfwr.zhuanke.zhuanke.util.AppManager;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -142,5 +144,19 @@ public class MainActivity extends BaseActivity<IMsgView, MsgPresent<IMsgView>> i
         llService.setSelected(false);
         llMine.setSelected(false);
         linearLayout.setSelected(true);
+    }
+
+
+    private long exitTime;
+    @Override
+    public void onBackPressed() {
+        //显示在：发现Fragment
+        long nowTime = System.currentTimeMillis();
+        if((nowTime - exitTime) <= 2000){
+            AppManager.getAppManager().AppExit(this);
+        }else{
+            ToastUtils.showLong("再按一次程序！");
+            exitTime = nowTime;
+        }
     }
 }

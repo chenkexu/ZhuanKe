@@ -1,11 +1,11 @@
-package com.dfwr.zhuanke.zhuanke.api;
+package com.dfwr.zhuanke.zhuanke.api.response;
 
 /**
  * Created by huang on 2018/4/16.
  */
 
 public class ApiResponse<T> {
-    private static int SUCCESS_CODE=0;//成功的code
+    private static int SUCCESS_CODE = 0;//成功的code
     int state;
     String msgCode;
     String msgText;

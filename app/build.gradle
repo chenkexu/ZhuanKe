@@ -87,13 +87,13 @@ MobSDK {
         devInfo {
 
             Wechat {
-                appId "wx4868b35061f87885"
-                appSecret "64020361b8ec4c99936c0e3999a9f249"
+                appId "wxa75cd1b3294dbda4"
+                appSecret "02a13b899babead10f80ecf257a02202"
                 bypassApproval false
             }
             WechatMoments {
-                appId "wx4868b35061f87885"
-                appSecret "64020361b8ec4c99936c0e3999a9f249"
+                appId "wxa75cd1b3294dbda4"
+                appSecret "02a13b899babead10f80ecf257a02202"
                 bypassApproval false
             }
 

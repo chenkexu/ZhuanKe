@@ -1,6 +1,7 @@
 package com.dfwr.zhuanke.zhuanke.base;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
@@ -10,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.dfwr.zhuanke.zhuanke.R;
+
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
@@ -17,17 +20,26 @@ import butterknife.Unbinder;
  * 当以show()和hide()方法形式加载Fragment，沉浸式的使用
  * Created by geyifeng on 2017/4/7.
  */
-public abstract class BaseTwoFragment extends Fragment {
+public abstract class BaseTwoFragment<V, T extends BasePresenter<V>> extends Fragment {
 
     protected Activity mActivity;
     protected View mRootView;
-
+    protected T mPresent;
+    private Dialog progressDialog;
     private Unbinder unbinder;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         mActivity = (Activity) context;
+    }
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mPresent = createPresent();
+        mPresent.attachView((V) this);
     }
 
     @Nullable
@@ -41,18 +53,12 @@ public abstract class BaseTwoFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         unbinder = ButterKnife.bind(this, view);
-        if (isImmersionBarEnabled())
-            initImmersionBar();
         initData();
         initView();
         setListener();
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        unbinder.unbind();
-    }
+
 
     @Override
     public void onHiddenChanged(boolean hidden) {
@@ -66,20 +72,8 @@ public abstract class BaseTwoFragment extends Fragment {
      */
     protected abstract int setLayoutId();
 
-    /**
-     * 是否在Fragment使用沉浸式
-     *
-     * @return the boolean
-     */
-    protected boolean isImmersionBarEnabled() {
-        return true;
-    }
 
-    /**
-     * 初始化沉浸式
-     */
-    protected void initImmersionBar() {
-    }
+
 
 
     /**
@@ -114,4 +108,47 @@ public abstract class BaseTwoFragment extends Fragment {
     protected <T extends View> T findActivityViewById(@IdRes int id) {
         return (T) mActivity.findViewById(id);
     }
+
+
+
+    @Override
+    public void onDestroy() {
+        mPresent.detach();
+        super.onDestroy();
+    }
+
+    /**
+     * 显示默认的进度条
+     */
+    protected void showDefaultLoading() {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            return;
+        } else {
+            progressDialog = null;
+        }
+
+        progressDialog = new Dialog(mActivity, R.style.loadingDialog);
+        View view = LayoutInflater.from(mActivity).inflate(R.layout.content__roll_loading, null);
+        progressDialog.setContentView(view);
+        progressDialog.setCancelable(false);
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.show();
+    }
+
+    /**
+     * 隐藏默认的进度条
+     */
+    protected void hideDefaultLoading() {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+            progressDialog = null;
+        }
+    }
+
+    /**
+     * 构建具体的Presenter
+     * @return
+     */
+    protected abstract T createPresent();
+
 }
