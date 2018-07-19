@@ -5,55 +5,31 @@ package com.dfwr.zhuanke.zhuanke.api.response;
  */
 
 public class ApiResponse<T> {
-    private static int SUCCESS_CODE = 0;//成功的code
-    int state;
-    String msgCode;
-    String msgText;
-    T data;
+    private int code;
+    private String message;
+    private T result;
 
-
-    public boolean isSuccess(){
-        return getState()==SUCCESS_CODE;
-    }
-    public int getState() {
-        return state;
+    public int getCode() {
+        return code;
     }
 
-    public void setState(int state) {
-        this.state = state;
+    public void setCode(int code) {
+        this.code = code;
     }
 
-    public String getMsgCode() {
-        return msgCode;
+    public String getMessage() {
+        return message == null ? "" : message;
     }
 
-    public void setMsgCode(String msgCode) {
-        this.msgCode = msgCode;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
-    public String getMsgText() {
-        return msgText;
+    public T getResult() {
+        return result;
     }
 
-    public void setMsgText(String msgText) {
-        this.msgText = msgText;
-    }
-
-    public T getData() {
-        return data;
-    }
-
-    public void setData(T data) {
-        this.data = data;
-    }
-
-    @Override
-    public String toString() {
-        return "ApiResponse{" +
-                "state=" + state +
-                ", msgCode='" + msgCode + '\'' +
-                ", msgText='" + msgText + '\'' +
-                ", data=" + data +
-                '}';
+    public void setResult(T result) {
+        this.result = result;
     }
 }

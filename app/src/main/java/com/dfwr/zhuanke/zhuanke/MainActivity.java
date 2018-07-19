@@ -1,5 +1,6 @@
 package com.dfwr.zhuanke.zhuanke;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
@@ -15,6 +16,7 @@ import com.dfwr.zhuanke.zhuanke.mvp.view.fragment.MeFragment;
 import com.dfwr.zhuanke.zhuanke.mvp.view.fragment.NewsFragment;
 import com.dfwr.zhuanke.zhuanke.mvp.view.fragment.WithDrawFragment;
 import com.dfwr.zhuanke.zhuanke.util.AppManager;
+import com.dfwr.zhuanke.zhuanke.widget.Systems;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -52,6 +54,28 @@ public class MainActivity extends BaseActivity<IMsgView, MsgPresent<IMsgView>> i
     }
 
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (getIntent()!=null){
+            Intent intent = getIntent();
+            String stringExtra = intent.getStringExtra(Systems.from_withdraw);
+            if (stringExtra!=null) {
+                switch (stringExtra){
+                    case "0":
+                        selectedFragment(0);
+                        tabSelected(llHome);
+                        break;
+                    case "1":
+                        break;
+                }
+            }
+
+        }
+    }
+
     @Override
     protected MsgPresent<IMsgView> createPresent() {
         return new MsgPresent<>(this);
@@ -60,13 +84,14 @@ public class MainActivity extends BaseActivity<IMsgView, MsgPresent<IMsgView>> i
 
     @Override
     public void showLoading() {
-
+        showDefaultLoading();
     }
 
     @Override
     public void hideLoading() {
-
+        hideDefaultLoading();
     }
+
 
     @OnClick({R.id.ll_home, R.id.ll_category, R.id.ll_service, R.id.ll_mine})
     public void onViewClicked(View view) {
@@ -155,7 +180,7 @@ public class MainActivity extends BaseActivity<IMsgView, MsgPresent<IMsgView>> i
         if((nowTime - exitTime) <= 2000){
             AppManager.getAppManager().AppExit(this);
         }else{
-            ToastUtils.showLong("再按一次程序！");
+            ToastUtils.showShort("再按一次程序！");
             exitTime = nowTime;
         }
     }

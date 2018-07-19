@@ -7,7 +7,7 @@ import android.widget.ImageView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.dfwr.zhuanke.zhuanke.R;
-import com.dfwr.zhuanke.zhuanke.bean.FeedArticleData;
+import com.dfwr.zhuanke.zhuanke.bean.Article;
 import com.dfwr.zhuanke.zhuanke.util.GlideUtil;
 
 import java.util.List;
@@ -18,16 +18,16 @@ import java.util.List;
  * @date 2018/2/24
  */
 
-public class NewsAdapter extends BaseQuickAdapter<FeedArticleData, BaseViewHolder> {
+public class NewsAdapter extends BaseQuickAdapter<Article, BaseViewHolder> {
 
-    public NewsAdapter(@Nullable List<FeedArticleData> data) {
+    public NewsAdapter(@Nullable List<Article> data) {
         super(R.layout.item_news_list, data);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, FeedArticleData item) {
-        if (!TextUtils.isEmpty(item.getEnvelopePic())) {
-            GlideUtil.getInstance().loadAdImage(mContext, (ImageView) helper.getView(R.id.item_project_list_iv),item.getEnvelopePic()
+    protected void convert(BaseViewHolder helper, Article item) {
+        if (!TextUtils.isEmpty(item.getHeadImg())) {
+            GlideUtil.getInstance().loadAdImage(mContext, (ImageView) helper.getView(R.id.item_project_list_iv),item.getHeadImg()
             ,true);
         }
         if (!TextUtils.isEmpty(item.getTitle())) {
@@ -35,7 +35,7 @@ public class NewsAdapter extends BaseQuickAdapter<FeedArticleData, BaseViewHolde
         }
 
         helper.setText(R.id.tv_price, "点击分享赚1.5毛");
-        helper.setText(R.id.tv_watch_sum, "10293");
+        helper.setText(R.id.tv_watch_sum, item.getClick()+"");
     }
 
 

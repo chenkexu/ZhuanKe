@@ -11,6 +11,7 @@ import android.widget.FrameLayout;
 import com.dfwr.zhuanke.zhuanke.R;
 
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by ckx on 2018/6/21.
@@ -32,4 +33,22 @@ public class AddQQView extends FrameLayout {
                 .inflate(R.layout.include_add_qq, this);
         ButterKnife.bind(view);
     }
+
+
+    private OnClickListener onItemClickListener;
+
+    @OnClick(R.id.tv_add_qq)
+    public void onViewClicked() {
+        onItemClickListener.joinQQ();
+    }
+
+    public interface OnClickListener {
+        void joinQQ();
+    }
+
+
+    public void setOnItemClickListener(OnClickListener listener) {
+        onItemClickListener = listener;
+    }
+
 }

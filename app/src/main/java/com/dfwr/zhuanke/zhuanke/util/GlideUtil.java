@@ -17,6 +17,7 @@ import com.dfwr.zhuanke.zhuanke.R;
 import java.io.File;
 import java.math.BigDecimal;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 
@@ -40,7 +41,7 @@ public class GlideUtil {
      */
     static class Contants {
         public static final int BLUR_VALUE = 20; //模糊
-        public static final int CORNER_RADIUS = 20; //圆角
+        public static final int CORNER_RADIUS = 100; //圆角
         public static final float THUMB_SIZE = 0.5f; //0-1之间  10%原图的大小
     }
 
@@ -54,21 +55,15 @@ public class GlideUtil {
      * @param imgUrl  图片地址
      * @param isFade  是否需要动画
      */
-    public void loadHeadImage(Context context, ImageView imageView,
+    public void loadHeadImage(Context context, CircleImageView imageView,
                           String imgUrl, boolean isFade) {
         if (isFade) {
             Glide.with(context)
                     .load(imgUrl)
                     .error(R.mipmap.head_default)
                     .crossFade()
-                    .placeholder(R.mipmap.head_default)
                     .priority(Priority.NORMAL) //下载的优先级
-                    //all:缓存源资源和转换后的资源 none:不作任何磁盘缓存
-                    //source:缓存源资源   result：缓存转换后的资源
                     .diskCacheStrategy(DiskCacheStrategy.ALL) //缓存策略
-                    .bitmapTransform(
-                            new RoundedCornersTransformation(
-                                    context, Contants.CORNER_RADIUS, Contants.CORNER_RADIUS))
                     .into(imageView);
         } else {
             Glide.with(context)

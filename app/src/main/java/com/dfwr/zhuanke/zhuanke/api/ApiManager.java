@@ -27,6 +27,8 @@ public class ApiManager {
         initRetrofit();
     }
 
+
+
     public static ApiManager getInstence(){
         if (mRetrofitManager==null){
             synchronized (ApiManager.class) {

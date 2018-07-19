@@ -7,10 +7,12 @@ import android.os.Handler;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.dfwr.zhuanke.zhuanke.MainActivity;
 import com.dfwr.zhuanke.zhuanke.R;
 import com.dfwr.zhuanke.zhuanke.base.BasePermissionActivity;
 import com.dfwr.zhuanke.zhuanke.util.SharedPreferencesTool;
+
 
 
 /**
@@ -25,36 +27,39 @@ public class GuideActivity extends BasePermissionActivity {
             requestWindowFeature(Window.FEATURE_NO_TITLE);
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                     WindowManager.LayoutParams.FLAG_FULLSCREEN);
-            setContentView(R.layout.activity_login);
+            setContentView(R.layout.activity_splash);
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     requestPermission(new String[]{
                             Manifest.permission.READ_PHONE_STATE,
                             Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                            Manifest.permission.READ_EXTERNAL_STORAGE,
-                            Manifest.permission.CAMERA,
-                            Manifest.permission.ACCESS_FINE_LOCATION,
-                            Manifest.permission.ACCESS_LOCATION_EXTRA_COMMANDS
+                            Manifest.permission.READ_EXTERNAL_STORAGE
 
                     });
-                }
-            }, 20);
 
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    boolean loginout = SharedPreferencesTool.getInstance().getBooleanValue(SharedPreferencesTool.USER_LOGOUT, true);
-                    if (loginout) {   //已经退出,进入登录界面，或者找不到该变量（默认为true）
-                        startActivity(new Intent(GuideActivity.this, LoginActivity.class));
-                        finish();
-                    } else { //false进入主页面
-                        startActivity(new Intent(GuideActivity.this, MainActivity.class));
-                        finish();
-                    }
                 }
-            }, 2000);
+            }, 1000);
 
         }
 
+    @Override
+    protected void permissionSuccess() {
+        super.permissionSuccess();
+        boolean loginout = SharedPreferencesTool.getInstance().getBooleanValue(SharedPreferencesTool.USER_LOGOUT, true);
+        if (loginout) {   //已经退出,进入登录界面，或者找不到该变量（默认为true）
+            startActivity(new Intent(GuideActivity.this, LoginActivity.class));
+            finish();
+        } else { //false进入主页面
+            startActivity(new Intent(GuideActivity.this, MainActivity.class));
+            finish();
+        }
     }
+
+    @Override
+    protected void permissionFail() {
+        super.permissionFail();
+        ToastUtils.showShort("授权失败");
+        finish();
+    }
+}

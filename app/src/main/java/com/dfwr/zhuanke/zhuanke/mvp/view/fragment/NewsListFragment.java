@@ -7,14 +7,14 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.dfwr.zhuanke.zhuanke.R;
 import com.dfwr.zhuanke.zhuanke.adapter.NewsAdapter;
 import com.dfwr.zhuanke.zhuanke.base.LazyLoadFragment;
-import com.dfwr.zhuanke.zhuanke.bean.FeedArticleData;
-import com.dfwr.zhuanke.zhuanke.bean.ProjectListData;
+import com.dfwr.zhuanke.zhuanke.bean.Article;
 import com.dfwr.zhuanke.zhuanke.mvp.contract.NewsListView;
 import com.dfwr.zhuanke.zhuanke.mvp.presenter.NewsListPresent;
 import com.dfwr.zhuanke.zhuanke.mvp.view.CommonWebView;
@@ -32,17 +32,19 @@ import butterknife.Unbinder;
 public class NewsListFragment extends LazyLoadFragment<NewsListView, NewsListPresent<NewsListView>> implements
         SwipeRefreshLayout.OnRefreshListener, NewsListView, BaseQuickAdapter.RequestLoadMoreListener {
 
-    RecyclerView recyclerView;
 
-    SwipeRefreshLayout refreshLayout;
+    private  RecyclerView recyclerView;
 
-    NewsAdapter newsAdapter;
-    RelativeLayout activityGuide;
-    Unbinder unbinder;
-    private List<FeedArticleData> mData = new ArrayList<>();
+    private SwipeRefreshLayout refreshLayout;
+
+    private NewsAdapter newsAdapter;
+    private  RelativeLayout activityGuide;
+    private Unbinder unbinder;
+    private List<Article> mData = new ArrayList<>();
     private int currentPage;
-    private int cid;
-    private static final int PAGE_SIZE = 15;
+    private String type;
+    private static final int PAGE_SIZE = 10;
+
 
     @Override
     public void showLoading() {
@@ -76,25 +78,22 @@ public class NewsListFragment extends LazyLoadFragment<NewsListView, NewsListPre
         newsAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                List<FeedArticleData> data = newsAdapter.getData();
-                FeedArticleData feedArticleData = data.get(position);
+                List<Article> data = newsAdapter.getData();
+                Article feedArticleData = data.get(position);
                 Intent intent = new Intent(getActivity(), CommonWebView.class);
-                intent.putExtra(Systems.title, feedArticleData.getTitle());
-                intent.putExtra(Systems.url, feedArticleData.getProjectLink());
-
+                intent.putExtra(Systems.title, feedArticleData.getContent());
                 intent.putExtra(Systems.feedArticleData, feedArticleData);
-
                 startActivity(intent);
             }
         });
     }
 
+
+
     private void initView() {
         mData = new ArrayList<>();
         recyclerView = findViewById(R.id.recyclerView);
         refreshLayout = findViewById(R.id.refreshLayout);
-
-
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         refreshLayout.setOnRefreshListener(this);//刷新
         newsAdapter = new NewsAdapter(mData);
@@ -103,7 +102,7 @@ public class NewsListFragment extends LazyLoadFragment<NewsListView, NewsListPre
 
         recyclerView.setAdapter(newsAdapter);
         Bundle bundle = getArguments();
-        cid = bundle.getInt(Systems.ARG_PARAM1);
+        type = bundle.getString(Systems.ARG_PARAM1);
     }
 
 
@@ -112,14 +111,14 @@ public class NewsListFragment extends LazyLoadFragment<NewsListView, NewsListPre
     public void onRefresh() {
         currentPage = 1;
         newsAdapter.setEnableLoadMore(false);//这里的作用是防止下拉刷新的时候还可以上拉加载
-        mPresent.getProjectListData(currentPage, cid);
+        mPresent.getProjectListData(type,currentPage, PAGE_SIZE);
     }
 
 
     //加载更多
     @Override
     public void onLoadMoreRequested() {
-        mPresent.getProjectListLoadMore(currentPage, cid);
+        mPresent.getProjectListLoadMore(type,currentPage, PAGE_SIZE);
     }
 
 
@@ -142,23 +141,23 @@ public class NewsListFragment extends LazyLoadFragment<NewsListView, NewsListPre
     }
 
 
-    @Override
-    public void getArticleListSuccess(ProjectListData projectListData) {
 
-    }
 
-    @Override
-    public void getArticleListFail(String msg, boolean isNetError) {
 
-    }
 
 
     @Override
-    public void getArticleListRefreshSuccess(ProjectListData projectListData) {
-        mData = projectListData.getDatas();
-        setData(true, mData);
-        newsAdapter.setEnableLoadMore(true);
+    public void getArticleListSuccess(List<Article> projectListData) {
+        if (projectListData == null || projectListData.size() == 0) {
+            newsAdapter.setNewData(null);
+            newsAdapter.setEmptyView(R.layout.layout_no_content, (ViewGroup) recyclerView.getParent());
+        }else{
+            mData = projectListData;
+            setData(true, mData);
+            newsAdapter.setEnableLoadMore(true);
+        }
         refreshLayout.setRefreshing(false);
+
     }
 
     @Override
@@ -167,12 +166,26 @@ public class NewsListFragment extends LazyLoadFragment<NewsListView, NewsListPre
         refreshLayout.setRefreshing(false);
     }
 
-
     @Override
-    public void getArticleListMoreSuccess(ProjectListData projectListData) {
-        mData = projectListData.getDatas();
+    public void getArticleListMoreSuccess(List<Article> projectListData) {
+        mData = projectListData;
         setData(false, mData);
     }
+
+
+//    @Override
+//    public void getArticleListMoreSuccess(ProjectListData projectListData) {
+//        mData = projectListData.getDatas();
+//        setData(false, mData);
+//    }
+
+//    @Override
+//    public void getArticleListRefreshSuccess(ProjectListData projectListData) {
+//        mData = projectListData.getDatas();
+//        setData(true, mData);
+//        newsAdapter.setEnableLoadMore(true);
+//        refreshLayout.setRefreshing(false);
+//    }
 
     @Override
     public void getArticleListMoreFail(String errorMsg) {
@@ -180,10 +193,12 @@ public class NewsListFragment extends LazyLoadFragment<NewsListView, NewsListPre
     }
 
 
-    public static NewsListFragment getInstance(int param1, String param2) {
+
+
+    public static NewsListFragment getInstance(String param1, String param2) {
         NewsListFragment fragment = new NewsListFragment();
         Bundle args = new Bundle();
-        args.putInt(Systems.ARG_PARAM1, param1);
+        args.putString(Systems.ARG_PARAM1, param1);
         args.putString(Systems.ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;

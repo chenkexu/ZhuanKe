@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>测试</title>
+</head>
+<body>
+    测试测试~！
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <script src="./wechatshare.pure.js"></script>
+    <script>
+        wechatShare({
+            title: '标题',
+            desc: '描述',
+            success_callback: function () {
+                alert('success');
+            },
+            cancel_callback: function () {
+                alert('cancel');
+            },
+            debug: true
+        })
+    </script>
+</body>
+</html>

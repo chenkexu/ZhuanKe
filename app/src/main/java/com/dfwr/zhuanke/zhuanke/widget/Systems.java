@@ -17,6 +17,8 @@ public final class Systems {
     public static final String url = "url";
     public static final String feedArticleData = "feedArticleData";
 
+    public static final String USER_INFO = "USER_INFO";
+
 
 
     public static final String latitude = "latitude";
@@ -24,9 +26,16 @@ public final class Systems {
     public static final String CurrentCircleRadius = "CurrentCircleRadius";
     public static final String mCityName = "mCityName";
 
+    public static final String from_withdraw = "from_withdraw";
+
 
     public static final String address = "address";
     public static final String newsType = "newsType";
+
+    public static final String payAccount = "payAccount";
+    public static final String payName = "payName";
+
+
     /**
      * Path
      */

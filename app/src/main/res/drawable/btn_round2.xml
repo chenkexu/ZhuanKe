@@ -2,9 +2,9 @@
     <corners android:radius="30dp">
 
     </corners>
-    <solid android:color="@color/colorPrimary"></solid>
-    <padding android:bottom="10dp"
-        android:left="10dp"
-        android:right="10dp"
-        android:top="10dp"/>
+    <solid android:color="@color/bg_red"></solid>
+    <padding android:bottom="2dp"
+        android:left="5dp"
+        android:right="5dp"
+        android:top="2dp"/>
 </shape>

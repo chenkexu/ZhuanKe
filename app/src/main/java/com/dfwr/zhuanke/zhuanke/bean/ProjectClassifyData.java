@@ -1,12 +1,15 @@
 package com.dfwr.zhuanke.zhuanke.bean;
 
+import java.io.Serializable;
+
 /**
  * @author quchao
  * @date 2018/2/24
  */
 
-public class ProjectClassifyData {
+public class ProjectClassifyData implements Serializable{
 
+    private static final long serialVersionUID = -3154342334753452798L;
     /**
      *   "children": [ ],
      "courseId": 13,
@@ -23,6 +26,26 @@ public class ProjectClassifyData {
     private int order;
     private int parentChapterId;
     private int visible;
+    private int position;
+    private String type;
+
+
+
+    public String getType() {
+        return type == null ? "" : type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
 
     public int getCourseId() {
         return courseId;

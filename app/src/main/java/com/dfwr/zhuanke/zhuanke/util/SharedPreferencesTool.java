@@ -23,16 +23,9 @@ public class SharedPreferencesTool {
     private static SharedPreferences sp;
 
 
-    public static final String  CERTIFICATE_KEY ="certificate_enterprise";//存储企业认证信息的
-    public static final String CERTIFICATE_KEY_PER ="certificate_per";//存储个人认证信息的
     private SharedPreferences.Editor editor;
     private static SharedPreferencesTool INSTANCE = null;
     private static final String PREFERENCES_FILE_NAME = "config";
-    public static final String ENTERPRISE_INDUSTRY = "enterprise_industry";//存储获取企业一级行业
-    public static final String SEARCH_HISTORY="search_history";//业务选择搜索记录
-    public static final String DIRECTION_HISTORY="direction_set_history";//缓存的定向设置
-    public static final String CERTIFICATE_STATUS="certificate_status";//认证状态
-    public static final String USER_STATUS="user_status";//认证状态
 
 
 
@@ -48,11 +41,7 @@ public class SharedPreferencesTool {
     public static final String user ="user";//保存的用户的信息
 
 
-    public static final String msgContent ="msgContent";//保存的短信的信息
 
-    public static final String guide_main ="guide_main";
-
-    public static final String guide_dir ="guide_dir";
 
 
 
@@ -229,6 +218,7 @@ public class SharedPreferencesTool {
         editor.putString(key, objectStr);
         return editor.commit();
     }
+
     public static Object getObjectFromShare(String key) {
         try {
             String wordBase64 = sp.getString(key, "");

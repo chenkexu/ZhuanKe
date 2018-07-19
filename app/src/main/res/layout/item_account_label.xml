@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:layout_centerVertical="true"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/login_btn_style">
+
+
+
+    <!--<ImageView
+        android:layout_centerVertical="true"
+        android:id="@+id/iv_clear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:scaleType="centerInside"
+        android:src="@mipmap/icon_login_account_clear"
+        android:visibility="visible"
+        />-->
+
+    <com.dfwr.zhuanke.zhuanke.widget.ClearEditText
+        android:background="@null"
+        android:id="@+id/et_account"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@mipmap/icon_login_account_hint"
+        android:drawablePadding="8dp"
+        android:gravity="center_vertical"
+        android:hint="+86请输入手机号"
+        android:inputType="phone"
+        android:maxLength="11"
+        android:singleLine="true"
+        android:textColor="@color/black"
+        android:textColorHint="@color/text_gray"
+        android:textSize="13sp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+
+
+
+        <View
+            android:layout_below="@id/et_account"
+            style="@style/line_style" />
+
+</RelativeLayout>
+
+

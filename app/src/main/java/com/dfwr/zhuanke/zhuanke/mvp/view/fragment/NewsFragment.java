@@ -3,7 +3,7 @@ package com.dfwr.zhuanke.zhuanke.mvp.view.fragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.dfwr.zhuanke.zhuanke.R;
@@ -12,6 +12,7 @@ import com.dfwr.zhuanke.zhuanke.base.LazyLoadFragment;
 import com.dfwr.zhuanke.zhuanke.bean.ProjectClassifyData;
 import com.dfwr.zhuanke.zhuanke.mvp.contract.NewsView;
 import com.dfwr.zhuanke.zhuanke.mvp.presenter.NewsPresent;
+import com.dfwr.zhuanke.zhuanke.widget.Dialog.ChannelDialog;
 import com.dfwr.zhuanke.zhuanke.widget.Systems;
 import com.flyco.tablayout.SlidingTabLayout;
 
@@ -27,7 +28,6 @@ import butterknife.BindView;
 public class NewsFragment extends BaseTwoFragment<NewsView, NewsPresent<NewsView>>
         implements NewsView {
 
-
     @BindView(R.id.add_channel_iv)
     ImageView addChannelIv;
 
@@ -36,17 +36,12 @@ public class NewsFragment extends BaseTwoFragment<NewsView, NewsPresent<NewsView
     @BindView(R.id.tl_5)
     SlidingTabLayout mTabLayout;
     private List<ProjectClassifyData> mData;
+    private List<Integer> channelIds = new ArrayList<>();
+
 //    private int currentPage;
 
     private ArrayList<LazyLoadFragment> mFragments = new ArrayList<>();
 
-
-
-
-    private final String[] mTitles = {
-            "全部", "审核中", "审核失败"
-            , "待投放", "投放中", "投放结束"
-    };
 
     private int currentPage;
 
@@ -54,9 +49,6 @@ public class NewsFragment extends BaseTwoFragment<NewsView, NewsPresent<NewsView
     protected int setLayoutId() {
         return R.layout.app_bar_news;
     }
-
-
-
 
 
     @Override
@@ -71,7 +63,9 @@ public class NewsFragment extends BaseTwoFragment<NewsView, NewsPresent<NewsView
 //        }else{
 //            viewPager.setCurrentItem(0);
 //        }
+        // TODO: 2018/7/18 请求新闻数据 
         mPresent.getProjectClassifyData();
+
     }
 
     @Override
@@ -81,27 +75,41 @@ public class NewsFragment extends BaseTwoFragment<NewsView, NewsPresent<NewsView
 
     @Override
     public void showLoading() {
-
+        showDefaultLoading();
     }
 
     @Override
     public void hideLoading() {
-
+        hideDefaultLoading();
     }
 
     @Override
     public void getProjectClassifyDataSuccess(List<ProjectClassifyData> projectClassifyDatas) {
         mData = projectClassifyDatas;
+        addChannelIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ChannelDialog channelDialog = new ChannelDialog(getActivity(),mData);
+                channelDialog.SetOnChannelClick(new ChannelDialog.SetOnChannelClickInterFace() {
+                    @Override
+                    public void itemOnclick(int position) {
+                        viewPager.setCurrentItem(position);
+                    }
+                });
+                channelDialog.show();
+            }
+        });
         initViewPagerAndTabLayout();
     }
 
 
 
     private void initViewPagerAndTabLayout() {
-        Log.d("okgo", "接收到了数据");
+
         for (ProjectClassifyData data : mData) {
-            NewsListFragment projectListFragment = NewsListFragment.getInstance(data.getId(), null);
+            NewsListFragment projectListFragment = NewsListFragment.getInstance(data.getType(), null);
             mFragments.add(projectListFragment);
+            channelIds.add(data.getId());
         }
         viewPager.setAdapter(new FragmentStatePagerAdapter(getChildFragmentManager()) {
             @Override
@@ -116,7 +124,7 @@ public class NewsFragment extends BaseTwoFragment<NewsView, NewsPresent<NewsView
 
             @Override
             public CharSequence getPageTitle(int position) {
-                return mData.get(position).getName();
+                return mData.get(position).getType();
             }
         });
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -138,6 +146,5 @@ public class NewsFragment extends BaseTwoFragment<NewsView, NewsPresent<NewsView
         mTabLayout.setViewPager(viewPager);
         viewPager.setCurrentItem(Systems.TAB_ONE);
     }
-
 
 }

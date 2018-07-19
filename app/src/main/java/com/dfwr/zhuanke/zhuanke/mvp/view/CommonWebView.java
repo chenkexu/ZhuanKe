@@ -10,7 +10,6 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.dfwr.zhuanke.zhuanke.R;
-import com.dfwr.zhuanke.zhuanke.ShareMananger;
 import com.dfwr.zhuanke.zhuanke.base.BaseActivity;
 import com.dfwr.zhuanke.zhuanke.base.BasePresenter;
 import com.dfwr.zhuanke.zhuanke.bean.FeedArticleData;
@@ -32,7 +31,7 @@ public class CommonWebView extends BaseActivity {
     MyTitle myTitle;
 
     private WebView webView;
-    private String title = "";
+    private String title = "11";
     private String url = "";
     private FeedArticleData feedArticleData;
 
@@ -44,9 +43,8 @@ public class CommonWebView extends BaseActivity {
         myTitle.setImageBack(this);
         Intent intent = getIntent();
         title = intent.getStringExtra(Systems.title);
-        feedArticleData = (FeedArticleData) intent.getSerializableExtra(Systems.feedArticleData);
+
         myTitle.setTitleName(title);
-        url = intent.getStringExtra(Systems.url);
         initView();
     }
 
@@ -77,10 +75,23 @@ public class CommonWebView extends BaseActivity {
         webView.getSettings().setUseWideViewPort(true); //将图片调整到适合webview的大小
         webView.getSettings().setLoadWithOverviewMode(true); // 缩放至屏幕的大小
         webView.setWebChromeClient(new WebChromeClient());
+        // 设置与Js交互的权限
+        // 设置允许JS弹窗
+        webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+        WebSettings webSettings = webView.getSettings();
+        webSettings.setBuiltInZoomControls(false);
+
+
+        webView.loadUrl("file:///android_asset/aa.html");
+
+
+
+
+
+
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                webView.loadUrl(url);
                 return true;
             }
 
@@ -92,23 +103,17 @@ public class CommonWebView extends BaseActivity {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
+//                webView.loadUrl("javascript:pushNewsDate('"+title+"')");
             }
         });
 
-        WebSettings webSettings = webView.getSettings();
-        //设置WebView属性，能够执行Javascript脚本
-        webSettings.setJavaScriptEnabled(true);
-        //设置可以访问文件
-//        webSettings.setAllowFileAccess(true);
-        //设置支持缩放
-        webSettings.setBuiltInZoomControls(false);
-        //加载需要显示的网页
-        webView.loadUrl(url);
+
     }
 
     @OnClick(R.id.btn_share)
     public void onViewClicked() {
-        ShareMananger.oneKeyShareWechat(this,feedArticleData.getTitle(),feedArticleData.getDesc(),feedArticleData.getEnvelopePic());
+
+//        ShareMananger.oneKeyShareWechat(this,feedArticleData.getTitle(),feedArticleData.getDesc(),feedArticleData.getEnvelopePic());
     }
 
 

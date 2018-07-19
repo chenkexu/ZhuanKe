@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
-            android:text="新闻"
+            android:text="赚钱"
             android:textColor="@color/text_color" />
     </LinearLayout>
 
@@ -46,7 +46,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
-            android:text="师徒"
+            android:text="收徒"
             android:textColor="@color/text_color" />
     </LinearLayout>
 

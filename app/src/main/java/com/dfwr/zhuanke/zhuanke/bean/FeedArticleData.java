@@ -29,6 +29,8 @@ public class FeedArticleData implements Serializable {
     private int visible;
     private int zan;
 
+
+
     public String getApkLink() {
         return apkLink;
     }

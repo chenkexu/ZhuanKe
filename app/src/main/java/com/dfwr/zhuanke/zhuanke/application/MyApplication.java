@@ -4,7 +4,10 @@ import android.app.Application;
 import android.content.Context;
 
 import com.blankj.utilcode.util.Utils;
+import com.dfwr.zhuanke.zhuanke.bean.UserBean;
 import com.dfwr.zhuanke.zhuanke.util.SharedPreferencesTool;
+import com.dfwr.zhuanke.zhuanke.util.SharedPreferencesUtil;
+import com.dfwr.zhuanke.zhuanke.widget.Systems;
 import com.mob.MobSDK;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.FormatStrategy;
@@ -18,6 +21,8 @@ import com.orhanobut.logger.PrettyFormatStrategy;
 public class MyApplication extends Application {
 
     private static Context applicationContext;
+    private UserBean loginBean;
+
 
     @Override
     public void onCreate() {
@@ -43,5 +48,51 @@ public class MyApplication extends Application {
     public static Context getContext() {
         return applicationContext;
     }
+
+
+    /**
+     * 注销用户
+     */
+    public void logOutLogin(Context context) {
+        loginBean = null;
+        SharedPreferencesUtil.removeData(context, Systems.USER_INFO);
+    }
+
+    /**
+     * 保存用户信息
+     *
+     * @param loginBean
+     */
+    public void saveLoginBean(UserBean loginBean) {
+        this.loginBean = loginBean;
+        SharedPreferencesUtil.save(Systems.USER_INFO, loginBean);
+    }
+
+    /**
+     * 判断用户是否登录
+     *
+     * @return
+     */
+    public boolean isMemberLogin() {
+        if (getLoginBean() != null) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 获取用户详细信息
+     *
+     * @return
+     */
+    public UserBean getLoginBean() {
+        if (loginBean != null) {
+            return loginBean;
+        }
+        loginBean = (UserBean) SharedPreferencesUtil.get(Systems.USER_INFO);
+        return loginBean;
+    }
+
+
 
 }

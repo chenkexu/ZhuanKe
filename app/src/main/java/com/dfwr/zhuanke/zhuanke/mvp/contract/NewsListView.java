@@ -2,20 +2,19 @@ package com.dfwr.zhuanke.zhuanke.mvp.contract;
 
 
 import com.dfwr.zhuanke.zhuanke.base.BaseView;
-import com.dfwr.zhuanke.zhuanke.bean.ProjectListData;
+import com.dfwr.zhuanke.zhuanke.bean.Article;
+
+import java.util.List;
 
 /**
  * Created by wy on 2017/12/10.
  */
 
 public interface NewsListView extends BaseView {
-    void getArticleListSuccess(ProjectListData projectListData);
-    void getArticleListFail(String msg,boolean isNetError);
-
-    void getArticleListRefreshSuccess(ProjectListData projectListData);
+    void getArticleListSuccess(List<Article> projectListData);
     void getArticleListRefreshError(String msg);
 
-    void getArticleListMoreSuccess(ProjectListData projectListData);
+    void getArticleListMoreSuccess(List<Article> projectListData);
     void getArticleListMoreFail(String errorMsg);
 
 

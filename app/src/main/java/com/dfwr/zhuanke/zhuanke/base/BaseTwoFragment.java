@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ public abstract class BaseTwoFragment<V, T extends BasePresenter<V>> extends Fra
     protected T mPresent;
     private Dialog progressDialog;
     private Unbinder unbinder;
+    public String fragmentTitle;
 
     @Override
     public void onAttach(Context context) {
@@ -42,6 +44,8 @@ public abstract class BaseTwoFragment<V, T extends BasePresenter<V>> extends Fra
         mPresent.attachView((V) this);
     }
 
+    
+    
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -63,6 +67,15 @@ public abstract class BaseTwoFragment<V, T extends BasePresenter<V>> extends Fra
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
+        if (hidden) {
+
+        }else{
+            fragmentToUserVisible();
+        }
+    }
+
+    protected  void fragmentToUserVisible(){
+
     }
 
     /**
@@ -151,4 +164,11 @@ public abstract class BaseTwoFragment<V, T extends BasePresenter<V>> extends Fra
      */
     protected abstract T createPresent();
 
+    public String getTitle() {
+        return TextUtils.isEmpty(fragmentTitle) ? "" : fragmentTitle;
+    }
+
+    public void setTitle(String title) {
+        fragmentTitle = title;
+    }
 }
