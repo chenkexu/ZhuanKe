@@ -8,14 +8,19 @@ import android.widget.TextView;
 
 import com.dfwr.zhuanke.zhuanke.R;
 import com.dfwr.zhuanke.zhuanke.base.BaseTwoFragment;
+import com.dfwr.zhuanke.zhuanke.bean.CheckWithDrawBean;
 import com.dfwr.zhuanke.zhuanke.bean.UserBaseInfo;
 import com.dfwr.zhuanke.zhuanke.bean.UserBean;
-import com.dfwr.zhuanke.zhuanke.mvp.contract.IHomeView;
-import com.dfwr.zhuanke.zhuanke.mvp.presenter.HomePresent;
+import com.dfwr.zhuanke.zhuanke.mvp.contract.HomeWithDrawView;
+import com.dfwr.zhuanke.zhuanke.mvp.presenter.HomeWithDrawPresent;
+import com.dfwr.zhuanke.zhuanke.mvp.view.activity.AttentionWechatNumberActivity;
 import com.dfwr.zhuanke.zhuanke.mvp.view.activity.BindAlipayActivity;
+import com.dfwr.zhuanke.zhuanke.mvp.view.activity.BindPhoneActivity;
 import com.dfwr.zhuanke.zhuanke.mvp.view.activity.GoWithDrawActivity;
 import com.dfwr.zhuanke.zhuanke.mvp.view.activity.PhoneWithDrawActivity;
 import com.dfwr.zhuanke.zhuanke.util.SharedPreferencesTool;
+import com.dfwr.zhuanke.zhuanke.util.SharedPreferencesUtil;
+import com.dfwr.zhuanke.zhuanke.widget.Systems;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -25,7 +30,7 @@ import butterknife.OnClick;
  * 提现
  */
 
-public class WithDrawFragment extends BaseTwoFragment<IHomeView, HomePresent<IHomeView>> implements IHomeView {
+public class WithDrawFragment extends BaseTwoFragment<HomeWithDrawView, HomeWithDrawPresent<HomeWithDrawView>> implements HomeWithDrawView {
 
 
     @BindView(R.id.tv_account)
@@ -64,8 +69,8 @@ public class WithDrawFragment extends BaseTwoFragment<IHomeView, HomePresent<IHo
 
 
     @Override
-    protected HomePresent<IHomeView> createPresent() {
-        return new HomePresent<>(this);
+    protected HomeWithDrawPresent<HomeWithDrawView> createPresent() {
+        return new HomeWithDrawPresent<>(this);
     }
 
 
@@ -84,7 +89,11 @@ public class WithDrawFragment extends BaseTwoFragment<IHomeView, HomePresent<IHo
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_withdraw_wechat:
-                startActivity(new Intent(getActivity(), GoWithDrawActivity.class));
+//                mPresent.checkWithDraw();
+                Intent intent = new Intent(getActivity(), GoWithDrawActivity.class);
+                intent.putExtra(Systems.isFirstWithDraw, false);
+                startActivity(intent);
+//                startActivity(new Intent(getActivity(), BindPhoneActivity.class));
                 break;
             case R.id.ll_withdraw_alipay:
                 startActivity(new Intent(getActivity(), BindAlipayActivity.class));
@@ -95,6 +104,12 @@ public class WithDrawFragment extends BaseTwoFragment<IHomeView, HomePresent<IHo
         }
     }
 
+
+
+
+
+
+
     @Override
     protected void fragmentToUserVisible() {
         super.fragmentToUserVisible();
@@ -103,8 +118,26 @@ public class WithDrawFragment extends BaseTwoFragment<IHomeView, HomePresent<IHo
 
     @Override
     public void getUserInfo(UserBaseInfo userBaseInfo) {
-        tvBalance.setText(userBaseInfo.getUser().getBalance()+"");
+        tvBalance.setText(userBaseInfo.getAccount().getBalance()+"");
         tvAllWithDraw.setText(userBaseInfo.getUser().getBalance()+"");
         tvAllWithDraw.setText(userBaseInfo.getAllWithDrawMoney()+"");
+        SharedPreferencesUtil.putStringData(getActivity(), SharedPreferencesTool.balance,userBaseInfo.getAccount().getBalance()+"");
+    }
+
+    @Override
+    public void getCheckWithDrawSuccess(CheckWithDrawBean checkWithDrawBean) {
+        if (checkWithDrawBean.getPhoneIsBinding() == 0) { //没绑定手机号
+            startActivity(new Intent(getActivity(), BindPhoneActivity.class));
+        }else if(checkWithDrawBean.getGongzhonghao() == 0){ //没关注微信
+            startActivity(new Intent(getActivity(), AttentionWechatNumberActivity.class));
+        }else {
+            Intent intent = new Intent(getActivity(), GoWithDrawActivity.class);
+            if (checkWithDrawBean.getNum() == 0) { //是否首次提现 0，没有提现记录
+                intent.putExtra(Systems.isFirstWithDraw, true);
+            }else{
+                intent.putExtra(Systems.isFirstWithDraw, false);
+            }
+            startActivity(intent);
+        }
     }
 }

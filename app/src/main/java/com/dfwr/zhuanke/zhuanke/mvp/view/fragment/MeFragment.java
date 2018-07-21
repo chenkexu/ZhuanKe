@@ -18,13 +18,17 @@ import com.dfwr.zhuanke.zhuanke.base.BaseTwoFragment;
 import com.dfwr.zhuanke.zhuanke.bean.HomeBean;
 import com.dfwr.zhuanke.zhuanke.bean.UserBaseInfo;
 import com.dfwr.zhuanke.zhuanke.bean.UserBean;
-import com.dfwr.zhuanke.zhuanke.mvp.contract.IHomeView;
-import com.dfwr.zhuanke.zhuanke.mvp.presenter.HomePresent;
+import com.dfwr.zhuanke.zhuanke.mvp.contract.HomeMeView;
+import com.dfwr.zhuanke.zhuanke.mvp.presenter.HomeMePresent;
 import com.dfwr.zhuanke.zhuanke.mvp.view.activity.BusinessHezuoActivity;
 import com.dfwr.zhuanke.zhuanke.mvp.view.activity.RankActivity;
 import com.dfwr.zhuanke.zhuanke.util.GlideUtil;
+import com.dfwr.zhuanke.zhuanke.util.SharedPreferencesTool;
+import com.dfwr.zhuanke.zhuanke.util.SharedPreferencesUtil;
 import com.dfwr.zhuanke.zhuanke.util.UserDataManeger;
 import com.flyco.tablayout.SlidingTabLayout;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +44,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * 我的界面
  */
 
-public class MeFragment extends BaseTwoFragment<IHomeView,HomePresent<IHomeView>> implements IHomeView {
+public class MeFragment extends BaseTwoFragment<HomeMeView,HomeMePresent<HomeMeView>> implements HomeMeView {
 
 
 //    @BindView(R.id.tv_name)
@@ -94,11 +98,13 @@ public class MeFragment extends BaseTwoFragment<IHomeView,HomePresent<IHomeView>
 
     @Override
     public void getUserInfo(UserBaseInfo userBaseInfo) {
+        EventBus.getDefault().post(userBaseInfo);
         tvAccount.setText("余额（元）："+userBaseInfo.getAccount().getBalance());
         tvAllPupil.setText("总收徒（人）："+userBaseInfo.getStudentNum());
         tvTodayProfit.setText(userBaseInfo.getAccount().getTodayMoney()+"");
         tvArticalMoney.setText(userBaseInfo.getAccount().getArticleMoney()+"");
         tvTodayPupil.setText(userBaseInfo.getTodayStudentNum()+"");
+        SharedPreferencesUtil.putStringData(getActivity(), SharedPreferencesTool.balance,userBaseInfo.getAccount().getBalance()+"");
     }
 
 
@@ -199,22 +205,23 @@ public class MeFragment extends BaseTwoFragment<IHomeView,HomePresent<IHomeView>
 
 
     @Override
-    protected HomePresent<IHomeView> createPresent() {
-        return new HomePresent<>(this);
+    protected HomeMePresent createPresent() {
+        return new HomeMePresent<>(this);
     }
 
     @OnClick(R.id.tv_add_qq)
     public void onViewClicked() {
-        joinQQGroup("qDmYFkk2XtU903xEk2vrPayicCb-lAeh");
+        joinQQGroup();
     }
 
     /****************
      * 发起添加群流程。群号：乐享转官方群(826248193) 的 key 为： qDmYFkk2XtU903xEk2vrPayicCb-lAeh
      * 调用 joinQQGroup(qDmYFkk2XtU903xEk2vrPayicCb-lAeh) 即可发起手Q客户端申请加群 乐享转官方群(826248193)
-     * @param key 由官网生成的key
+     * @param
      * @return 返回true表示呼起手Q成功，返回fals表示呼起失败
      ******************/
-    public boolean joinQQGroup(String key) {
+    public boolean joinQQGroup() {
+        String key = "qDmYFkk2XtU903xEk2vrPayicCb-lAeh";
         Intent intent = new Intent();
         intent.setData(Uri.parse("mqqopensdkapi://bizAgent/qm/qr?url=http%3A%2F%2Fqm.qq.com%2Fcgi-bin%2Fqm%2Fqr%3Ffrom%3Dapp%26p%3Dandroid%26k%3D" + key));
         // 此Flag可根据具体产品需要自定义，如设置，则在加群界面按返回，返回手Q主界面，不设置，按返回会返回到呼起产品界面    //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)

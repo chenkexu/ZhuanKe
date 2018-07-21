@@ -8,9 +8,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <com.dfwr.zhuanke.zhuanke.widget.MyTitle
+        android:id="@+id/my_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </com.dfwr.zhuanke.zhuanke.widget.MyTitle>
     <ImageView
         android:layout_marginBottom="20sp"
-        android:layout_marginTop="20sp"
+        android:layout_marginTop="10sp"
         android:layout_gravity="center"
         android:src="@mipmap/code"
         android:layout_width="wrap_content"
@@ -29,7 +35,7 @@
     <TextView
         android:textSize="15sp"
         android:textStyle="bold"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_marginBottom="5dp"
         android:text="方法②：一键复制公众号名字（乐享转），到微信进行搜索并且关注。"
         android:layout_width="wrap_content"

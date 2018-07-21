@@ -7,9 +7,7 @@
     android:layout_height="match_parent">
 
 
-
-    <include layout="@layout/include_my_account"/>
-
+    <include layout="@layout/include_my_account" />
 
 
     <android.support.v7.widget.RecyclerView
@@ -24,29 +22,41 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tv_my_account"
+            android:textSize="15sp"
+            android:layout_marginLeft="10dp"
+            android:textStyle="bold"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/bg_red"
+            android:text="注：每日只能提现两次。"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
         <Button
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
             android:id="@+id/tv_submit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:background="@drawable/bg_tv_round_gradient"
-            android:text="立即绑定"
+            android:text="立即提现"
             android:textColor="@color/bg_white"
             android:textSize="15sp" />
 
         <Button
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
             android:id="@+id/tv_go_makemoney"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:background="@drawable/bg_tv_round_gradient"
+            android:background="@drawable/round_border_gray"
             android:text="继续挣钱"
-            android:textColor="@color/bg_white"
+            android:textColor="@color/bg_red"
             android:textSize="15sp" />
+
+
     </LinearLayout>
 
 

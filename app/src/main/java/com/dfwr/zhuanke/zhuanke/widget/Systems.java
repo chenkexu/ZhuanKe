@@ -35,6 +35,8 @@ public final class Systems {
     public static final String payAccount = "payAccount";
     public static final String payName = "payName";
 
+    public static final String isFirstWithDraw = "isFirstWithDraw";
+
 
     /**
      * Path

@@ -15,8 +15,12 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.dfwr.zhuanke.zhuanke.MainActivity;
 import com.dfwr.zhuanke.zhuanke.R;
 import com.dfwr.zhuanke.zhuanke.base.BaseActivity;
-import com.dfwr.zhuanke.zhuanke.base.BasePresenter;
+import com.dfwr.zhuanke.zhuanke.mvp.contract.MeWithDrawView;
+import com.dfwr.zhuanke.zhuanke.mvp.presenter.MeWithDrawPresent;
+import com.dfwr.zhuanke.zhuanke.util.SharedPreferencesTool;
+import com.dfwr.zhuanke.zhuanke.util.SharedPreferencesUtil;
 import com.dfwr.zhuanke.zhuanke.widget.Systems;
+import com.orhanobut.logger.Logger;
 
 import java.util.Arrays;
 import java.util.List;
@@ -29,9 +33,7 @@ import butterknife.OnClick;
  * Created by ckx on 2018/7/17.
  */
 
-public class GoWithDrawActivity extends BaseActivity {
-
-
+public class GoWithDrawActivity extends BaseActivity<MeWithDrawView,MeWithDrawPresent<MeWithDrawView>> implements MeWithDrawView {
 
     @BindView(R.id.tv_my_account)
     TextView tvMyAccount;
@@ -47,6 +49,9 @@ public class GoWithDrawActivity extends BaseActivity {
     ImageView backBtn;
     private String[] accountSelects = {"3元(仅限首次)", "10元", "20元", "50元", "100元"};
     private String withdrawType="";
+    private Adapter adaptersex;
+    private boolean isFirstWithDraw;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,9 +63,10 @@ public class GoWithDrawActivity extends BaseActivity {
     }
 
 
+
     private void initView() {
         recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
-        final Adapter adaptersex = new Adapter(Arrays.asList(accountSelects));
+        adaptersex = new Adapter(Arrays.asList(accountSelects));
         recyclerView.setAdapter(adaptersex);
         adaptersex.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
@@ -79,17 +85,23 @@ public class GoWithDrawActivity extends BaseActivity {
     }
 
     private void initData() {
+        String balance = SharedPreferencesUtil.getStringData(this, SharedPreferencesTool.balance);
+        tvMyAccount.setText(balance);
         Intent intent = getIntent();
-
         if (intent!=null) {
-            withdrawType = "0";
+            isFirstWithDraw = intent.getBooleanExtra(Systems.isFirstWithDraw, true);
+            adaptersex.notifyDataSetChanged();
+            if (isFirstWithDraw) { //首次提现
+
+            }else{  //不是首次提现
+
+            }
+            withdrawType = "alipay";
             String payAccount = intent.getStringExtra(Systems.payAccount);
             String payName = intent.getStringExtra(Systems.payName);
         }else{
-            withdrawType = "1";
+            withdrawType = "wechat";
         }
-
-
 
     }
 
@@ -108,10 +120,27 @@ public class GoWithDrawActivity extends BaseActivity {
     }
 
 
+
+
     private int sexPosition = 0;
 
+    @Override
+    public void showLoading() {
+        showDefaultLoading();
+    }
+
+    @Override
+    public void hideLoading() {
+        hideDefaultLoading();
+    }
+
+
+
+
+
+
     public class Adapter extends BaseQuickAdapter<String, BaseViewHolder> {
-        private int type;
+
 
         public Adapter(@Nullable List<String> data) {
             super(R.layout.item_account_select, data);
@@ -121,6 +150,7 @@ public class GoWithDrawActivity extends BaseActivity {
         protected void convert(BaseViewHolder helper, String item) {
             int layoutPosition = helper.getLayoutPosition();
             helper.setText(R.id.tv_title, item);
+
             if (sexPosition == layoutPosition) {
                 helper.setTextColor(R.id.tv_title, getResources().getColor(R.color.bg_white));
                 helper.setBackgroundRes(R.id.rl_title, R.drawable.btn_selec);
@@ -128,18 +158,24 @@ public class GoWithDrawActivity extends BaseActivity {
                 helper.setTextColor(R.id.tv_title, getResources().getColor(R.color.text_gray_new));
                 helper.setBackgroundRes(R.id.rl_title, R.drawable.btn_no_selec_border);
             }
+
+            if (isFirstWithDraw) { //首次提现
+                Logger.d("首次體現");
+            }else{  //不是首次提现
+                if (layoutPosition==0) {
+                    helper.setBackgroundRes(R.id.rl_title, R.drawable.btn_selec_gray_border);
+                    helper.setTextColor(R.id.tv_title, getResources().getColor(R.color.bg_white));
+                    View view = helper.getView(R.id.rl_title);
+                    view.setClickable(false);
+                }
+            }
         }
     }
 
 
     @Override
-    protected BasePresenter createPresent() {
-        return new BasePresenter() {
-            @Override
-            public void fecth() {
-
-            }
-        };
+    protected MeWithDrawPresent<MeWithDrawView> createPresent() {
+        return new MeWithDrawPresent<>(this);
     }
 
 }

@@ -63,13 +63,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".mvp.view.activity.LoginActivity"></activity>
-        <activity android:name=".mvp.view.CommonWebView"></activity>
-        <activity android:name=".mvp.view.activity.BusinessHezuoActivity"></activity>
+        <activity android:name=".mvp.view.activity.LoginActivity"/>
+        <activity android:name=".mvp.view.CommonWebView"/>
+        <activity android:name=".mvp.view.activity.BusinessHezuoActivity"/>
         <activity android:name=".mvp.view.activity.GoWithDrawActivity"/>
         <activity android:name=".mvp.view.activity.BindAlipayActivity"/>
         <activity android:name=".mvp.view.activity.BindPhoneActivity"/>
         <activity android:name=".mvp.view.activity.PhoneWithDrawActivity"/>
         <activity android:name=".mvp.view.activity.RankActivity"/>
+        <activity android:name=".mvp.view.activity.AttentionWechatNumberActivity"/>
     </application>
 </manifest>

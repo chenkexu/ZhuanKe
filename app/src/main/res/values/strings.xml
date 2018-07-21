@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">乐享转</string>
+    <string name="withdraw_hint">提现需先绑定手机号，再关注微信号才能提现哦!</string>
+    <string name="wechat_name">虎策百货</string>
 </resources>

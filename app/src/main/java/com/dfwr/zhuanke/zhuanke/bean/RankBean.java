@@ -7,10 +7,10 @@ public class RankBean implements Serializable{
 
 	private static final long serialVersionUID = 2515741704210271097L;
 
-	
+
 		/**
-		 * balance : 3.0
-		 * num : 0
+		 * balance : 3.0 金额
+		 * num : 0   收徒多少人
 		 * status : 0
 		 * uid : 17
 		 * wxId : 1

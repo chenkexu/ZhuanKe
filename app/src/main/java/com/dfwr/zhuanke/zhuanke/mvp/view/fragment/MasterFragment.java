@@ -12,6 +12,8 @@ import com.dfwr.zhuanke.zhuanke.bean.HomeBean;
 import com.dfwr.zhuanke.zhuanke.bean.UserBaseInfo;
 import com.dfwr.zhuanke.zhuanke.mvp.contract.IHomeView;
 import com.dfwr.zhuanke.zhuanke.mvp.presenter.HomePresent;
+import com.dfwr.zhuanke.zhuanke.util.SharedPreferencesTool;
+import com.dfwr.zhuanke.zhuanke.util.SharedPreferencesUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -114,6 +116,7 @@ public class MasterFragment extends BaseTwoFragment<IHomeView,HomePresent<IHomeV
         tvTodayStudentNum.setText(userBaseInfo.getTodayStudentNum()+"");
         tvTodayStudentProfit.setText(userBaseInfo.getTodayStudentPofit()+"");
         tvAllStudentPofit.setText(userBaseInfo.getStudentPofit()+"");
+        SharedPreferencesUtil.putStringData(getActivity(), SharedPreferencesTool.balance,userBaseInfo.getAccount().getBalance()+"");
     }
 
 

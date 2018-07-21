@@ -45,6 +45,8 @@ public class RankActivity extends BaseActivity {
     };
     private MyPagerAdapter mAdapter;
 
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +55,8 @@ public class RankActivity extends BaseActivity {
         initView();
         initData();
     }
+
+
 
 
     private void initViewPager() {
@@ -66,6 +70,8 @@ public class RankActivity extends BaseActivity {
         viewPager.setOffscreenPageLimit(0);
         tl5.setViewPager(viewPager);
     }
+
+
 
     private void initView() {
         myTitle.setImageBack(this);

@@ -41,6 +41,9 @@ public class SharedPreferencesTool {
     public static final String user ="user";//保存的用户的信息
 
 
+    public static final String balance ="balance";//保存的用户的信息
+
+
 
 
 

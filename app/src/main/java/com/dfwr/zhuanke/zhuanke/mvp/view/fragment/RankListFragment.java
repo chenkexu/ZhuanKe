@@ -3,7 +3,6 @@ package com.dfwr.zhuanke.zhuanke.mvp.view.fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.widget.RelativeLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.dfwr.zhuanke.zhuanke.R;
@@ -16,8 +15,6 @@ import com.dfwr.zhuanke.zhuanke.mvp.presenter.RankPresent;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Unbinder;
-
 /**
  * Created by ckx on 2018/7/12.
  */
@@ -25,9 +22,7 @@ import butterknife.Unbinder;
 public class RankListFragment extends LazyLoadFragment<RankView, RankPresent<RankView>> implements
         SwipeRefreshLayout.OnRefreshListener, RankView {
 
-    private List<Integer> channelIds = new ArrayList<>();
 
-    //    private int currentPage;
     private ArrayList<LazyLoadFragment> mFragments = new ArrayList<>();
 
 
@@ -36,12 +31,7 @@ public class RankListFragment extends LazyLoadFragment<RankView, RankPresent<Ran
     SwipeRefreshLayout refreshLayout;
 
     RankListAdapter newsAdapter;
-    RelativeLayout activityGuide;
-    Unbinder unbinder;
     private List<RankBean> mData = new ArrayList<>();
-    private int currentPage;
-    private int cid;
-    private static final int PAGE_SIZE = 15;
 
 
 
@@ -54,6 +44,7 @@ public class RankListFragment extends LazyLoadFragment<RankView, RankPresent<Ran
 
     public static RankListFragment getInstance() {
         RankListFragment sf = new RankListFragment();
+
         return sf;
     }
 
@@ -68,6 +59,7 @@ public class RankListFragment extends LazyLoadFragment<RankView, RankPresent<Ran
 
     @Override
     protected void lazyLoad() {
+        initView();
         onRefresh();
     }
 
@@ -90,8 +82,10 @@ public class RankListFragment extends LazyLoadFragment<RankView, RankPresent<Ran
     public void onRefresh() {
         String title = getTitle();
         if (title.equals("收入排行榜")) {
+            newsAdapter.setType(title);
             mPresent.getProfitRanking();
         }else{
+            newsAdapter.setType(title);
             mPresent.getStudentRanking();
         }
     }
@@ -102,15 +96,50 @@ public class RankListFragment extends LazyLoadFragment<RankView, RankPresent<Ran
         mData = new ArrayList<>();
         recyclerView = findViewById(R.id.recyclerView);
         refreshLayout = findViewById(R.id.refreshLayout);
-
-
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         refreshLayout.setOnRefreshListener(this);//刷新
         newsAdapter = new RankListAdapter(mData,"1");
         newsAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
         recyclerView.setAdapter(newsAdapter);
-
     }
 
 
+    @Override
+    public void getProfitRankingSuccess(List<RankBean> rankBeans) {
+        if (rankBeans == null||rankBeans.size()==0) {
+            // TODO: 2018/7/20 为空
+        }else{
+            newsAdapter.setNewData(rankBeans);
+        }
+        refreshLayout.setRefreshing(false);
+    }
+
+
+
+
+//    private boolean isContainsMe(List<RankBean> rankBeans){
+//        UserBean userBean = UserDataManeger.getInstance().getUserBean();
+//        if (userBean!=null) {
+//            for(RankBean rankBean:rankBeans){
+//                if (rankBean.getUid() == userBean.getUser().getUid()) {
+//                    return true;
+//                }else{
+//                    return false;
+//                }
+//            }
+//        }
+//    }
+
+
+
+    @Override
+    public void getStudentRankingSuccess(List<RankBean> rankBeans) {
+            if (rankBeans == null || rankBeans.size() == 0) {
+                // TODO: 2018/7/20 为空
+            } else {
+                newsAdapter.setNewData(rankBeans);
+            }
+
+        refreshLayout.setRefreshing(false);
+    }
 }

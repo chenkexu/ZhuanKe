@@ -1,7 +1,7 @@
 package com.dfwr.zhuanke.zhuanke.mvp.view.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
@@ -14,13 +14,14 @@ import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.dfwr.zhuanke.zhuanke.R;
 import com.dfwr.zhuanke.zhuanke.base.BaseActivity;
-import com.dfwr.zhuanke.zhuanke.base.BasePresenter;
 import com.dfwr.zhuanke.zhuanke.bean.UserBean;
+import com.dfwr.zhuanke.zhuanke.mvp.contract.BindPhoneView;
 import com.dfwr.zhuanke.zhuanke.mvp.event.UpdateSmsStateEvent;
+import com.dfwr.zhuanke.zhuanke.mvp.presenter.BindPhonePresent;
 import com.dfwr.zhuanke.zhuanke.util.UserDataManeger;
 import com.dfwr.zhuanke.zhuanke.widget.MyTitle;
 
-import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,7 +31,7 @@ import butterknife.OnClick;
  * Created by ckx on 2018/7/17.
  */
 
-public class BindPhoneActivity extends BaseActivity {
+public class BindPhoneActivity extends BaseActivity<BindPhoneView, BindPhonePresent<BindPhoneView>> implements BindPhoneView {
 
 
     @BindView(R.id.my_title)
@@ -48,6 +49,7 @@ public class BindPhoneActivity extends BaseActivity {
     Button btnBind;
     @BindView(R.id.tv_name)
     TextView tvName;
+    String phoneNo="";
 
 
 
@@ -76,69 +78,71 @@ public class BindPhoneActivity extends BaseActivity {
 
     @OnClick({R.id.btn_login, R.id.tv_call_code})
     public void onViewClicked(View view) {
+        phoneNo = etAccount.getText().toString().trim();
         switch (view.getId()) {
             case R.id.btn_login:
+                if (!RegexUtils.isMobileExact(phoneNo)) {
+                    ToastUtils.showShort("请输入正确的手机号");
+                    return;
+                }
+                String code = etAuthCode.getText().toString();
+                if(TextUtils.isEmpty(code)){
+                    ToastUtils.showShort("请输入验证码！");
+                    return;
+                }
+                mPresent.BindPhone(phoneNo,code);
 
                 break;
             case R.id.tv_call_code:
-                final String phoneNo = etAccount.getText().toString().trim();
                 if (TextUtils.isEmpty(phoneNo)) {
                     ToastUtils.showShort("请输入手机号");
                     return;
                 }
-                if (!RegexUtils.isTel(phoneNo)) {
+                if (!RegexUtils.isMobileExact(phoneNo)) {
                     ToastUtils.showShort("请输入正确的手机号");
                     return;
                 }
-                showDefaultLoading();
-
+                mPresent.sendMessageCode(phoneNo);
                 break;
         }
     }
 
 
-    //验证码Id
-    private String codeId = "";
-    private long totalTime = 60000;
-    private long progress = 0;
-    private CountDownTimer timer;
 
-    //倒计时开始
-    private void countDown() {
-        progress = totalTime;
-        timer = new CountDownTimer(totalTime, 1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-                //不可再次获取验证码
-                progress -= 1000;
-                String currentTime = progress / 1000 + "s";
-                UpdateSmsStateEvent updateSmsStateEvent = new UpdateSmsStateEvent();
-                updateSmsStateEvent.isCall = false;
-                updateSmsStateEvent.surplusTime = currentTime;
-                EventBus.getDefault().post(updateSmsStateEvent);
-            }
-
-            @Override
-            public void onFinish() {
-                //可以再次获取验证码
-                progress = totalTime;
-                UpdateSmsStateEvent updateSmsStateEvent = new UpdateSmsStateEvent();
-                updateSmsStateEvent.isCall = true;
-                updateSmsStateEvent.surplusTime = "0s";
-                EventBus.getDefault().post(updateSmsStateEvent);
-            }
-        };
-        timer.start();
+    @Subscribe
+    public void updateSmsState(UpdateSmsStateEvent updateSmsTimeEvent) {
+        if (updateSmsTimeEvent.isCall) {
+            tvCallCode.setText("再次获取");
+            tvCallCode.setClickable(true);
+            tvCallCode.setBackground(getResources().getDrawable(R.drawable.bg_code_round));
+        } else {
+            tvCallCode.setText(updateSmsTimeEvent.surplusTime);
+            tvCallCode.setBackground(getResources().getDrawable(R.drawable.round_border_gray));
+            tvCallCode.setClickable(false);
+        }
     }
 
 
     @Override
-    protected BasePresenter createPresent() {
-        return new BasePresenter() {
-            @Override
-            public void fecth() {
+    protected BindPhonePresent<BindPhoneView> createPresent() {
+        return new BindPhonePresent<>(this);
+    }
 
-            }
-        };
+
+    @Override
+    public void showLoading() {
+        showDefaultLoading();
+    }
+
+    @Override
+    public void hideLoading() {
+        hideDefaultLoading();
+    }
+
+
+    @Override
+    public void bindPhoneSuccess(Object object) {
+        Intent intent = new Intent(this,GoWithDrawActivity.class);
+        startActivity(intent);
     }
 }

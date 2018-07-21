@@ -8,7 +8,7 @@ import com.dfwr.zhuanke.zhuanke.bean.UserBaseInfo;
  * Created by wy on 2017/12/10.
  */
 
-public interface IHomeView extends BaseView {
+public interface HomeMeView extends BaseView {
 
 
     void getUserInfo(UserBaseInfo objec);

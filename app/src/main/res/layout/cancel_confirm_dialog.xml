@@ -7,6 +7,15 @@
     android:background="@drawable/shape_circle_white_load_bg1"
     android:orientation="vertical">
 
+    <TextView
+        android:layout_marginTop="10dp"
+        android:id="@+id/tvRemind"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textColor="@color/colorPrimary"
+        android:layout_gravity="center_horizontal"
+        android:text="温馨提示"/>
 
     <TextView
         android:id="@+id/tvRemind"
@@ -16,7 +25,7 @@
         android:textColor="@color/text_gray"
         android:layout_marginTop="30dp"
         android:layout_gravity="center_horizontal"
-        android:text="你好"/>
+        android:text="@string/withdraw_hint"/>
 
     <LinearLayout
         android:layout_marginRight="10dp"
@@ -37,7 +46,7 @@
             android:layout_height="match_parent"
             android:background="@drawable/bac_rec_border"
             android:gravity="center"
-            android:text="确定"
+            android:text="绑定手机号"
             android:visibility="visible"
             android:textColor="@color/colorPrimary"
             android:textSize="12sp" />
@@ -51,9 +60,9 @@
             android:layout_height="match_parent"
             android:background="@drawable/round_border"
             android:gravity="center"
-            android:text="取消"
+            android:text="再忍忍"
             android:layout_marginLeft="30dp"
-            android:textColor="@color/text_gray"
+            android:textColor="@color/bg_red"
             android:textSize="12sp" />
     </LinearLayout>
 

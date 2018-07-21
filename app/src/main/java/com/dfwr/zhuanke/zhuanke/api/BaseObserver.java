@@ -53,7 +53,6 @@ public  abstract class BaseObserver<T> implements Observer<ApiResponse<T>> {
     @Override
     public void onError(Throwable e) {
         e.printStackTrace();
-
         Writer result = new StringWriter();
         PrintWriter printWriter = new PrintWriter(result);
         e.printStackTrace(printWriter);

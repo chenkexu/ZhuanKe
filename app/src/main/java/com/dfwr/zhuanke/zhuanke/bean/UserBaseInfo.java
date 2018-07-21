@@ -197,7 +197,7 @@ public class UserBaseInfo implements Serializable{
              */
 
             private double articleMoney;
-            private int balance;
+            private double balance;
             private int id;
             private double shareMoney;
             private double todayMoney;
@@ -211,11 +211,11 @@ public class UserBaseInfo implements Serializable{
                 this.articleMoney = articleMoney;
             }
 
-            public int getBalance() {
+            public Double getBalance() {
                 return balance;
             }
 
-            public void setBalance(int balance) {
+            public void setBalance(double balance) {
                 this.balance = balance;
             }
 

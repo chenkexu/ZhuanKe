@@ -40,7 +40,7 @@ public class RankPresent<T> extends BasePresenter<RankView> {
                 .subscribe(new BaseObserver<List<RankBean>>() {
                     @Override
                     protected void onSuccees(ApiResponse<List<RankBean>> t) {
-
+                        rankView.getStudentRankingSuccess(t.getResult());
                     }
 
                     @Override
@@ -59,13 +59,12 @@ public class RankPresent<T> extends BasePresenter<RankView> {
                 .subscribe(new BaseObserver<List<RankBean>>() {
                     @Override
                     protected void onSuccees(ApiResponse<List<RankBean>> t) {
-
+                        rankView.getProfitRankingSuccess(t.getResult());
                     }
 
                     @Override
                     protected void onFailure(String errorInfo, boolean isNetWorkError) {
                         ToastUtils.showShort(errorInfo);
-
                     }
                 });
     }

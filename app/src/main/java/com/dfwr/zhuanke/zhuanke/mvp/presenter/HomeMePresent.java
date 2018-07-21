@@ -8,7 +8,7 @@ import com.dfwr.zhuanke.zhuanke.api.param.ParamsUtil;
 import com.dfwr.zhuanke.zhuanke.api.response.ApiResponse;
 import com.dfwr.zhuanke.zhuanke.base.BasePresenter;
 import com.dfwr.zhuanke.zhuanke.bean.UserBaseInfo;
-import com.dfwr.zhuanke.zhuanke.mvp.contract.IHomeView;
+import com.dfwr.zhuanke.zhuanke.mvp.contract.HomeMeView;
 import com.dfwr.zhuanke.zhuanke.util.RxUtil;
 
 import java.util.HashMap;
@@ -18,11 +18,11 @@ import java.util.HashMap;
  * 消息
  */
 
-public class HomePresent<T> extends BasePresenter<IHomeView> {
+public class HomeMePresent<T> extends BasePresenter<HomeMeView> {
 
-    private IHomeView mMsgView;
+    private HomeMeView mMsgView;
 
-    public HomePresent(IHomeView mMsgView) {
+    public HomeMePresent(HomeMeView mMsgView) {
         this.mMsgView = mMsgView;
     }
 

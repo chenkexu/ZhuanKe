@@ -82,7 +82,7 @@ public class CommonWebView extends BaseActivity {
         webSettings.setBuiltInZoomControls(false);
 
 
-        webView.loadUrl("file:///android_asset/aa.html");
+        webView.loadUrl("file:///android_asset/www/bb.html");
 
 
 

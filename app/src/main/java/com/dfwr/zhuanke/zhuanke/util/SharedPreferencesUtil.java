@@ -56,10 +56,11 @@ public class SharedPreferencesUtil {
 
 	/**
 	 * 读取String型数据。
-	 * @param context 
+	 * @param context
 	 * @param key  String
 	 */
-	public static String getStringData(Context context,String key){
+	public static String getStringData(Context context, String key){
+
 		SharedPreferences pre=context.getSharedPreferences(FILE_NAME,Context.MODE_PRIVATE);
 		return pre.getString(key,null);
 	}
