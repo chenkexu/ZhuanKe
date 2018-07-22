@@ -1,10 +1,14 @@
 package com.dfwr.zhuanke.zhuanke.mvp.view.fragment;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.TextView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.dfwr.zhuanke.zhuanke.R;
 import com.dfwr.zhuanke.zhuanke.adapter.HomeAdapter;
 import com.dfwr.zhuanke.zhuanke.base.BaseTwoFragment;
@@ -14,7 +18,11 @@ import com.dfwr.zhuanke.zhuanke.mvp.contract.IHomeView;
 import com.dfwr.zhuanke.zhuanke.mvp.presenter.HomePresent;
 import com.dfwr.zhuanke.zhuanke.util.SharedPreferencesTool;
 import com.dfwr.zhuanke.zhuanke.util.SharedPreferencesUtil;
+import com.dfwr.zhuanke.zhuanke.wechatshare.GetResultListener;
+import com.dfwr.zhuanke.zhuanke.wechatshare.ShareUtils;
+import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,7 +95,27 @@ public class MasterFragment extends BaseTwoFragment<IHomeView,HomePresent<IHomeV
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 4));
         taskAdapter = new HomeAdapter(imagesAndTitles);
         recyclerView.setAdapter(taskAdapter);
+
         getUserData();
+       taskAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+           int wxSceneSession = SendMessageToWX.Req.WXSceneSession;
+           int wxSceneTimeline = SendMessageToWX.Req.WXSceneTimeline;
+           @Override
+           public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+               Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+               ShareUtils.shareWXReady(new WeakReference(getActivity()), "你好", "你好", "www.baidu.com", wxSceneSession, bitmap, new GetResultListener() {
+                   @Override
+                   public void onError() {
+
+                   }
+
+                   @Override
+                   public void onSuccess(Object object) {
+
+                   }
+               });
+           }
+       });
     }
 
 
