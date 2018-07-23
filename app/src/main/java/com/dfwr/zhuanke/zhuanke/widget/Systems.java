@@ -16,6 +16,7 @@ public final class Systems {
     public static final String title = "title";
     public static final String url = "url";
     public static final String feedArticleData = "feedArticleData";
+    public static final String articleData = "articleData";
 
     public static final String USER_INFO = "USER_INFO";
 

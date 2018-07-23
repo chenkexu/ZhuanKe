@@ -32,7 +32,6 @@ public interface ApiService {
     /**
      * 项目分类
      * http://www.wanandroid.com/project/tree/json
-     *
      * @return 项目分类数据
      */
     @GET("project/tree/json")
@@ -49,6 +48,11 @@ public interface ApiService {
     Observable<BaseResponse<ProjectListData>> getProjectListData(@Path("page") int page, @Query("cid") int cid);
 
 
+
+
+
+
+
     //登录接口
     @FormUrlEncoded
     @POST("user/user_login")
@@ -60,16 +64,17 @@ public interface ApiService {
     @POST("/user/user_info")
     Observable<ApiResponse<UserBaseInfo>> getUserInfo(@FieldMap HashMap<String, Object> map);
 
+
     //获取文章类型
     @FormUrlEncoded
-    @POST("/article/articType")
+    @POST("/article/artic_type")
     Observable<ApiResponse<List<ProjectClassifyData>>> getArticType(@FieldMap HashMap<String, Object> map);
 
 
 
     //文章列表详情
     @FormUrlEncoded
-    @POST("/article/articleDetailsList")
+    @POST("/article/article_details_list")
     Observable<ApiResponse<List<Article>>> getArticleDetailsList (@FieldMap HashMap<String, Object> map);
 
 
@@ -77,18 +82,18 @@ public interface ApiService {
 
     //收徒排行榜
     @FormUrlEncoded
-    @POST("/user/studentRanking")
+    @POST("/user/student_ranking")
     Observable<ApiResponse<List<RankBean>>> studentRanking (@FieldMap HashMap<String, Object> map);
 
     //收入排行榜
     @FormUrlEncoded
-    @POST("/user/profitRanking ")
+    @POST("/user/profit_ranking")
     Observable<ApiResponse<List<RankBean>>> profitRanking (@FieldMap HashMap<String, Object> map);
 
 
     //发送验证码接口
     @FormUrlEncoded
-    @POST("/send/sendMessage")
+    @POST("/send/send_message")
     Observable<ApiResponse<Object>> sendMessage (@FieldMap HashMap<String, Object> map);
 
 
@@ -96,13 +101,13 @@ public interface ApiService {
 
     //绑定手机号
     @FormUrlEncoded
-    @POST("/user/bindingPhone")
+    @POST("/user/binding_phone")
     Observable<ApiResponse<Object>> bindingPhone(@FieldMap HashMap<String, Object> map);
 
 
     //获取文章链接接口
     @FormUrlEncoded
-    @POST("/article/articleTemplate")
+    @POST("/article/article_template")
     Observable<ApiResponse<Object>> getArticleLink(@FieldMap HashMap<String, Object> map);
 
 
@@ -110,7 +115,7 @@ public interface ApiService {
 
     //提现接口
     @FormUrlEncoded
-    @POST("/change/takeMoney")
+    @POST("/change/take_money")
     Observable<ApiResponse<Object>> weChatTakeMoney(@FieldMap HashMap<String, Object> map);
 
 
@@ -118,7 +123,7 @@ public interface ApiService {
 
     //提现校验接口
     @FormUrlEncoded
-    @POST("/change/takeMoneyCheck")
+    @POST("/change/take_money_check")
     Observable<ApiResponse<CheckWithDrawBean>> takeMoneyCheck(@FieldMap HashMap<String, Object> map);
 
 

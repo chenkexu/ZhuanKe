@@ -13,6 +13,8 @@ public interface HomeMeView extends BaseView {
 
     void getUserInfo(UserBaseInfo objec);
 
+    //获取我的收益成功
+
 
 
 }

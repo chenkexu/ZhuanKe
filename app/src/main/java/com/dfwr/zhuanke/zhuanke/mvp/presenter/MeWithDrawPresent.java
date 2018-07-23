@@ -19,7 +19,7 @@ import java.util.HashMap;
 
 /**
  * Created by wy on 2017/12/5.
- * 消息
+ * 提现
  */
 
 public class MeWithDrawPresent<T> extends BasePresenter<MeWithDrawView> {

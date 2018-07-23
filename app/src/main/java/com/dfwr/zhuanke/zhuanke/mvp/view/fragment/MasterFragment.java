@@ -1,7 +1,6 @@
 package com.dfwr.zhuanke.zhuanke.mvp.view.fragment;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.content.Intent;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,13 +15,11 @@ import com.dfwr.zhuanke.zhuanke.bean.HomeBean;
 import com.dfwr.zhuanke.zhuanke.bean.UserBaseInfo;
 import com.dfwr.zhuanke.zhuanke.mvp.contract.IHomeView;
 import com.dfwr.zhuanke.zhuanke.mvp.presenter.HomePresent;
+import com.dfwr.zhuanke.zhuanke.mvp.view.activity.LoginActivity;
+import com.dfwr.zhuanke.zhuanke.mvp.view.activity.MyCodeActivity;
 import com.dfwr.zhuanke.zhuanke.util.SharedPreferencesTool;
 import com.dfwr.zhuanke.zhuanke.util.SharedPreferencesUtil;
-import com.dfwr.zhuanke.zhuanke.wechatshare.GetResultListener;
-import com.dfwr.zhuanke.zhuanke.wechatshare.ShareUtils;
-import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,8 +44,6 @@ public class MasterFragment extends BaseTwoFragment<IHomeView,HomePresent<IHomeV
     TextView tvAllStudentPofit;
 
 
-
-
     private List<HomeBean> imagesAndTitles = new ArrayList<>();
     private HomeAdapter taskAdapter;
 
@@ -56,6 +51,7 @@ public class MasterFragment extends BaseTwoFragment<IHomeView,HomePresent<IHomeV
     private int[] taskStatusPics = {R.mipmap.ic_launcher, R.mipmap.ic_launcher,
             R.mipmap.ic_launcher, R.mipmap.ic_launcher
     };
+
 
     private String[] myStr = {"微信收徒", "QQ收徒", "二维码收徒", "链接收徒"};
 
@@ -65,11 +61,15 @@ public class MasterFragment extends BaseTwoFragment<IHomeView,HomePresent<IHomeV
         return R.layout.fragment_master;
     }
 
+
+
     @Override
     protected void fragmentToUserVisible() {
         super.fragmentToUserVisible();
         getUserData();
     }
+
+
 
     public void getUserData() {
         mPresent.getUserInfo();
@@ -79,6 +79,12 @@ public class MasterFragment extends BaseTwoFragment<IHomeView,HomePresent<IHomeV
     @Override
     protected void initData() {
         super.initData();
+        tvAllStudentPofit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), LoginActivity.class));
+            }
+        });
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -95,27 +101,25 @@ public class MasterFragment extends BaseTwoFragment<IHomeView,HomePresent<IHomeV
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 4));
         taskAdapter = new HomeAdapter(imagesAndTitles);
         recyclerView.setAdapter(taskAdapter);
-
         getUserData();
-       taskAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-           int wxSceneSession = SendMessageToWX.Req.WXSceneSession;
-           int wxSceneTimeline = SendMessageToWX.Req.WXSceneTimeline;
-           @Override
-           public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-               Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
-               ShareUtils.shareWXReady(new WeakReference(getActivity()), "你好", "你好", "www.baidu.com", wxSceneSession, bitmap, new GetResultListener() {
-                   @Override
-                   public void onError() {
+        taskAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
 
-                   }
-
-                   @Override
-                   public void onSuccess(Object object) {
-
-                   }
-               });
-           }
-       });
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                switch (position){
+                    case 0:
+                        break;
+                    case 1:
+                        break;
+                    case 2:
+                        Intent intent = new Intent(getActivity(), MyCodeActivity.class);
+                        startActivity(intent);
+                        break;
+                    case 3:
+                        break;
+                }
+            }
+        });
     }
 
 
@@ -146,6 +150,5 @@ public class MasterFragment extends BaseTwoFragment<IHomeView,HomePresent<IHomeV
         tvAllStudentPofit.setText(userBaseInfo.getStudentPofit()+"");
         SharedPreferencesUtil.putStringData(getActivity(), SharedPreferencesTool.balance,userBaseInfo.getAccount().getBalance()+"");
     }
-
 
 }

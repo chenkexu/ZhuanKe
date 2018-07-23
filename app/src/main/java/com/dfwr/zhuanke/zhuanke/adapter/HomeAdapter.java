@@ -16,6 +16,8 @@ import java.util.List;
 
 public class HomeAdapter extends BaseQuickAdapter<HomeBean, BaseViewHolder> {
 
+
+
     public HomeAdapter(@Nullable List<HomeBean> data) {
         super(R.layout.item_gv_me, data);
     }

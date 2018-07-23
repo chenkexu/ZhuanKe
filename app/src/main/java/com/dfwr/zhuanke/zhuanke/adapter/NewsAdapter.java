@@ -35,7 +35,7 @@ public class NewsAdapter extends BaseQuickAdapter<Article, BaseViewHolder> {
         }
 
         helper.setText(R.id.tv_price, "点击分享赚1.5毛");
-        helper.setText(R.id.tv_watch_sum, item.getClick()+"");
+        helper.setText(R.id.tv_watch_sum, item.getClick()+"分享");
     }
 
 

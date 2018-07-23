@@ -13,6 +13,6 @@ public interface HomeWithDrawView extends BaseView {
 
     void getUserInfo(UserBaseInfo objec);
     void getCheckWithDrawSuccess(CheckWithDrawBean object);
-
+    void getWithDrawHistory(Object object);
 
 }

@@ -82,7 +82,7 @@ public class NewsListFragment extends LazyLoadFragment<NewsListView, NewsListPre
                 Article feedArticleData = data.get(position);
                 Intent intent = new Intent(getActivity(), CommonWebView.class);
                 intent.putExtra(Systems.title, feedArticleData.getContent());
-                intent.putExtra(Systems.feedArticleData, feedArticleData);
+                intent.putExtra(Systems.articleData, feedArticleData);
                 startActivity(intent);
             }
         });

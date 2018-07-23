@@ -19,6 +19,7 @@ public class Article implements Serializable{
 
 
 
+
 	public String getArticleLink() {
 		return articleLink == null ? "" : articleLink;
 	}

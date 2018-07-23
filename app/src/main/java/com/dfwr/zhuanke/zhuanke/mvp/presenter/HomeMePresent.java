@@ -56,5 +56,9 @@ public class HomeMePresent<T> extends BasePresenter<HomeMeView> {
     }
 
 
+    public void  getMyProfit(){
+
+    }
+
 
 }

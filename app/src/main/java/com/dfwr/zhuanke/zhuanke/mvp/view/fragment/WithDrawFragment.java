@@ -140,4 +140,9 @@ public class WithDrawFragment extends BaseTwoFragment<HomeWithDrawView, HomeWith
             startActivity(intent);
         }
     }
+
+    @Override
+    public void getWithDrawHistory(Object object) {
+
+    }
 }

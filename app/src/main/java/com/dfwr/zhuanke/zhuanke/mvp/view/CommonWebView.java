@@ -5,16 +5,24 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.dfwr.zhuanke.zhuanke.R;
+import com.dfwr.zhuanke.zhuanke.api.HttpContants;
 import com.dfwr.zhuanke.zhuanke.base.BaseActivity;
 import com.dfwr.zhuanke.zhuanke.base.BasePresenter;
-import com.dfwr.zhuanke.zhuanke.bean.FeedArticleData;
+import com.dfwr.zhuanke.zhuanke.bean.Article;
+import com.dfwr.zhuanke.zhuanke.util.UIUtils;
+import com.dfwr.zhuanke.zhuanke.wechatshare.GetResultListener;
+import com.dfwr.zhuanke.zhuanke.wechatshare.ShareUtils;
 import com.dfwr.zhuanke.zhuanke.widget.MyTitle;
 import com.dfwr.zhuanke.zhuanke.widget.Systems;
+import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
+
+import java.lang.ref.WeakReference;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,10 +38,13 @@ public class CommonWebView extends BaseActivity {
     @BindView(R.id.my_title)
     MyTitle myTitle;
 
+
     private WebView webView;
     private String title = "11";
     private String url = "";
-    private FeedArticleData feedArticleData;
+    private Article article;
+    private Bitmap httpBitmap;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,22 +53,12 @@ public class CommonWebView extends BaseActivity {
         ButterKnife.bind(this);
         myTitle.setImageBack(this);
         Intent intent = getIntent();
-        title = intent.getStringExtra(Systems.title);
-
-        myTitle.setTitleName(title);
+        myTitle.setTitleName("文章阅读");
+        title = intent.getStringExtra(Systems.articleData);
+        article = (Article) intent.getSerializableExtra(Systems.articleData);
         initView();
     }
 
-
-    @Override
-    protected BasePresenter createPresent() {
-        return new BasePresenter() {
-            @Override
-            public void fecth() {
-
-            }
-        };
-    }
 
 
     private void initView() {
@@ -80,12 +81,7 @@ public class CommonWebView extends BaseActivity {
         webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
         WebSettings webSettings = webView.getSettings();
         webSettings.setBuiltInZoomControls(false);
-
-
-        webView.loadUrl("file:///android_asset/www/bb.html");
-
-
-
+        webView.loadUrl(HttpContants.article_details + article.getAid());
 
 
 
@@ -103,30 +99,82 @@ public class CommonWebView extends BaseActivity {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-//                webView.loadUrl("javascript:pushNewsDate('"+title+"')");
             }
         });
 
 
     }
 
-    @OnClick(R.id.btn_share)
-    public void onViewClicked() {
-
-//        ShareMananger.oneKeyShareWechat(this,feedArticleData.getTitle(),feedArticleData.getDesc(),feedArticleData.getEnvelopePic());
-    }
 
 
-    public class WebChromeClient extends android.webkit.WebChromeClient {
-        @Override
-        public void onProgressChanged(WebView view, int newProgress) {
-            if (newProgress == 100) {
-                hideDefaultLoading();
-            } else {
-                showDefaultLoading();
+    @OnClick({R.id.ivWechat, R.id.ivWechatFriend})
+    public void onViewClicked(View view) {
+        final String headImg = article.getHeadImg();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    httpBitmap = UIUtils.getHttpBitmap(headImg);
+                } catch (Throwable throwable) {
+                    throwable.printStackTrace();
+                }
             }
-            super.onProgressChanged(view, newProgress);
+        }).start();
+
+        switch (view.getId()) {
+            case R.id.ivWechat:
+                share(article.getTitle(),article.getTitle(),SendMessageToWX.Req.WXSceneSession,httpBitmap,"www.baidu.com");
+                break;
+            case R.id.ivWechatFriend:
+                share(article.getTitle(),article.getTitle(),SendMessageToWX.Req.WXSceneTimeline,httpBitmap,"www.baidu.com");
+                break;
         }
+    }
+
+
+
+    //分享
+    private void share(String title,String content,int type,Bitmap bitmap,String clickUrl) {
+        int wxSceneSession = SendMessageToWX.Req.WXSceneSession; //聊天界面
+        int wxSceneTimeline = SendMessageToWX.Req.WXSceneTimeline;//朋友圈
+        ShareUtils.shareWXReady(new WeakReference(this), title, content, clickUrl, type, bitmap, new GetResultListener() {
+            @Override
+            public void onError() {
+
+            }
+
+            @Override
+            public void onSuccess(Object object) {
+
+            }
+        });
+    }
+
+
+
+        public class WebChromeClient extends android.webkit.WebChromeClient {
+            @Override
+            public void onProgressChanged(WebView view, int newProgress) {
+                if (newProgress == 100) {
+                    hideDefaultLoading();
+                } else {
+                    showDefaultLoading();
+                }
+                super.onProgressChanged(view, newProgress);
+            }
 
     }
+
+
+
+    @Override
+    protected BasePresenter createPresent() {
+        return new BasePresenter() {
+            @Override
+            public void fecth() {
+
+            }
+        };
+    }
+
 }

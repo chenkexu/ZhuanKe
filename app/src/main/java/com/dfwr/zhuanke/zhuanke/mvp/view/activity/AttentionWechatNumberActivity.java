@@ -77,6 +77,7 @@ public class AttentionWechatNumberActivity extends BaseActivity {
             return true;
         } catch (Exception e) {
             // 未安装手Q或安装的版本不支持
+            ToastUtils.showShort("未安装手Q或安装的版本不支持");
             return false;
         }
     }

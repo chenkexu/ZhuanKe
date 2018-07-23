@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.dfwr.zhuanke.zhuanke.R;
 import com.dfwr.zhuanke.zhuanke.adapter.HomeAdapter;
@@ -230,6 +231,7 @@ public class MeFragment extends BaseTwoFragment<HomeMeView,HomeMePresent<HomeMeV
             return true;
         } catch (Exception e) {
             // 未安装手Q或安装的版本不支持
+            ToastUtils.showShort("未安装手Q或安装的版本不支持");
             return false;
         }
     }

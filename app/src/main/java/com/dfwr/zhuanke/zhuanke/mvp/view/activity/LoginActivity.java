@@ -2,7 +2,6 @@ package com.dfwr.zhuanke.zhuanke.mvp.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
@@ -14,6 +13,8 @@ import com.dfwr.zhuanke.zhuanke.api.ApiManager;
 import com.dfwr.zhuanke.zhuanke.api.BaseObserver;
 import com.dfwr.zhuanke.zhuanke.api.param.ParamsUtil;
 import com.dfwr.zhuanke.zhuanke.api.response.ApiResponse;
+import com.dfwr.zhuanke.zhuanke.base.BaseActivity;
+import com.dfwr.zhuanke.zhuanke.base.BasePresenter;
 import com.dfwr.zhuanke.zhuanke.bean.UserBean;
 import com.dfwr.zhuanke.zhuanke.bean.WechatBean;
 import com.dfwr.zhuanke.zhuanke.util.GsonUtils;
@@ -29,7 +30,7 @@ import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.wechat.friends.Wechat;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +42,19 @@ public class LoginActivity extends AppCompatActivity {
         ButterKnife.bind(this);
     }
 
+    @Override
+    protected BasePresenter createPresent() {
+        return new BasePresenter() {
+            @Override
+            public void fecth() {
+
+            }
+        };
+    }
+
 
     private void loginWeChat() {
+        showDefaultLoading();
         final Platform wechat = ShareSDK.getPlatform(Wechat.NAME);
         if (wechat.isClientValid()) {
             //客户端可用
@@ -74,6 +86,7 @@ public class LoginActivity extends AppCompatActivity {
                         .subscribe(new BaseObserver<UserBean>() {
                             @Override
                             protected void onSuccees(ApiResponse<UserBean> t) {
+                                hideDefaultLoading();
                                 UserBean result = t.getResult();
                                 SharedPreferencesTool.getInstance().setObject(result, SharedPreferencesTool.user);
                                 // 这里授权成功跳转到程序主界面了
@@ -84,6 +97,7 @@ public class LoginActivity extends AppCompatActivity {
 
                             @Override
                             protected void onFailure(String errorInfo, boolean isNetWorkError) {
+                                hideDefaultLoading();
                                 ToastUtils.showShort(errorInfo);
                             }
                         });

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+
+    <RelativeLayout
+        android:layout_gravity="bottom"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:padding="10dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:id="@+id/relative1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/bg_gray_pale">
+
+        <TextView
+            android:layout_centerVertical="true"
+            android:textColor="@color/bg_red"
+            android:id="@+id/tvShareRemind"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="分享赚钱"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:layout_marginRight="30dp"
+            android:layout_alignParentRight="true"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/ivWechat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/img_wechat"
+                android:gravity="center_horizontal" />
+
+            <ImageView
+                android:layout_marginLeft="30dp"
+                android:id="@+id/ivWechatFriend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/img_wechat_friend"
+                android:gravity="center_horizontal" />
+
+
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+
+
+
+

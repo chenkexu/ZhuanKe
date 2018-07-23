@@ -56,6 +56,7 @@ public class HomeWithDrawPresent<T> extends BasePresenter<HomeWithDrawView> {
 
     }
 
+    //提现校验
     public void checkWithDraw(){
         mMsgView.showLoading();
         HashMap<String, Object> map = ParamsUtil.getMap();
@@ -79,6 +80,10 @@ public class HomeWithDrawPresent<T> extends BasePresenter<HomeWithDrawView> {
 
     }
 
+    //获取提现记录
+    public void getWithDrawHistory(){
+
+    }
 
 
 }

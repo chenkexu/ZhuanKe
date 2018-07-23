@@ -16,6 +16,7 @@ import com.dfwr.zhuanke.zhuanke.mvp.view.fragment.MeFragment;
 import com.dfwr.zhuanke.zhuanke.mvp.view.fragment.NewsFragment;
 import com.dfwr.zhuanke.zhuanke.mvp.view.fragment.WithDrawFragment;
 import com.dfwr.zhuanke.zhuanke.util.AppManager;
+import com.dfwr.zhuanke.zhuanke.widget.Dialog.AdvertisementDialog;
 import com.dfwr.zhuanke.zhuanke.widget.Systems;
 
 import butterknife.BindView;
@@ -43,7 +44,6 @@ public class MainActivity extends BaseActivity<IMsgView, MsgPresent<IMsgView>> i
     private WithDrawFragment withDrawFragment;
     private MeFragment meFragment;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,14 +51,20 @@ public class MainActivity extends BaseActivity<IMsgView, MsgPresent<IMsgView>> i
         ButterKnife.bind(this);
         selectedFragment(0);
         tabSelected(llHome);
+        showAdDialog();
+
     }
 
+    //显示广告弹窗
+    private void showAdDialog() {
+        AdvertisementDialog advertisementDialog = new AdvertisementDialog(this);
+        advertisementDialog.showDialog();
+    }
 
 
     @Override
     public void onResume() {
         super.onResume();
-
         if (getIntent()!=null){
             Intent intent = getIntent();
             String stringExtra = intent.getStringExtra(Systems.from_withdraw);

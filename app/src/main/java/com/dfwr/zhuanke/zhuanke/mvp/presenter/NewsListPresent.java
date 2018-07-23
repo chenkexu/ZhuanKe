@@ -16,7 +16,7 @@ import java.util.List;
 
 /**
  * Created by wy on 2017/12/5.
- * 消息
+ * 新闻
  */
 
 public class NewsListPresent<T> extends BasePresenter<NewsListView> {
