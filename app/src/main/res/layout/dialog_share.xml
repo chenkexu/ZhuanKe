@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_guide"
+    android:orientation="vertical"
+    android:background="@color/bg_white"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:padding="10dp"
+        android:layout_margin="10dp"
+        android:textColor="@color/grey_dark"
+        android:text="请选择分享的方式"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <ImageView
+        android:id="@+id/iv_close"
+        android:padding="10dp"
+        android:layout_margin="10dp"
+        android:layout_alignParentRight="true"
+        android:src="@mipmap/icon_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="30dp"
+        android:layout_below="@id/iv_close"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iv_wechat"
+            android:layout_weight="1"
+            android:src="@mipmap/img_wechat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <ImageView
+            android:id="@+id/iv_wechat_circle"
+            android:layout_weight="1"
+            android:src="@mipmap/img_wechat_friend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:id="@+id/iv_qq"
+            android:layout_weight="1"
+            android:src="@mipmap/img_qq"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <ImageView
+            android:id="@+id/iv_qq_zone"
+            android:layout_weight="1"
+            android:src="@mipmap/img_space"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+    </LinearLayout>
+</RelativeLayout>

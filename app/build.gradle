@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'android-apt'
+apply plugin: 'walle'
 // 添加插件
 apply plugin: 'com.mob.sdk'
 android {
@@ -30,13 +31,25 @@ android {
             storePassword 'zhuanke123'
             keyAlias 'zhuanke'
             keyPassword 'zhuanke123'
+            v2SigningEnabled true//是否启用APK Signature Scheme v2
         }
         release {
             storeFile file('zhuanke.jks')
             storePassword 'zhuanke123'
             keyAlias 'zhuanke'
             keyPassword 'zhuanke123'
+            v2SigningEnabled true//是否启用APK Signature Scheme v2
         }
+    }
+
+    walle {
+        // 指定渠道包的输出路径
+//    apkOutputFolder = new File("${project.buildDir}/outputs/channels");
+        apkOutputFolder = new File("F:/APK/MakeAPK")
+        // 定制渠道包的APK的文件名称
+        apkFileNameFormat = 'lexiangzhuan_${channel}.apk';
+        // 渠道配置文件
+        channelFile = new File("${project.getProjectDir()}/channel.txt")
     }
 }
 
@@ -74,6 +87,9 @@ dependencies {
     compile 'com.orhanobut:logger:2.1.1'
     compile 'de.hdodenhof:circleimageview:2.2.0'
     compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:1.1.6'
+
+    compile 'com.meituan.android.walle:library:1.1.6'
+
 }
 
 // 在MobSDK的扩展中注册ShareSDK的相关信息
@@ -99,15 +115,15 @@ MobSDK {
             }
 
             QQ {
-                appId "100371282"
-                appKey "aed9b0303e3ed1e27bae87c33761161d"
+                appId "1107127253"
+                appKey "zk1UKw4k8rB3RVus"
                 bypassApproval false
                 shareByAppClient true
             }
 
             QZone {
-                appId "100371282"
-                appKey "aed9b0303e3ed1e27bae87c33761161d"
+                appId "1107127253"
+                appKey "zk1UKw4k8rB3RVus"
                 bypassApproval false
                 shareByAppClient true
             }

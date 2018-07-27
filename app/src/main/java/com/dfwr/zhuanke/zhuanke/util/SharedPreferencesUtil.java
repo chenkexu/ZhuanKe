@@ -28,7 +28,9 @@ public class SharedPreferencesUtil {
 	
 	//文件存储的位置
 	private static final String FILE_NAME="GdAPP";
-	
+
+	public static final String student_link="student_link";
+
 	/**
 	 * 写入String型的数据到。data/data/包名/share_prefs下。map类型存储
 	 * @param context 

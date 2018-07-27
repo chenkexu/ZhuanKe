@@ -19,6 +19,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.SoftReference;
 import java.net.URL;
+import java.util.Enumeration;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 import static com.blankj.utilcode.util.ActivityUtils.startActivity;
 
@@ -31,6 +34,41 @@ import static com.blankj.utilcode.util.ActivityUtils.startActivity;
  */
 
 public class UIUtils {
+
+
+
+    public static String readChannelFromApkMetaInfo(Context context) {
+        String channel = null;
+
+        String sourceDir = context.getApplicationInfo().sourceDir;
+        final String start_flag = "META-INF/channel_";
+        ZipFile zipfile = null;
+        try {
+            zipfile = new ZipFile(sourceDir);
+            Enumeration<?> entries = zipfile.entries();
+            while (entries.hasMoreElements()) {
+                ZipEntry entry = ((ZipEntry) entries.nextElement());
+                String entryName = entry.getName();
+                if (entryName.contains(start_flag)) {
+                    channel = entryName.replace(start_flag, "");
+                    break;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (zipfile != null) {
+                try {
+                    zipfile.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return channel;
+    }
+
+
 
     /** dip转换px */
     public static int dip2px(int dip) {

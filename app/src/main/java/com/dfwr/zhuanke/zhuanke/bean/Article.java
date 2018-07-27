@@ -5,8 +5,8 @@ import java.util.Date;
 
 public class Article implements Serializable{
 
-	private static final long serialVersionUID = 1L;
 
+	private static final long serialVersionUID = 7619167491040543604L;
 	private Integer aid;
 	private String time;
 	private String content;

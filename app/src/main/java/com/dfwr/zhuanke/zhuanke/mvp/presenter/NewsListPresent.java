@@ -32,11 +32,28 @@ public class NewsListPresent<T> extends BasePresenter<NewsListView> {
     }
 
 
+    //获取文章价格
+    public void getSharePrice(){
+        mMsgView.showLoading();
+        HashMap<String, Object> map = ParamsUtil.getMap();
+        ApiManager.getInstence().getApiService().getSharePrice(ParamsUtil.getParams(map))
+                .compose(RxUtil.<ApiResponse<String>>rxSchedulerHelper())
+                .subscribe(new BaseObserver<String>() {
+                    @Override
+                    protected void onSuccees(ApiResponse<String> t) {
+
+                    }
+
+                    @Override
+                    protected void onFailure(String errorInfo, boolean isNetWorkError) {
+
+                    }
+                });
+    }
 
 
 
     public void getProjectListData(String type,int page, int rows){
-        mMsgView.showLoading();
         HashMap<String, Object> map = ParamsUtil.getMap();
         map.put("page",page+"");
         map.put("type",type);

@@ -46,6 +46,12 @@ public class GlideUtil {
     }
 
 
+    public static void LoadImage(Context context, Object url, ImageView imageView) {
+        Glide.with(context).load(url)
+                .centerCrop()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(imageView);
+    }
 
 
     /**
@@ -96,6 +102,7 @@ public class GlideUtil {
                     .priority(Priority.NORMAL) //下载的优先级
                     //all:缓存源资源和转换后的资源 none:不作任何磁盘缓存
                     //source:缓存源资源   result：缓存转换后的资源
+                    .centerCrop()
                     .diskCacheStrategy(DiskCacheStrategy.ALL) //缓存策略
                     .into(imageView);
         } else {
@@ -125,12 +132,12 @@ public class GlideUtil {
         if (isFade) {
             Glide.with(context)
                     .load(imgUrl)
-                    .error(R.mipmap.ad_error)
-                    .crossFade()
+                    .error(R.mipmap.icon_logo)
                     .placeholder(R.mipmap.ad_error)
                     .priority(Priority.NORMAL) //下载的优先级
                     //all:缓存源资源和转换后的资源 none:不作任何磁盘缓存
                     //source:缓存源资源   result：缓存转换后的资源
+                    .centerCrop()
                     .diskCacheStrategy(DiskCacheStrategy.ALL) //缓存策略
                     .into(imageView);
         } else {

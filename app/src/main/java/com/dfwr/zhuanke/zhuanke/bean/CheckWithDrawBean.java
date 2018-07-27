@@ -13,14 +13,23 @@ public class CheckWithDrawBean implements Serializable {
         /**
          * phoneIsBinding : 1
          * num : 1
-         * gongzhonghao : 0
+         * public : 0
          */
 
         private int phoneIsBinding;
         private int num;
-        private int gongzhonghao;
+        private int publicNum;
 
-        public int getPhoneIsBinding() {
+
+        public int getPublicNum() {
+            return publicNum;
+        }
+
+        public void setPublicNum(int publicNum) {
+            this.publicNum = publicNum;
+        }
+
+    public int getPhoneIsBinding() {
             return phoneIsBinding;
         }
 
@@ -36,11 +45,5 @@ public class CheckWithDrawBean implements Serializable {
             this.num = num;
         }
 
-        public int getGongzhonghao() {
-            return gongzhonghao;
-        }
 
-        public void setGongzhonghao(int gongzhonghao) {
-            this.gongzhonghao = gongzhonghao;
-        }
     }

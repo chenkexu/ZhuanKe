@@ -13,12 +13,14 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.dfwr.zhuanke.zhuanke.MainActivity;
 import com.dfwr.zhuanke.zhuanke.R;
 import com.dfwr.zhuanke.zhuanke.base.BaseActivity;
 import com.dfwr.zhuanke.zhuanke.base.BasePresenter;
+import com.dfwr.zhuanke.zhuanke.mvp.event.ChooseFragmentEvent;
 import com.dfwr.zhuanke.zhuanke.widget.ClearEditText;
 import com.dfwr.zhuanke.zhuanke.widget.Systems;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.Arrays;
 import java.util.List;
@@ -109,9 +111,13 @@ public class PhoneWithDrawActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_go_makemoney:
-                Intent intent = new Intent(this, MainActivity.class);
-                intent.putExtra(Systems.from_withdraw, "0");
-                startActivity(intent);
+                ChooseFragmentEvent chooseFragmentEvent = new ChooseFragmentEvent();
+                chooseFragmentEvent.fragmentStr = "0";
+                EventBus.getDefault().post(chooseFragmentEvent);
+                finish();
+//                Intent intent = new Intent(this, MainActivity.class);
+//                intent.putExtra(Systems.from_withdraw, "0");
+//                startActivity(intent);
                 break;
         }
     }

@@ -13,7 +13,7 @@ public final class Systems {
 
     public static final String UTF_8 = "utf-8";
 
-    public static final String title = "title";
+    public static final String share_host = "share_host";
     public static final String url = "url";
     public static final String feedArticleData = "feedArticleData";
     public static final String articleData = "articleData";
@@ -38,6 +38,15 @@ public final class Systems {
 
     public static final String isFirstWithDraw = "isFirstWithDraw";
 
+    public static final String withDrawType = "withDrawType";
+
+    public static final String propertie = "propertie";
+
+    public static final String wechat = "wechat";
+    public static final String alipay = "alipay";
+
+    public static final String link = "alipay";
+
 
     /**
      * Path
@@ -50,8 +59,10 @@ public final class Systems {
      * Intent params
      */
     public static final String ARG_PARAM1 = "param1";
-
+    public static final String ARG_PARAM3 = "param3";
     public static final String ARG_PARAM2 = "param2";    /**
+
+     /**
      * Bottom Navigation tab classify
      */
     public static final int TAB_ONE = 0;

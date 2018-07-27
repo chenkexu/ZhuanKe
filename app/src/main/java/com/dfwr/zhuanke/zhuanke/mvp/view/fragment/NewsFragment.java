@@ -1,5 +1,7 @@
 package com.dfwr.zhuanke.zhuanke.mvp.view.fragment;
 
+import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -10,8 +12,10 @@ import com.dfwr.zhuanke.zhuanke.R;
 import com.dfwr.zhuanke.zhuanke.base.BaseTwoFragment;
 import com.dfwr.zhuanke.zhuanke.base.LazyLoadFragment;
 import com.dfwr.zhuanke.zhuanke.bean.ProjectClassifyData;
+import com.dfwr.zhuanke.zhuanke.bean.Propertie;
 import com.dfwr.zhuanke.zhuanke.mvp.contract.NewsView;
 import com.dfwr.zhuanke.zhuanke.mvp.presenter.NewsPresent;
+import com.dfwr.zhuanke.zhuanke.widget.CustomViewPager;
 import com.dfwr.zhuanke.zhuanke.widget.Dialog.ChannelDialog;
 import com.dfwr.zhuanke.zhuanke.widget.Systems;
 import com.flyco.tablayout.SlidingTabLayout;
@@ -32,7 +36,7 @@ public class NewsFragment extends BaseTwoFragment<NewsView, NewsPresent<NewsView
     ImageView addChannelIv;
 
     @BindView(R.id.view_pager)
-    ViewPager viewPager;
+    CustomViewPager viewPager;
     @BindView(R.id.tl_5)
     SlidingTabLayout mTabLayout;
     private List<ProjectClassifyData> mData;
@@ -51,37 +55,14 @@ public class NewsFragment extends BaseTwoFragment<NewsView, NewsPresent<NewsView
     }
 
 
+
     @Override
     protected void initData() {
         super.initData();
-//        Intent intent = getActivity().getIntent();
-//        String newsType = intent.getStringExtra(Systems.newsType);
-//
-//        if (newsType!=null) {
-//            int positon = Arrays.binarySearch(mTitles, newsType);
-//            viewPager.setCurrentItem(positon);
-//        }else{
-//            viewPager.setCurrentItem(0);
-//        }
         // TODO: 2018/7/18 请求新闻数据 
         mPresent.getProjectClassifyData();
-
     }
 
-    @Override
-    protected NewsPresent createPresent() {
-        return new NewsPresent<>(this);
-    }
-
-    @Override
-    public void showLoading() {
-        showDefaultLoading();
-    }
-
-    @Override
-    public void hideLoading() {
-        hideDefaultLoading();
-    }
 
     @Override
     public void getProjectClassifyDataSuccess(List<ProjectClassifyData> projectClassifyDatas) {
@@ -92,8 +73,13 @@ public class NewsFragment extends BaseTwoFragment<NewsView, NewsPresent<NewsView
                 ChannelDialog channelDialog = new ChannelDialog(getActivity(),mData);
                 channelDialog.SetOnChannelClick(new ChannelDialog.SetOnChannelClickInterFace() {
                     @Override
-                    public void itemOnclick(int position) {
-                        viewPager.setCurrentItem(position);
+                    public void itemOnclick(final int position) {
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                viewPager.setCurrentItem(position, false);
+                            }
+                        }, 100);
                     }
                 });
                 channelDialog.show();
@@ -105,9 +91,10 @@ public class NewsFragment extends BaseTwoFragment<NewsView, NewsPresent<NewsView
 
 
     private void initViewPagerAndTabLayout() {
-
+        Bundle arguments = getArguments();
+        Propertie propertie = (Propertie) arguments.getSerializable(Systems.propertie);
         for (ProjectClassifyData data : mData) {
-            NewsListFragment projectListFragment = NewsListFragment.getInstance(data.getType(), null);
+            NewsListFragment projectListFragment = NewsListFragment.getInstance(data.getType(), propertie.getShare_price(),propertie.getShare_host());
             mFragments.add(projectListFragment);
             channelIds.add(data.getId());
         }
@@ -143,8 +130,36 @@ public class NewsFragment extends BaseTwoFragment<NewsView, NewsPresent<NewsView
 
             }
         });
+        viewPager.setOffscreenPageLimit(2);
         mTabLayout.setViewPager(viewPager);
-        viewPager.setCurrentItem(Systems.TAB_ONE);
+        viewPager.setCurrentItem(Systems.TAB_ONE,false);
     }
+
+
+
+
+
+
+
+
+
+
+
+
+    @Override
+    protected NewsPresent createPresent() {
+        return new NewsPresent<>(this);
+    }
+
+    @Override
+    public void showLoading() {
+        showDefaultLoading();
+    }
+
+    @Override
+    public void hideLoading() {
+        hideDefaultLoading();
+    }
+
 
 }

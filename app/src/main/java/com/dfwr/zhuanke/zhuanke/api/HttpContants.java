@@ -13,5 +13,7 @@ public class HttpContants {
 
     public static final String article_details = HOST_URL + "article/article_details/";
 
+    public static final String share = "/wzpt/bb.html?";
+
 
 }

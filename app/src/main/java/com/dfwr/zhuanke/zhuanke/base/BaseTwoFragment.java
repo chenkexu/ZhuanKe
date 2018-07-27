@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 
 import com.dfwr.zhuanke.zhuanke.R;
 
+import org.greenrobot.eventbus.EventBus;
+
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
@@ -128,6 +130,7 @@ public abstract class BaseTwoFragment<V, T extends BasePresenter<V>> extends Fra
     public void onDestroy() {
         mPresent.detach();
         super.onDestroy();
+        EventBus.getDefault().unregister(this);//反注册EventBus
     }
 
     /**

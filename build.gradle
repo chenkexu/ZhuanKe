@@ -10,6 +10,7 @@ buildscript {
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
         // 注册MobSDK
         classpath 'com.mob.sdk:MobSDK:+'
+        classpath 'com.meituan.android.walle:plugin:1.1.6'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }

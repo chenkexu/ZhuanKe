@@ -39,9 +39,66 @@ public class HomePresent<T> extends BasePresenter<IHomeView> {
                 .subscribe(new BaseObserver<UserBaseInfo>() {
                     @Override
                     protected void onSuccees(ApiResponse<UserBaseInfo> t) {
+                        mMsgView.hideLoading();
                         if (t!=null) {
                             mMsgView.getUserInfo(t.getResult());
 
+                        }
+                    }
+
+                    @Override
+                    protected void onFailure(String errorInfo, boolean isNetWorkError) {
+                        mMsgView.hideLoading();
+                        ToastUtils.showShort(errorInfo);
+                    }
+                });
+
+    }
+
+    //获取收徒链接
+    public void getStudentLink() {
+        mMsgView.showLoading();
+        HashMap<String, Object> map = ParamsUtil.getMap();
+        ApiManager.getInstence().getApiService().get_student_share_url(ParamsUtil.getParams(map))
+                .compose(RxUtil.<ApiResponse<String>>rxSchedulerHelper())
+                .subscribe(new BaseObserver<String>() {
+                    @Override
+                    protected void onSuccees(ApiResponse<String> t) {
+                        mMsgView.getStudentLink(t.getResult());
+                        mMsgView.hideLoading();
+                    }
+
+                    @Override
+                    protected void onFailure(String errorInfo, boolean isNetWorkError) {
+                        mMsgView.hideLoading();
+                        ToastUtils.showShort(errorInfo);
+                    }
+                });
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  /*  public void getProperties(){
+        HashMap<String, Object> map = ParamsUtil.getMap();
+        ApiManager.getInstence().getApiService().getProperties(ParamsUtil.getParams(map))
+                .compose(RxUtil.<ApiResponse<Object>>rxSchedulerHelper())
+                .subscribe(new BaseObserver<Object>() {
+                    @Override
+                    protected void onSuccees(ApiResponse<Object> t) {
+                        if (t!=null) {
                         }
                         mMsgView.hideLoading();
                     }
@@ -54,6 +111,8 @@ public class HomePresent<T> extends BasePresenter<IHomeView> {
                 });
 
     }
+*/
+
 
 
 

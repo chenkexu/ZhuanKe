@@ -42,9 +42,9 @@ public abstract class  BaseActivity<V, T extends BasePresenter<V>> extends AppCo
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
         mPresent = createPresent();
         mPresent.attachView((V) this);
-        EventBus.getDefault().register(this);
         AppManager.getAppManager().addActivity(this);
     }
 
@@ -241,6 +241,7 @@ public abstract class  BaseActivity<V, T extends BasePresenter<V>> extends AppCo
     public void onPause() {
         super.onPause();
     }
+
 
 
 }

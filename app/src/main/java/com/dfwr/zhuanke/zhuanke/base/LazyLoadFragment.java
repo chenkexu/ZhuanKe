@@ -13,6 +13,8 @@ import android.widget.Toast;
 
 import com.dfwr.zhuanke.zhuanke.R;
 
+import org.greenrobot.eventbus.EventBus;
+
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
@@ -38,6 +40,8 @@ public abstract class LazyLoadFragment<V, T extends BasePresenter<V>> extends Fr
     private BaseActivity baseActivity;
     public String fragmentTitle;
     private Unbinder unbinder;
+
+
 
 
     @Override
@@ -102,6 +106,7 @@ public abstract class LazyLoadFragment<V, T extends BasePresenter<V>> extends Fr
         if (unbinder!=null) {
             unbinder.unbind();
         }
+        EventBus.getDefault().unregister(this);//反注册EventBus
     }
 
     /**

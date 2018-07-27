@@ -69,6 +69,14 @@
     </style>
 
 
+    <!--  从下到上显示-->
+    <style name="share_anim_style">
+        <item name="android:windowEnterAnimation">@anim/popshow_anim</item>
+        <!-- 指定显示的动画xml -->
+
+        <item name="android:windowExitAnimation">@anim/pophidden_anim</item>
+        <!-- 指定消失的动画xml -->
+    </style>
 
     <style name="order_cardView_style">
         <item name="android:layout_marginTop">5dp</item>

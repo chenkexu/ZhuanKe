@@ -8,22 +8,35 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import com.blankj.utilcode.util.ToastUtils;
+import com.dfwr.zhuanke.zhuanke.api.ApiManager;
+import com.dfwr.zhuanke.zhuanke.api.BaseObserver;
+import com.dfwr.zhuanke.zhuanke.api.param.ParamsUtil;
+import com.dfwr.zhuanke.zhuanke.api.response.ApiResponse;
 import com.dfwr.zhuanke.zhuanke.base.BaseActivity;
+import com.dfwr.zhuanke.zhuanke.bean.Propertie;
 import com.dfwr.zhuanke.zhuanke.mvp.contract.IMsgView;
+import com.dfwr.zhuanke.zhuanke.mvp.event.ChooseFragmentEvent;
 import com.dfwr.zhuanke.zhuanke.mvp.presenter.MsgPresent;
 import com.dfwr.zhuanke.zhuanke.mvp.view.fragment.MasterFragment;
 import com.dfwr.zhuanke.zhuanke.mvp.view.fragment.MeFragment;
 import com.dfwr.zhuanke.zhuanke.mvp.view.fragment.NewsFragment;
 import com.dfwr.zhuanke.zhuanke.mvp.view.fragment.WithDrawFragment;
 import com.dfwr.zhuanke.zhuanke.util.AppManager;
+import com.dfwr.zhuanke.zhuanke.util.RxUtil;
 import com.dfwr.zhuanke.zhuanke.widget.Dialog.AdvertisementDialog;
 import com.dfwr.zhuanke.zhuanke.widget.Systems;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class MainActivity extends BaseActivity<IMsgView, MsgPresent<IMsgView>> implements IMsgView {
+
 
 
     @BindView(R.id.content)
@@ -44,22 +57,60 @@ public class MainActivity extends BaseActivity<IMsgView, MsgPresent<IMsgView>> i
     private WithDrawFragment withDrawFragment;
     private MeFragment meFragment;
 
+
+    private Propertie propertie;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        //获取全局属性
+        getProperties();
+        showAdDialog();
+    }
+
+
+    //定义处理接收的方法
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void chooseFragment(ChooseFragmentEvent chooseStr){
         selectedFragment(0);
         tabSelected(llHome);
-        showAdDialog();
-
     }
+
+
+
+
+    //获取各个单价
+    public void getProperties(){
+        HashMap<String, Object> map = ParamsUtil.getMap();
+        ApiManager.getInstence().getApiService().getProperties(ParamsUtil.getParams(map))
+                .compose(RxUtil.<ApiResponse<Propertie>>rxSchedulerHelper())
+                .subscribe(new BaseObserver<Propertie>() {
+                    @Override
+                    protected void onSuccees(ApiResponse<Propertie> t) {
+                        if (t!=null) {
+                            Propertie result = t.getResult();
+                            MainActivity.this.propertie = result;
+                            selectedFragment(0);
+                            tabSelected(llHome);
+                        }
+                    }
+                    @Override
+                    protected void onFailure(String errorInfo, boolean isNetWorkError) {
+                        ToastUtils.showShort(errorInfo);
+                    }
+                });
+    }
+
+
 
     //显示广告弹窗
     private void showAdDialog() {
         AdvertisementDialog advertisementDialog = new AdvertisementDialog(this);
         advertisementDialog.showDialog();
     }
+
 
 
     @Override
@@ -82,21 +133,7 @@ public class MainActivity extends BaseActivity<IMsgView, MsgPresent<IMsgView>> i
         }
     }
 
-    @Override
-    protected MsgPresent<IMsgView> createPresent() {
-        return new MsgPresent<>(this);
-    }
 
-
-    @Override
-    public void showLoading() {
-        showDefaultLoading();
-    }
-
-    @Override
-    public void hideLoading() {
-        hideDefaultLoading();
-    }
 
 
     @OnClick({R.id.ll_home, R.id.ll_category, R.id.ll_service, R.id.ll_mine})
@@ -129,6 +166,9 @@ public class MainActivity extends BaseActivity<IMsgView, MsgPresent<IMsgView>> i
             case 0:
                 if (newsFragment == null) {
                     newsFragment = new NewsFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable(Systems.propertie,propertie);
+                    newsFragment.setArguments(bundle);
                     transaction.add(R.id.content, newsFragment);
                 } else
                     transaction.show(newsFragment);
@@ -136,6 +176,9 @@ public class MainActivity extends BaseActivity<IMsgView, MsgPresent<IMsgView>> i
             case 1:
                 if (masterFragment == null) {
                     masterFragment = new MasterFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable(Systems.propertie,propertie);
+                    masterFragment.setArguments(bundle);
                     transaction.add(R.id.content, masterFragment);
                 } else
                     transaction.show(masterFragment);
@@ -155,7 +198,7 @@ public class MainActivity extends BaseActivity<IMsgView, MsgPresent<IMsgView>> i
                     transaction.show(withDrawFragment);
                 break;
         }
-        transaction.commit();
+        transaction.commitAllowingStateLoss();
     }
 
     private void hideFragment(FragmentTransaction transaction) {
@@ -189,5 +232,23 @@ public class MainActivity extends BaseActivity<IMsgView, MsgPresent<IMsgView>> i
             ToastUtils.showShort("再按一次程序！");
             exitTime = nowTime;
         }
+    }
+
+
+
+    @Override
+    protected MsgPresent<IMsgView> createPresent() {
+        return new MsgPresent<>(this);
+    }
+
+
+    @Override
+    public void showLoading() {
+        showDefaultLoading();
+    }
+
+    @Override
+    public void hideLoading() {
+        hideDefaultLoading();
     }
 }

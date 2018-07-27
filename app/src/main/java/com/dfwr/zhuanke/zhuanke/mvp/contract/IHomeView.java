@@ -13,6 +13,8 @@ public interface IHomeView extends BaseView {
 
     void getUserInfo(UserBaseInfo objec);
 
+    void getStudentLink(String objec);
+
 
 
 }

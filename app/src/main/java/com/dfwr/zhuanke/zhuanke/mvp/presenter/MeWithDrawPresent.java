@@ -9,9 +9,11 @@ import com.dfwr.zhuanke.zhuanke.api.BaseObserver;
 import com.dfwr.zhuanke.zhuanke.api.param.ParamsUtil;
 import com.dfwr.zhuanke.zhuanke.api.response.ApiResponse;
 import com.dfwr.zhuanke.zhuanke.base.BasePresenter;
+import com.dfwr.zhuanke.zhuanke.bean.CheckWithDrawBean;
 import com.dfwr.zhuanke.zhuanke.mvp.contract.MeWithDrawView;
 import com.dfwr.zhuanke.zhuanke.mvp.event.UpdateSmsStateEvent;
 import com.dfwr.zhuanke.zhuanke.util.RxUtil;
+import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -19,7 +21,7 @@ import java.util.HashMap;
 
 /**
  * Created by wy on 2017/12/5.
- * 提现
+ * 提现页面
  */
 
 public class MeWithDrawPresent<T> extends BasePresenter<MeWithDrawView> {
@@ -34,6 +36,12 @@ public class MeWithDrawPresent<T> extends BasePresenter<MeWithDrawView> {
     public void fecth() {
 
     }
+
+
+
+
+
+
 
 
     private String codeId = "";
@@ -58,6 +66,98 @@ public class MeWithDrawPresent<T> extends BasePresenter<MeWithDrawView> {
                     }
                 });
     }
+
+
+
+    //提现校验
+    public void checkWithDraw(int type){
+        rankView.showLoading();
+        HashMap<String, Object> map = ParamsUtil.getMap();
+        map.put("type", type + "");
+        ApiManager.getInstence().getApiService().takeMoneyCheck(ParamsUtil.getParams(map))
+                .compose(RxUtil.<ApiResponse<CheckWithDrawBean>>rxSchedulerHelper())
+                .subscribe(new BaseObserver<CheckWithDrawBean>() {
+                    @Override
+                    protected void onSuccees(ApiResponse<CheckWithDrawBean> t) {
+                        rankView.hideLoading();
+                        rankView.getCheckWithDrawSuccess(t.getResult());
+                    }
+                    @Override
+                    protected void onFailure(String errorInfo, boolean isNetWorkError) {
+                        ToastUtils.showShort(errorInfo);
+                        rankView.hideLoading();
+                    }
+                });
+
+    }
+
+
+
+    //支付宝提现
+    public void alipayTakeMoney(double money,String zfbName, String zfbNum){
+        Logger.d("支付宝提现金额:"+money);
+        rankView.showLoading();
+        HashMap<String, Object> map = ParamsUtil.getMap();
+        map.put("money", money+"");
+        map.put("zfbName", zfbName);
+        map.put("zfbNum", zfbNum);
+        ApiManager.getInstence().getApiService().alipayTakeMoney(ParamsUtil.getParams(map))
+                .compose(RxUtil.<ApiResponse<Object>>rxSchedulerHelper())
+                .subscribe(new BaseObserver<Object>() {
+                    @Override
+                    protected void onSuccees(ApiResponse<Object> t) {
+                        rankView.hideLoading();
+                        rankView.withdrawSuccess(t.getResult());
+                    }
+
+                    @Override
+                    protected void onFailure(String errorInfo, boolean isNetWorkError) {
+                        rankView.hideLoading();
+                        ToastUtils.showShort(errorInfo);
+
+
+                    }
+                });
+    }
+
+
+    //
+    public void weChatTakeMoney(double money){
+        Logger.d("微信提现金额:"+money);
+        rankView.showLoading();
+        HashMap<String, Object> map = ParamsUtil.getMap();
+        map.put("money", money+"");
+        rankView.showLoading();
+        ApiManager.getInstence().getApiService().weChatTakeMoney(ParamsUtil.getParams(map))
+                .compose(RxUtil.<ApiResponse<Object>>rxSchedulerHelper())
+                .subscribe(new BaseObserver<Object>() {
+                    @Override
+                    protected void onSuccees(ApiResponse<Object> t) {
+                        rankView.withdrawSuccess(t.getResult());
+                        rankView.hideLoading();
+                    }
+
+                    @Override
+                    protected void onFailure(String errorInfo, boolean isNetWorkError) {
+                        rankView.hideLoading();
+                        ToastUtils.showShort(errorInfo);
+
+
+                    }
+                });
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     //倒计时开始
@@ -96,29 +196,6 @@ public class MeWithDrawPresent<T> extends BasePresenter<MeWithDrawView> {
 
 
 
-    public void weChatTakeMoney(String money){
-        rankView.showLoading();
-        HashMap<String, Object> map = ParamsUtil.getMap();
-        map.put("money", money);
-        rankView.showLoading();
-        ApiManager.getInstence().getApiService().weChatTakeMoney(ParamsUtil.getParams(map))
-                .compose(RxUtil.<ApiResponse<Object>>rxSchedulerHelper())
-                .subscribe(new BaseObserver<Object>() {
-                    @Override
-                    protected void onSuccees(ApiResponse<Object> t) {
-
-                        rankView.hideLoading();
-                    }
-
-                    @Override
-                    protected void onFailure(String errorInfo, boolean isNetWorkError) {
-                        rankView.hideLoading();
-                        ToastUtils.showShort(errorInfo);
-
-
-                    }
-                });
-    }
 
 
 }

@@ -81,20 +81,19 @@ public class MeFragment extends BaseTwoFragment<HomeMeView,HomeMePresent<HomeMeV
     private HomeAdapter taskAdapter;
 
     private ArrayList<Fragment> mFragments = new ArrayList<>();
-    private final String[] mTitles = {
-            "文章收益", "徒弟分享收益", "收徒收益"
-    };
-
-
 
     private MyPagerAdapter mAdapter;
 
-    private int[] taskStatusPics = {R.mipmap.ic_launcher, R.mipmap.ic_launcher,
-            R.mipmap.ic_launcher, R.mipmap.ic_launcher
+    private int[] taskStatusPics = {R.mipmap.icon_money, R.mipmap.icon_rank,
+            R.mipmap.icon_guide, R.mipmap.icon_hezuo
     };
 
     private String[] myStr = {"开始赚钱", "排行榜", "攻略",
             "商务合作"};
+    private String[] mTitles;
+
+    public MeFragment() {
+    }
 
 
     @Override
@@ -119,6 +118,8 @@ public class MeFragment extends BaseTwoFragment<HomeMeView,HomeMePresent<HomeMeV
     @Override
     protected void initView() {
         super.initView();
+
+
         UserBean userBean = UserDataManeger.getInstance().getUserBean();
 
         if (userBean != null) {
@@ -173,8 +174,9 @@ public class MeFragment extends BaseTwoFragment<HomeMeView,HomeMePresent<HomeMeV
 
 
     private void initViewPager() {
+        mTitles = getResources().getStringArray(R.array.my_profit);
         for (String title : mTitles) {
-            MeProfitFragment fragment = MeProfitFragment.getInstance();
+            ProfitListFragment fragment = ProfitListFragment.getInstance();
             fragment.setTitle(title);
             mFragments.add(fragment);
         }
@@ -183,24 +185,6 @@ public class MeFragment extends BaseTwoFragment<HomeMeView,HomeMePresent<HomeMeV
         viewPager.setOffscreenPageLimit(0);
         tl5.setViewPager(viewPager);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -15,6 +15,7 @@ import com.dfwr.zhuanke.zhuanke.R;
 import com.dfwr.zhuanke.zhuanke.adapter.NewsAdapter;
 import com.dfwr.zhuanke.zhuanke.base.LazyLoadFragment;
 import com.dfwr.zhuanke.zhuanke.bean.Article;
+import com.dfwr.zhuanke.zhuanke.bean.Propertie;
 import com.dfwr.zhuanke.zhuanke.mvp.contract.NewsListView;
 import com.dfwr.zhuanke.zhuanke.mvp.presenter.NewsListPresent;
 import com.dfwr.zhuanke.zhuanke.mvp.view.CommonWebView;
@@ -38,33 +39,16 @@ public class NewsListFragment extends LazyLoadFragment<NewsListView, NewsListPre
     private SwipeRefreshLayout refreshLayout;
 
     private NewsAdapter newsAdapter;
-    private  RelativeLayout activityGuide;
+    private RelativeLayout activityGuide;
     private Unbinder unbinder;
     private List<Article> mData = new ArrayList<>();
     private int currentPage;
     private String type;
-    private static final int PAGE_SIZE = 10;
+    private static final int PAGE_SIZE = 20;
+    private Propertie propertie;
+    private String price;
+    private String share_host;
 
-
-    @Override
-    public void showLoading() {
-        showDefaultLoading();
-    }
-
-    @Override
-    public void hideLoading() {
-        hideDefaultLoading();
-    }
-
-    @Override
-    protected int setLayoutId() {
-        return R.layout.activity_news_list;
-    }
-
-    @Override
-    protected NewsListPresent<NewsListView> createPresent() {
-        return new NewsListPresent<>(this);
-    }
 
 
     @Override
@@ -72,6 +56,7 @@ public class NewsListFragment extends LazyLoadFragment<NewsListView, NewsListPre
         initView();
         initData();
     }
+
 
     private void initData() {
         onRefresh();
@@ -81,13 +66,12 @@ public class NewsListFragment extends LazyLoadFragment<NewsListView, NewsListPre
                 List<Article> data = newsAdapter.getData();
                 Article feedArticleData = data.get(position);
                 Intent intent = new Intent(getActivity(), CommonWebView.class);
-                intent.putExtra(Systems.title, feedArticleData.getContent());
+                intent.putExtra(Systems.share_host, share_host);
                 intent.putExtra(Systems.articleData, feedArticleData);
                 startActivity(intent);
             }
         });
     }
-
 
 
     private void initView() {
@@ -99,10 +83,11 @@ public class NewsListFragment extends LazyLoadFragment<NewsListView, NewsListPre
         newsAdapter = new NewsAdapter(mData);
         newsAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
         newsAdapter.setOnLoadMoreListener(this, recyclerView);
-
         recyclerView.setAdapter(newsAdapter);
         Bundle bundle = getArguments();
         type = bundle.getString(Systems.ARG_PARAM1);
+        price = bundle.getString(Systems.ARG_PARAM2);
+        share_host = bundle.getString(Systems.ARG_PARAM3);
     }
 
 
@@ -115,11 +100,18 @@ public class NewsListFragment extends LazyLoadFragment<NewsListView, NewsListPre
     }
 
 
+
+
+
     //加载更多
     @Override
     public void onLoadMoreRequested() {
         mPresent.getProjectListLoadMore(type,currentPage, PAGE_SIZE);
     }
+
+
+
+
 
 
     private void setData(boolean isRefresh, List data) {
@@ -138,10 +130,8 @@ public class NewsListFragment extends LazyLoadFragment<NewsListView, NewsListPre
         } else {
             newsAdapter.loadMoreComplete();
         }
+        newsAdapter.setPrice(price);
     }
-
-
-
 
 
 
@@ -173,20 +163,6 @@ public class NewsListFragment extends LazyLoadFragment<NewsListView, NewsListPre
     }
 
 
-//    @Override
-//    public void getArticleListMoreSuccess(ProjectListData projectListData) {
-//        mData = projectListData.getDatas();
-//        setData(false, mData);
-//    }
-
-//    @Override
-//    public void getArticleListRefreshSuccess(ProjectListData projectListData) {
-//        mData = projectListData.getDatas();
-//        setData(true, mData);
-//        newsAdapter.setEnableLoadMore(true);
-//        refreshLayout.setRefreshing(false);
-//    }
-
     @Override
     public void getArticleListMoreFail(String errorMsg) {
         newsAdapter.loadMoreFail();
@@ -195,14 +171,36 @@ public class NewsListFragment extends LazyLoadFragment<NewsListView, NewsListPre
 
 
 
-    public static NewsListFragment getInstance(String param1, String param2) {
+    public static NewsListFragment getInstance(String param1, String param2,String param3 ) {
         NewsListFragment fragment = new NewsListFragment();
         Bundle args = new Bundle();
         args.putString(Systems.ARG_PARAM1, param1);
         args.putString(Systems.ARG_PARAM2, param2);
+        args.putString(Systems.ARG_PARAM3, param3);
         fragment.setArguments(args);
         return fragment;
     }
+
+    @Override
+    public void showLoading() {
+        showDefaultLoading();
+    }
+
+    @Override
+    public void hideLoading() {
+        hideDefaultLoading();
+    }
+
+    @Override
+    protected int setLayoutId() {
+        return R.layout.activity_news_list;
+    }
+
+    @Override
+    protected NewsListPresent<NewsListView> createPresent() {
+        return new NewsListPresent<>(this);
+    }
+
 
 
 }

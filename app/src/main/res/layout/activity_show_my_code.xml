@@ -10,6 +10,7 @@
     android:layout_height="match_parent">
 
     <ImageView
+        android:id="@+id/iv_back"
         android:padding="20dp"
         android:layout_gravity="left"
         android:src="@mipmap/me_icon_back"
@@ -17,14 +18,15 @@
         android:layout_height="wrap_content" />
 
 
-
     <TextView
+        android:textSize="30sp"
         android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
-        android:text=""
+        android:layout_marginTop="20dp"
+        android:text="@string/app_name"
         android:textColor="@color/bg_white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
 
     <android.support.v7.widget.CardView
         style="@style/order_cardView_style"
@@ -73,7 +75,24 @@
         </LinearLayout>
 
     </android.support.v7.widget.CardView>
+    <TextView
 
+        android:id="@+id/tv_tips"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="20dp"
+        android:text="注册即送1元，3元就可以提现秒到账"
+        android:textColor="@color/bg_white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/tv_tips2"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="5dp"
+        android:text="最高奖励20%徒弟收益+10%徒孙收益哦"
+        android:textColor="@color/bg_white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
     <!--<TextView
         android:textSize="20sp"
         android:layout_marginTop="30dp"

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+
+    <string-array name="my_profit">
+        <item>文章收益</item>
+        <item>收徒收益</item>
+        <item>徒弟分享收益</item>
+    </string-array>
+
+</resources>

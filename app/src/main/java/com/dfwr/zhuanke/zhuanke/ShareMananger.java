@@ -56,7 +56,7 @@ public class ShareMananger {
 
 
     //微信和微信朋友圈分享
-    public static void oneKeyShareWechat(Context context, final String title, final String content, final String imgurl) {
+    public static void oneKeyShareWechat(Context context,final String imgurl) {
         final OnekeyShare oks = new OnekeyShare();
         //关闭sso授权
         oks.disableSSOWhenAuthorize();
@@ -66,25 +66,12 @@ public class ShareMananger {
             @Override
             public void onShare(Platform platform, Platform.ShareParams paramsToShare) {
                 if ("Wechat".equals(platform.getName())) {
-                    paramsToShare.setTitle(title);
-                    paramsToShare.setUrl("http://sharesdk.cn");
-                    paramsToShare.setText(content);
                     paramsToShare.setImageUrl(imgurl);
-                    paramsToShare.setShareType(Platform.SHARE_WEBPAGE);
-                }
-                if ("QQ".equals(platform.getName())) {
-                    paramsToShare.setTitle(title);
-                    paramsToShare.setUrl("http://sharesdk.cn");
-                    paramsToShare.setText(content);
-                    paramsToShare.setImageUrl(imgurl);
-                    paramsToShare.setShareType(Platform.SHARE_WEBPAGE);
+                    paramsToShare.setShareType(Platform.SHARE_IMAGE);
                 }
                 if ("WechatMoments".equals(platform.getName())) {
-                    paramsToShare.setTitle(title);
-                    paramsToShare.setUrl("http://sharesdk.cn");
-                    paramsToShare.setText(content);
                     paramsToShare.setImageUrl(imgurl);
-                    paramsToShare.setShareType(Platform.SHARE_WEBPAGE);
+                    paramsToShare.setShareType(Platform.SHARE_IMAGE);
                 }
             }
         });
@@ -111,6 +98,16 @@ public class ShareMananger {
         oks.show(context);
     }
 
+
+
+
+
+
+
+
+
+
+
     //QQ分享
     public static void oneKeyShareQQImage(Context context, String imagePath) {
         final OnekeyShare oks = new OnekeyShare();
@@ -131,6 +128,10 @@ public class ShareMananger {
                 if ("QQ".equals(platform.getName())) {
                     //点击跳转的url地址
                     paramsToShare.setTitleUrl("http://design.blackgan.cn/xfkc1410.apk");
+                }
+                if ("WechatMoments".equals(platform.getName())) {
+                    paramsToShare.setUrl("http://design.blackgan.cn/xfkc1410.apk");
+                    paramsToShare.setShareType(Platform.SHARE_WEBPAGE);
                 }
                 if ("WechatMoments".equals(platform.getName())) {
                     paramsToShare.setUrl("http://design.blackgan.cn/xfkc1410.apk");

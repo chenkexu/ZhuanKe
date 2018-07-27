@@ -15,11 +15,14 @@ import com.dfwr.zhuanke.zhuanke.api.HttpContants;
 import com.dfwr.zhuanke.zhuanke.base.BaseActivity;
 import com.dfwr.zhuanke.zhuanke.base.BasePresenter;
 import com.dfwr.zhuanke.zhuanke.bean.Article;
+import com.dfwr.zhuanke.zhuanke.bean.UserBean;
 import com.dfwr.zhuanke.zhuanke.util.UIUtils;
+import com.dfwr.zhuanke.zhuanke.util.UserDataManeger;
 import com.dfwr.zhuanke.zhuanke.wechatshare.GetResultListener;
 import com.dfwr.zhuanke.zhuanke.wechatshare.ShareUtils;
 import com.dfwr.zhuanke.zhuanke.widget.MyTitle;
 import com.dfwr.zhuanke.zhuanke.widget.Systems;
+import com.orhanobut.logger.Logger;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 
 import java.lang.ref.WeakReference;
@@ -40,7 +43,7 @@ public class CommonWebView extends BaseActivity {
 
 
     private WebView webView;
-    private String title = "11";
+    private String share_host;
     private String url = "";
     private Article article;
     private Bitmap httpBitmap;
@@ -54,7 +57,7 @@ public class CommonWebView extends BaseActivity {
         myTitle.setImageBack(this);
         Intent intent = getIntent();
         myTitle.setTitleName("文章阅读");
-        title = intent.getStringExtra(Systems.articleData);
+        share_host = intent.getStringExtra(Systems.share_host);
         article = (Article) intent.getSerializableExtra(Systems.articleData);
         initView();
     }
@@ -121,12 +124,17 @@ public class CommonWebView extends BaseActivity {
             }
         }).start();
 
+        String articleLink = share_host + HttpContants.share;
+        UserBean userBean = UserDataManeger.getInstance().getUserBean();
+        if (userBean!=null) {
+            articleLink = articleLink + "UID=" + userBean.getUser().getUid() + "&AID=" + article.getAid();
+        }
         switch (view.getId()) {
             case R.id.ivWechat:
-                share(article.getTitle(),article.getTitle(),SendMessageToWX.Req.WXSceneSession,httpBitmap,"www.baidu.com");
+                share(article.getTitle(),article.getTitle(),SendMessageToWX.Req.WXSceneSession,httpBitmap,articleLink);
                 break;
             case R.id.ivWechatFriend:
-                share(article.getTitle(),article.getTitle(),SendMessageToWX.Req.WXSceneTimeline,httpBitmap,"www.baidu.com");
+                share(article.getTitle(),article.getTitle(),SendMessageToWX.Req.WXSceneTimeline,httpBitmap,articleLink);
                 break;
         }
     }
@@ -135,6 +143,7 @@ public class CommonWebView extends BaseActivity {
 
     //分享
     private void share(String title,String content,int type,Bitmap bitmap,String clickUrl) {
+        Logger.d("clickUrl:"+clickUrl);
         int wxSceneSession = SendMessageToWX.Req.WXSceneSession; //聊天界面
         int wxSceneTimeline = SendMessageToWX.Req.WXSceneTimeline;//朋友圈
         ShareUtils.shareWXReady(new WeakReference(this), title, content, clickUrl, type, bitmap, new GetResultListener() {

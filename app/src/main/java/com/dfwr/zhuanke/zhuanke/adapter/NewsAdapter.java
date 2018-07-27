@@ -19,6 +19,13 @@ import java.util.List;
  */
 
 public class NewsAdapter extends BaseQuickAdapter<Article, BaseViewHolder> {
+    private double price;
+
+    public void setPrice(String price){
+        double v = Double.parseDouble(price);
+        this.price = v * 10;
+        notifyDataSetChanged();
+    }
 
     public NewsAdapter(@Nullable List<Article> data) {
         super(R.layout.item_news_list, data);
@@ -34,7 +41,7 @@ public class NewsAdapter extends BaseQuickAdapter<Article, BaseViewHolder> {
             helper.setText(R.id.item_project_list_title_tv, item.getTitle());
         }
 
-        helper.setText(R.id.tv_price, "点击分享赚1.5毛");
+        helper.setText(R.id.tv_price, "点击分享赚"+price+"毛");
         helper.setText(R.id.tv_watch_sum, item.getClick()+"分享");
     }
 

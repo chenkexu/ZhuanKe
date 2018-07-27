@@ -2,6 +2,7 @@ package com.dfwr.zhuanke.zhuanke.wechatshare;
 
 import android.app.Activity;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
@@ -9,14 +10,22 @@ import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapFactory.Options;
 import android.net.Uri;
+import android.os.Build;
+import android.os.Looper;
+import android.provider.MediaStore;
+import android.util.Log;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.dfwr.zhuanke.zhuanke.application.MyApplication;
+import com.orhanobut.logger.Logger;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
 import com.tencent.mm.opensdk.modelmsg.WXWebpageObject;
 import com.tencent.smtt.sdk.TbsConfig;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.lang.ref.SoftReference;
 import java.lang.ref.WeakReference;
@@ -25,6 +34,44 @@ import java.net.URL;
 
 
 public class ShareUtils {
+
+
+
+
+    public static void throughIntentShareWXImage(Context context, String imagepath) {
+        try {
+            File file = new File(imagepath);
+            Uri photoUri = null;
+            if (file.exists()) {
+                if (Build.VERSION.SDK_INT >= 24) {
+                    try {
+                        photoUri = Uri.parse(MediaStore.Images.Media.insertImage(context.getContentResolver(), file.getPath(), "bigbang.jpg", null));
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    photoUri = Uri.fromFile(file);
+                }
+            }
+            Intent intentFriend = new Intent();
+            intentFriend.setComponent(new ComponentName("com.tencent.mm", "com.tencent.mm.ui.tools.ShareImgUI"));
+            intentFriend.setAction("android.intent.action.SEND");
+            intentFriend.setType("image/*");
+            intentFriend.putExtra("android.intent.extra.STREAM", photoUri);
+            intentFriend.setFlags(268435457);
+            context.startActivity(intentFriend);
+        } catch (Exception e2) {
+            if (e2.toString().contains("android.content.ActivityNotFoundException")) {
+                Looper.prepare();
+                ToastUtils.showShort("未发现微信");
+                Looper.loop();
+            }
+            Logger.e(Log.getStackTraceString(e2));
+        }
+    }
+
+
+
     public static void throughIntentShareWXdesc(String share_word) {
         try {
             Intent intentFriend = new Intent();
@@ -39,6 +86,7 @@ public class ShareUtils {
     }
 
     public static void throughIntentShareWXImage(String imageUri) {
+
         try {
             Intent intentFriend = new Intent();
             intentFriend.setComponent(new ComponentName("com.tencent.mm", "com.tencent.mm.ui.tools.ShareImgUI"));

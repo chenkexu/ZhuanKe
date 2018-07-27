@@ -9,10 +9,12 @@ import com.dfwr.zhuanke.zhuanke.api.response.ApiResponse;
 import com.dfwr.zhuanke.zhuanke.base.BasePresenter;
 import com.dfwr.zhuanke.zhuanke.bean.CheckWithDrawBean;
 import com.dfwr.zhuanke.zhuanke.bean.UserBaseInfo;
+import com.dfwr.zhuanke.zhuanke.bean.WithDrawHistory;
 import com.dfwr.zhuanke.zhuanke.mvp.contract.HomeWithDrawView;
 import com.dfwr.zhuanke.zhuanke.util.RxUtil;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by wy on 2017/12/5.
@@ -56,10 +58,13 @@ public class HomeWithDrawPresent<T> extends BasePresenter<HomeWithDrawView> {
 
     }
 
+
+
     //提现校验
     public void checkWithDraw(){
         mMsgView.showLoading();
         HashMap<String, Object> map = ParamsUtil.getMap();
+        map.put("type",  "1");
         ApiManager.getInstence().getApiService().takeMoneyCheck(ParamsUtil.getParams(map))
                 .compose(RxUtil.<ApiResponse<CheckWithDrawBean>>rxSchedulerHelper())
                 .subscribe(new BaseObserver<CheckWithDrawBean>() {
@@ -80,10 +85,61 @@ public class HomeWithDrawPresent<T> extends BasePresenter<HomeWithDrawView> {
 
     }
 
+
+
     //获取提现记录
-    public void getWithDrawHistory(){
+    public void getWithDrawHistory(int page,int size){
+        HashMap<String, Object> map = ParamsUtil.getMap();
+        map.put("page",page+"");
+        map.put("size",size+"");
+        ApiManager.getInstence().getApiService().get_cash_record(ParamsUtil.getParams(map))
+                .compose(RxUtil.<ApiResponse<List<WithDrawHistory>>>rxSchedulerHelper())
+                .subscribe(new BaseObserver<List<WithDrawHistory>>() {
+                    @Override
+                    protected void onSuccees(ApiResponse<List<WithDrawHistory>> t) {
+                        if (t!=null) {
+                            mMsgView.getWithDrawHistorySuccess(t.getResult());
+                        }
+                    }
+
+                    @Override
+                    protected void onFailure(String errorInfo, boolean isNetWorkError) {
+                        ToastUtils.showShort(errorInfo);
+                        mMsgView.getWithDrawHistoryRefreshError(errorInfo);
+                    }
+                });
 
     }
+
+
+
+    //获取提现记录
+    public void getWithDrawHistoryLoadMore(int page,int size){
+        HashMap<String, Object> map = ParamsUtil.getMap();
+        map.put("page",page+"");
+        map.put("size",size+"");
+        ApiManager.getInstence().getApiService().get_cash_record(ParamsUtil.getParams(map))
+                .compose(RxUtil.<ApiResponse<List<WithDrawHistory>>>rxSchedulerHelper())
+                .subscribe(new BaseObserver<List<WithDrawHistory>>() {
+                    @Override
+                    protected void onSuccees(ApiResponse<List<WithDrawHistory>> t) {
+                        if (t!=null) {
+                            mMsgView.getWithDrawHistoryMoreSuccess(t.getResult());
+                        }
+                    }
+
+                    @Override
+                    protected void onFailure(String errorInfo, boolean isNetWorkError) {
+                        mMsgView.getWithDrawHistoryMoreFail(errorInfo);
+                        ToastUtils.showShort(errorInfo);
+
+                    }
+                });
+
+    }
+
+
+
 
 
 }

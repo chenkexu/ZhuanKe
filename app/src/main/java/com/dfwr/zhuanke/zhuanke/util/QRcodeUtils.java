@@ -1,73 +1,65 @@
 package com.dfwr.zhuanke.zhuanke.util;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.PixelFormat;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.ThumbnailUtils;
 
-import com.dfwr.zhuanke.zhuanke.R;
 import com.google.zxing.BarcodeFormat;
-import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
+import com.orhanobut.logger.Logger;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Hashtable;
 
 public class QRcodeUtils {
 
-	/**
-	 * 将指定的内容生成成二维码
-	 * 
-	 * @param content
-	 *            将要生成二维码的内容
-	 * @return 返回生成好的二维码事件
-	 * @throws WriterException
-	 *             异常
-	 */
-	public static Bitmap createTwodCode(String content, Context context){
-		//设置白边大小
-		Hashtable<EncodeHintType, Object> hints = new Hashtable<EncodeHintType, Object>();
-		hints.put(EncodeHintType.MARGIN, 0);
-		BitmapDrawable drawable = (BitmapDrawable) context.getResources().getDrawable(R.mipmap.ic_launcher);
-		Bitmap bitmapLogo = drawable.getBitmap();
-		Bitmap bitmap = null;
-		// 生成二维矩阵,编码时指定大小,不要生成了图片以后再进行缩放,这样会模糊导致识别失败
-		BitMatrix matrix;
-		try {
-			matrix = new MultiFormatWriter().encode(content, BarcodeFormat.QR_CODE, 491, 491,hints);
-			int width = matrix.getWidth();
-			int height = matrix.getHeight();
-			// 二维矩阵转为一维像素数组,也就是一直横着排了
-			int[] pixels = new int[width * height];
-			for (int y = 0; y < height; y++) {
-				for (int x = 0; x < width; x++) {
-					if (matrix.get(x, y)) {
-						pixels[y * width + x] = 0xff000000;
-					}
+
+	public static Bitmap Create2DCode(String str) throws WriterException {
+		Logger.d("二维码链接是:" + str);
+		BitMatrix matrix = new MultiFormatWriter().encode(str, BarcodeFormat.QR_CODE, 650, 650);
+		int width = matrix.getWidth();
+		int height = matrix.getHeight();
+		int[] pixels = new int[(width * height)];
+		for (int y = 0; y < height; y++) {
+			for (int x = 0; x < width; x++) {
+				if (matrix.get(x, y)) {
+					pixels[(y * width) + x] = -16777216;
 				}
 			}
-
-			bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-			// 通过像素数组生成bitmap,具体参考api
-			bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
-	
-		} catch (WriterException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
-	
-		return addLogo(bitmap, bitmapLogo);
-	
+		Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_4444);
+		bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
+		return bitmap;
 	}
+
+
+	public static Bitmap Create2DCodeMin(String str) throws WriterException {
+		Logger.d("二维码链接是:" + str);
+		BitMatrix matrix = new MultiFormatWriter().encode(str, BarcodeFormat.QR_CODE, 650, 650);
+		int width = matrix.getWidth();
+		int height = matrix.getHeight();
+		int[] pixels = new int[(width * height)];
+		for (int y = 0; y < height; y++) {
+			for (int x = 0; x < width; x++) {
+				if (matrix.get(x, y)) {
+					pixels[(y * width) + x] = -16777216;
+				}
+			}
+		}
+		Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_4444);
+		bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
+		return bitmap;
+	}
+
+
+
 
 	/**
 	 * 在二维码中间添加Logo图案

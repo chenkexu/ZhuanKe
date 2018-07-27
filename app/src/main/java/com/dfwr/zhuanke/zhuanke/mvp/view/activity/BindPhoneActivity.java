@@ -123,11 +123,25 @@ public class BindPhoneActivity extends BaseActivity<BindPhoneView, BindPhonePres
     }
 
 
+
+
+
+
+
+    @Override
+    public void bindPhoneSuccess(Object object) {
+        Intent intent = getIntent();
+        intent.setClass(this, GoWithDrawActivity.class);
+        startActivity(intent);
+    }
+
+
+
+
     @Override
     protected BindPhonePresent<BindPhoneView> createPresent() {
         return new BindPhonePresent<>(this);
     }
-
 
     @Override
     public void showLoading() {
@@ -137,12 +151,5 @@ public class BindPhoneActivity extends BaseActivity<BindPhoneView, BindPhonePres
     @Override
     public void hideLoading() {
         hideDefaultLoading();
-    }
-
-
-    @Override
-    public void bindPhoneSuccess(Object object) {
-        Intent intent = new Intent(this,GoWithDrawActivity.class);
-        startActivity(intent);
     }
 }

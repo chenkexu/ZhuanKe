@@ -11,14 +11,16 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.ToastUtils;
-import com.dfwr.zhuanke.zhuanke.MainActivity;
 import com.dfwr.zhuanke.zhuanke.R;
 import com.dfwr.zhuanke.zhuanke.base.BaseActivity;
 import com.dfwr.zhuanke.zhuanke.base.BasePresenter;
 import com.dfwr.zhuanke.zhuanke.bean.UserBean;
+import com.dfwr.zhuanke.zhuanke.mvp.event.ChooseFragmentEvent;
 import com.dfwr.zhuanke.zhuanke.util.UserDataManeger;
 import com.dfwr.zhuanke.zhuanke.widget.MyTitle;
 import com.dfwr.zhuanke.zhuanke.widget.Systems;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -77,15 +79,6 @@ public class BindAlipayActivity extends BaseActivity {
     }
 
 
-    @Override
-    protected BasePresenter createPresent() {
-        return new BasePresenter() {
-            @Override
-            public void fecth() {
-
-            }
-        };
-    }
 
     @OnClick({R.id.tv_submit, R.id.tv_go_makemoney})
     public void onViewClicked(View view) {
@@ -95,8 +88,13 @@ public class BindAlipayActivity extends BaseActivity {
                 String payAccount = etPayAccount.getText().toString();
                 String payName = etPayName.getText().toString();
 
-                if(!TextUtils.isEmpty(payName)){
+                if(TextUtils.isEmpty(payName)){
                     ToastUtils.showShort("请输入收款人姓名");
+                    return;
+                }
+
+                if(TextUtils.isEmpty(payAccount)){
+                    ToastUtils.showShort("请输入支付宝账号");
                     return;
                 }
 
@@ -109,16 +107,31 @@ public class BindAlipayActivity extends BaseActivity {
                 }
 
                 intent = new Intent(this, GoWithDrawActivity.class);
-                intent.putExtra(payAccount,payAccount);
-                intent.putExtra(payAccount,payName);
+                intent.putExtra(Systems.payAccount,payAccount);
+                intent.putExtra(Systems.payName,payName);
+                intent.putExtra(Systems.withDrawType,Systems.alipay);
                 startActivity(intent);
 
                 break;
             case R.id.tv_go_makemoney:
-                intent = new Intent(this, MainActivity.class);
-                intent.putExtra(Systems.from_withdraw,"0");
-                startActivity(intent);
+                ChooseFragmentEvent chooseFragmentEvent = new ChooseFragmentEvent();
+                chooseFragmentEvent.fragmentStr = "0";
+                EventBus.getDefault().post(chooseFragmentEvent);
+                finish();
                 break;
         }
     }
+
+
+
+    @Override
+    protected BasePresenter createPresent() {
+        return new BasePresenter() {
+            @Override
+            public void fecth() {
+
+            }
+        };
+    }
+
 }

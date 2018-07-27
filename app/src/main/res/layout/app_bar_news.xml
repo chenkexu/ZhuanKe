@@ -9,14 +9,13 @@
 
 
         <RelativeLayout
+            android:paddingBottom="5dp"
             android:gravity="center_vertical"
             android:id="@+id/ll_title"
             android:background="@color/colorPrimary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-
-
 
             <com.flyco.tablayout.SlidingTabLayout
                 android:layout_toLeftOf="@+id/add_channel_iv"
@@ -25,9 +24,9 @@
                 android:id="@+id/tl_5"
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
-                tl:tl_indicator_color="@color/bd_blue"
+                tl:tl_indicator_color="@color/bg_white"
                 tl:tl_underline_color="@color/bg_white"
-                tl:tl_textSelectColor="@color/bd_blue"
+                tl:tl_textSelectColor="@color/bg_white"
                 tl:tl_textUnselectColor="@color/bg_white"
                 tl:tl_indicator_corner_radius="1.5dp"
                 tl:tl_indicator_height="3dp"
@@ -47,12 +46,12 @@
         </RelativeLayout>
 
 
-    <android.support.v4.view.ViewPager
+    <com.dfwr.zhuanke.zhuanke.widget.CustomViewPager
         android:layout_below="@id/ll_title"
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    </android.support.v4.view.ViewPager>
+    </com.dfwr.zhuanke.zhuanke.widget.CustomViewPager>
 
 
 

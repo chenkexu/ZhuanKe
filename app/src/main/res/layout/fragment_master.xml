@@ -133,18 +133,19 @@
                 android:padding="10dp">
 
                 <TextView
+                    android:textColor="@color/bd_blue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="通过以下方式收徒"
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/tv_master_reward"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:text="最低3元奖励/1人，还可享受提成收益"
-                    android:textColor="@color/bg_red"
-                    android:textStyle="bold" />
+                    android:text=""
+                    android:textColor="@color/black"/>
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recyclerView"
@@ -209,6 +210,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                     <TextView
+                        android:id="@+id/tv_master_tips"
                         android:text="邀请好友成为徒弟，徒弟提现即获得3元奖励，徒弟转发文章收益成功，永久享受高达30%收益"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
