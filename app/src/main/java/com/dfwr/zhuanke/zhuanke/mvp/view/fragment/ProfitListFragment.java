@@ -39,7 +39,7 @@ public class ProfitListFragment extends LazyLoadFragment<ProfitView, ProfitPrese
 
     private List<MyProfit> mData = new ArrayList<>();
     private int currentPage;
-    private static final int PAGE_SIZE = 15;
+    private static final int PAGE_SIZE = 20;
     private int type = 1;
 
     @Override

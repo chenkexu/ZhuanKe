@@ -126,9 +126,10 @@ public class GoWithDrawActivity extends BaseActivity<MeWithDrawView,MeWithDrawPr
                 isFirstWithDraw = intent.getBooleanExtra(Systems.isFirstWithDraw, true);
                 adaptersex.notifyDataSetChanged();
                 if (isFirstWithDraw) { //首次提现
-
+                    choosePosition = 0;
                 }else{  //不是首次提现
-
+                    money = 10.0;
+                    choosePosition = 1;
                 }
             }
         }
@@ -160,11 +161,6 @@ public class GoWithDrawActivity extends BaseActivity<MeWithDrawView,MeWithDrawPr
                 break;
         }
     }
-
-
-
-
-
 
     //提现校验成功
     @Override

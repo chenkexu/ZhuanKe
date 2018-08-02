@@ -63,7 +63,7 @@ public class WithDrawFragment extends BaseTwoFragment<HomeWithDrawView, HomeWith
     private WithDrawHistoryAdapter newsAdapter;
     private int currentPage;
     private String type;
-    private static final int PAGE_SIZE = 15;
+    private static final int PAGE_SIZE = 20;
 
 
     @Override
@@ -121,7 +121,6 @@ public class WithDrawFragment extends BaseTwoFragment<HomeWithDrawView, HomeWith
         switch (view.getId()) {
             case R.id.ll_withdraw_wechat:
                 mPresent.checkWithDraw();
-//                startActivity(new Intent(getActivity(), BindPhoneActivity.class));
                 break;
             case R.id.ll_withdraw_alipay:
                 startActivity(new Intent(getActivity(), BindAlipayActivity.class));
@@ -150,18 +149,22 @@ public class WithDrawFragment extends BaseTwoFragment<HomeWithDrawView, HomeWith
 
     @Override
     public void getCheckWithDrawSuccess(CheckWithDrawBean checkWithDrawBean) {
-        if (checkWithDrawBean.getPhoneIsBinding() == 0) { //没绑定手机号
-            startActivity(new Intent(getActivity(), BindPhoneActivity.class));
-        } else if (checkWithDrawBean.getPublicNum() == 0) { //没关注微信
-            startActivity(new Intent(getActivity(), AttentionWechatNumberActivity.class));
+        Intent intent1 = new Intent();
+        intent1.putExtra(Systems.withDrawType, Systems.wechat);
+        if (checkWithDrawBean.getNum() == 0) { //是否首次提现 0，没有提现记录
+            intent1.putExtra(Systems.isFirstWithDraw, true);
         } else {
-            Intent intent = new Intent(getActivity(), GoWithDrawActivity.class);
-            if (checkWithDrawBean.getNum() == 0) { //是否首次提现 0，没有提现记录
-                intent.putExtra(Systems.isFirstWithDraw, true);
-            } else {
-                intent.putExtra(Systems.isFirstWithDraw, false);
-            }
-            startActivity(intent);
+            intent1.putExtra(Systems.isFirstWithDraw, false);
+        }
+        if (checkWithDrawBean.getPhoneIsBinding() == 0) { //没绑定手机号
+            intent1.setClass(getActivity(), BindPhoneActivity.class);
+            startActivity(intent1);
+        } else if (checkWithDrawBean.getPublicNum() == 0) { //没关注微信
+            intent1.setClass(getActivity(), AttentionWechatNumberActivity.class);
+            startActivity(intent1);
+        } else {
+            intent1.setClass(getActivity(), GoWithDrawActivity.class);
+            startActivity(intent1);
         }
     }
 

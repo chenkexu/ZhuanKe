@@ -114,9 +114,7 @@
                 android:layout_height="0.1dp"
                 android:background="@color/black" />
             <android.support.v7.widget.RecyclerView
-                android:paddingBottom="5dp"
-                android:paddingTop="5dp"
-                android:paddingLeft="20dp"
+                android:padding="5dp"
                 android:layout_centerInParent="true"
                 android:layout_toRightOf="@id/line1"
                 android:layout_toLeftOf="@+id/line2"
@@ -169,7 +167,7 @@
                     android:id="@+id/tv_today_profit"
                     android:textColor="@color/bg_red"
                     android:textStyle="bold"
-                    android:text="ID:111345"
+                    android:text="0"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </LinearLayout>
@@ -190,7 +188,7 @@
                     android:id="@+id/tv_artical_money"
                     android:textColor="@color/bg_red"
                     android:textStyle="bold"
-                    android:text="ID:111345"
+                    android:text="0"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </LinearLayout>
@@ -211,31 +209,12 @@
                     android:id="@+id/tv_today_pupil"
                     android:textColor="@color/bg_red"
                     android:textStyle="bold"
-                    android:text="ID:111345"
+                    android:text="0"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </LinearLayout>
         </LinearLayout>
-
-
-        <com.flyco.tablayout.SlidingTabLayout
-            android:layout_gravity="center"
-            tl:tl_tab_padding="7dp"
-            android:id="@+id/tl_5"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            tl:tl_indicator_color="@color/colorPrimary"
-            tl:tl_underline_color="#1A000000"
-            tl:tl_textSelectColor="@color/colorPrimary"
-            tl:tl_textUnselectColor="#404040"
-            tl:tl_indicator_corner_radius="1.5dp"
-            tl:tl_indicator_height="3dp"
-            tl:tl_indicator_width="40dp"/>
-
-        <android.support.v4.view.ViewPager
-            android:id="@+id/vp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+        <include layout="@layout/include_tab_viewpager"/>
     </LinearLayout>
 
 

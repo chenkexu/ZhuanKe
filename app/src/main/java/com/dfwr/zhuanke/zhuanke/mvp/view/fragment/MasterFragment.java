@@ -2,16 +2,17 @@ package com.dfwr.zhuanke.zhuanke.mvp.view.fragment;
 
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.View;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.dfwr.zhuanke.zhuanke.R;
 import com.dfwr.zhuanke.zhuanke.adapter.HomeAdapter;
@@ -77,6 +78,7 @@ public class MasterFragment extends BaseTwoFragment<IHomeView,HomePresent<IHomeV
     }
 
 
+
     @Override
     protected void fragmentToUserVisible() {
         super.fragmentToUserVisible();
@@ -113,7 +115,6 @@ public class MasterFragment extends BaseTwoFragment<IHomeView,HomePresent<IHomeV
             HomeBean homeBean = new HomeBean(myStr[i], taskStatusPics[i]);
             imagesAndTitles.add(homeBean);
         }
-
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 4));
         taskAdapter = new HomeAdapter(imagesAndTitles);
         recyclerView.setAdapter(taskAdapter);
@@ -148,7 +149,15 @@ public class MasterFragment extends BaseTwoFragment<IHomeView,HomePresent<IHomeV
                         ClipboardManager cm = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
                         // 将文本内容放到系统剪贴板里。
                         cm.setText(studentLink);
-                        ToastUtils.showLong("徒弟链接已复制，快打开浏览器访问吧");
+                        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+                        alertDialog.setMessage("徒弟链接已复制，快打开浏览器访问吧!")
+                                .setPositiveButton("好的", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                }).create().show();
+//                        ToastUtils.showLong("徒弟链接已复制，快打开浏览器访问吧");
                         break;
                 }
             }

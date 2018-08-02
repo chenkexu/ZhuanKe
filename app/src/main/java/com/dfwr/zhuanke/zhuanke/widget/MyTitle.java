@@ -142,7 +142,7 @@ public class MyTitle extends RelativeLayout {
      */
     public void setImageBack(final Activity activity) {
         if (activity != null) {
-            setLeftImage(R.mipmap.ic_navigate_before, new OnClickListener() {
+            setLeftImage(R.mipmap.me_icon_back, new OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     activity.finish();

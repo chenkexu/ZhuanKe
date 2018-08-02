@@ -44,6 +44,10 @@ public class SharedPreferencesTool {
     public static final String balance ="balance";//保存的用户的信息
 
 
+    public static final String alipay_account ="alipay_account";//支付宝提现账号
+    public static final String alipay_name ="alipay_name";//支付宝提现用户名
+
+
 
 
 

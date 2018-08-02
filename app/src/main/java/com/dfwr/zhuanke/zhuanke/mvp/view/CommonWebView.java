@@ -47,6 +47,7 @@ public class CommonWebView extends BaseActivity {
     private String url = "";
     private Article article;
     private Bitmap httpBitmap;
+    private String articleLink;
 
 
     @Override
@@ -105,13 +106,6 @@ public class CommonWebView extends BaseActivity {
             }
         });
 
-
-    }
-
-
-
-    @OnClick({R.id.ivWechat, R.id.ivWechatFriend})
-    public void onViewClicked(View view) {
         final String headImg = article.getHeadImg();
         new Thread(new Runnable() {
             @Override
@@ -124,11 +118,17 @@ public class CommonWebView extends BaseActivity {
             }
         }).start();
 
-        String articleLink = share_host + HttpContants.share;
+        articleLink = share_host + HttpContants.share;
         UserBean userBean = UserDataManeger.getInstance().getUserBean();
         if (userBean!=null) {
             articleLink = articleLink + "UID=" + userBean.getUser().getUid() + "&AID=" + article.getAid();
         }
+
+    }
+
+
+    @OnClick({R.id.ivWechat, R.id.ivWechatFriend})
+    public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ivWechat:
                 share(article.getTitle(),article.getTitle(),SendMessageToWX.Req.WXSceneSession,httpBitmap,articleLink);
@@ -138,6 +138,9 @@ public class CommonWebView extends BaseActivity {
                 break;
         }
     }
+
+
+
 
 
 

@@ -40,7 +40,7 @@
                         android:id="@+id/tv_today_account"
                         android:textColor="@color/bg_red"
                         android:textStyle="bold"
-                        android:text="ID:111345"
+                        android:text="0"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                 </LinearLayout>
@@ -62,7 +62,7 @@
                         android:id="@+id/tv_all_pupil"
                         android:textColor="@color/bg_red"
                         android:textStyle="bold"
-                        android:text="ID:111345"
+                        android:text="0"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                 </LinearLayout>
@@ -92,7 +92,7 @@
                         android:id="@+id/tv_today_pupil"
                         android:textColor="@color/bg_red"
                         android:textStyle="bold"
-                        android:text="ID:111345"
+                        android:text="0"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                 </LinearLayout>
@@ -115,7 +115,7 @@
                         android:id="@+id/tv_all__pupil_account"
                         android:textColor="@color/bg_red"
                         android:textStyle="bold"
-                        android:text="ID:111345"
+                        android:text="0"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                 </LinearLayout>
@@ -148,12 +148,11 @@
                     android:textColor="@color/black"/>
 
                 <android.support.v7.widget.RecyclerView
+                    android:padding="5dp"
                     android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="5dp"
-                    android:paddingLeft="13dp" />
+                    android:layout_marginTop="5dp" />
             </LinearLayout>
             </android.support.v7.widget.CardView>
 

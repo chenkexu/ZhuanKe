@@ -7,7 +7,6 @@ import android.graphics.Bitmap.CompressFormat;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v4.content.FileProvider;
@@ -85,7 +84,9 @@ public class ShareUtil {
             Canvas canvas = new Canvas(bmp);
             canvas.drawBitmap(bitmap, 0.0f, 0.0f, null);
             canvas.drawBitmap(codeBitmap, (float) ((bitmap.getWidth() - codeBitmap.getWidth()) / 2), 850.0f, null);
-            canvas.save(31);
+//            canvas.save(31);
+            // TODO: 2018/7/30
+            canvas.save(Canvas.ALL_SAVE_FLAG);
             canvas.restore();
             saveBitmap(bmp, this.share_img_path);
         } catch (Exception e) {
@@ -107,7 +108,7 @@ public class ShareUtil {
             Canvas canvas = new Canvas(bmp);
             canvas.drawBitmap(bitmap, 0.0f, 0.0f, null);
             canvas.drawBitmap(codeBitmap, (float) ((bitmap.getWidth() - codeBitmap.getWidth()) / 2), 850.0f, null);
-            canvas.save(31);
+            canvas.save(Canvas.ALL_SAVE_FLAG);
             canvas.restore();
         } catch (WriterException e) {
             e.printStackTrace();
@@ -131,7 +132,7 @@ public class ShareUtil {
             Canvas cv = new Canvas(bmp);
             cv.drawBitmap(bitmap, 0.0f, 0.0f, null);
             cv.drawBitmap(core, 315.0f, 116.0f, null);
-            cv.save(31);
+            cv.save(Canvas.ALL_SAVE_FLAG);
             cv.restore();
             saveBitmap(bmp, this.my_share_img_path);
         }  catch (Exception e2) {

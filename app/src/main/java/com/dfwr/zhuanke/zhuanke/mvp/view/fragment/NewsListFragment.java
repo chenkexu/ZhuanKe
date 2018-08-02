@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
@@ -13,30 +14,36 @@ import android.widget.RelativeLayout;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.dfwr.zhuanke.zhuanke.R;
 import com.dfwr.zhuanke.zhuanke.adapter.NewsAdapter;
-import com.dfwr.zhuanke.zhuanke.base.LazyLoadFragment;
+import com.dfwr.zhuanke.zhuanke.base.BaseLazyFragment;
 import com.dfwr.zhuanke.zhuanke.bean.Article;
-import com.dfwr.zhuanke.zhuanke.bean.Propertie;
 import com.dfwr.zhuanke.zhuanke.mvp.contract.NewsListView;
 import com.dfwr.zhuanke.zhuanke.mvp.presenter.NewsListPresent;
 import com.dfwr.zhuanke.zhuanke.mvp.view.CommonWebView;
+import com.dfwr.zhuanke.zhuanke.util.ButtonUtils;
 import com.dfwr.zhuanke.zhuanke.widget.Systems;
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 /**
  * Created by ckx on 2018/6/20.
  */
 
-public class NewsListFragment extends LazyLoadFragment<NewsListView, NewsListPresent<NewsListView>> implements
+public class NewsListFragment extends BaseLazyFragment<NewsListView, NewsListPresent<NewsListView>> implements
         SwipeRefreshLayout.OnRefreshListener, NewsListView, BaseQuickAdapter.RequestLoadMoreListener {
 
 
-    private  RecyclerView recyclerView;
+//    private  RecyclerView recyclerView;
+//
+//    private SwipeRefreshLayout refreshLayout;
 
-    private SwipeRefreshLayout refreshLayout;
+    @BindView(R.id.recyclerView) RecyclerView recyclerView;
+    @BindView(R.id.refreshLayout) SwipeRefreshLayout refreshLayout;
 
     private NewsAdapter newsAdapter;
     private RelativeLayout activityGuide;
@@ -45,39 +52,22 @@ public class NewsListFragment extends LazyLoadFragment<NewsListView, NewsListPre
     private int currentPage;
     private String type;
     private static final int PAGE_SIZE = 20;
-    private Propertie propertie;
     private String price;
     private String share_host;
 
 
 
+
     @Override
-    protected void lazyLoad() {
-        initView();
-        initData();
+    protected View initView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.activity_news_list, container, false);
+        ButterKnife.bind(this, view);
+        return view;
     }
 
-
-    private void initData() {
-        onRefresh();
-        newsAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                List<Article> data = newsAdapter.getData();
-                Article feedArticleData = data.get(position);
-                Intent intent = new Intent(getActivity(), CommonWebView.class);
-                intent.putExtra(Systems.share_host, share_host);
-                intent.putExtra(Systems.articleData, feedArticleData);
-                startActivity(intent);
-            }
-        });
-    }
-
-
-    private void initView() {
+    @Override
+    protected void initData() {
         mData = new ArrayList<>();
-        recyclerView = findViewById(R.id.recyclerView);
-        refreshLayout = findViewById(R.id.refreshLayout);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         refreshLayout.setOnRefreshListener(this);//刷新
         newsAdapter = new NewsAdapter(mData);
@@ -88,7 +78,34 @@ public class NewsListFragment extends LazyLoadFragment<NewsListView, NewsListPre
         type = bundle.getString(Systems.ARG_PARAM1);
         price = bundle.getString(Systems.ARG_PARAM2);
         share_host = bundle.getString(Systems.ARG_PARAM3);
+        newsAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                List<Article> data = newsAdapter.getData();
+                Article feedArticleData = data.get(position);
+                Intent intent = new Intent(getActivity(), CommonWebView.class);
+                intent.putExtra(Systems.share_host, share_host);
+                intent.putExtra(Systems.articleData, feedArticleData);
+                if (!ButtonUtils.isFastDoubleClick(R.id.item_id)) {
+                    startActivity(intent);
+                }
+            }
+        });
+        Logger.d("initView");
+        setRefreshing(true);
+        onRefresh();
     }
+
+
+    public void setRefreshing(final boolean refreshing) {
+        refreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                refreshLayout.setRefreshing(refreshing);
+            }
+        });
+    }
+
 
 
     //下拉刷新
@@ -108,11 +125,6 @@ public class NewsListFragment extends LazyLoadFragment<NewsListView, NewsListPre
     public void onLoadMoreRequested() {
         mPresent.getProjectListLoadMore(type,currentPage, PAGE_SIZE);
     }
-
-
-
-
-
 
     private void setData(boolean isRefresh, List data) {
         currentPage++;
@@ -134,10 +146,9 @@ public class NewsListFragment extends LazyLoadFragment<NewsListView, NewsListPre
     }
 
 
-
-
     @Override
     public void getArticleListSuccess(List<Article> projectListData) {
+        Logger.d("getArticleListSuccess ");
         if (projectListData == null || projectListData.size() == 0) {
             newsAdapter.setNewData(null);
             newsAdapter.setEmptyView(R.layout.layout_no_content, (ViewGroup) recyclerView.getParent());
@@ -169,8 +180,6 @@ public class NewsListFragment extends LazyLoadFragment<NewsListView, NewsListPre
     }
 
 
-
-
     public static NewsListFragment getInstance(String param1, String param2,String param3 ) {
         NewsListFragment fragment = new NewsListFragment();
         Bundle args = new Bundle();
@@ -191,16 +200,16 @@ public class NewsListFragment extends LazyLoadFragment<NewsListView, NewsListPre
         hideDefaultLoading();
     }
 
-    @Override
-    protected int setLayoutId() {
-        return R.layout.activity_news_list;
-    }
 
     @Override
     protected NewsListPresent<NewsListView> createPresent() {
         return new NewsListPresent<>(this);
     }
 
+    @Override
+    protected void loadData() {
+
+    }
 
 
 }

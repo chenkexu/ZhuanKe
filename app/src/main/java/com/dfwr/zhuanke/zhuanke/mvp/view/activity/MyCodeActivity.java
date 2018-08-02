@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.dfwr.zhuanke.zhuanke.R;
 import com.dfwr.zhuanke.zhuanke.base.BaseActivity;
 import com.dfwr.zhuanke.zhuanke.base.BasePresenter;
@@ -58,37 +59,45 @@ public class MyCodeActivity extends BaseActivity {
             tvName.setText(userBean.getUser().getWxName());
             GlideUtil.getInstance().loadHeadImage(this, ivHead, userBean.getUser().getImgId(), true);
         }
+
         String studentLink = SharedPreferencesUtil.getStringData(this, SharedPreferencesUtil.student_link);
 
-        try {
-            Bitmap bitmap = QRcodeUtils.Create2DCode(studentLink);
-            ivCode.setImageBitmap(bitmap);
-        } catch (WriterException e) {
-            e.printStackTrace();
+        if (studentLink == null) {
+            ToastUtils.showShort("收徒链接不存在");
+        }else{
+            try {
+                Bitmap bitmap = QRcodeUtils.Create2DCode(studentLink);
+                ivCode.setImageBitmap(bitmap);
+            } catch (WriterException e) {
+                e.printStackTrace();
+            }
+
+
+            Intent intent = getIntent();
+            Propertie propertie = (Propertie) intent.getSerializableExtra(Systems.propertie);
+
+            if (propertie!=null) {
+                String price1 = propertie.getRegister_reward();
+                String price2 = propertie.getGet_balance_money_min();
+
+                String string = getResources().getString(R.string.my_code_tips, price1, price2);
+                tvTips.setText(Html.fromHtml(string));
+
+                String percentStr = propertie.getStudent_reward();
+                String percentStr2 = propertie.getGrandson_reward();
+                String string2 = getResources().getString(R.string.my_code_tips2, percentStr, percentStr2);
+                tvTips2.setText(Html.fromHtml(string2));
+            }
+
         }
-
-
-        Intent intent = getIntent();
-        Propertie propertie = (Propertie) intent.getSerializableExtra(Systems.propertie);
-
-        if (propertie!=null) {
-            String price1 = propertie.getRegister_reward();
-            String price2 = propertie.getGet_balance_money_min();
-
-
-
-            String string = getResources().getString(R.string.my_code_tips, price1, price2);
-            tvTips.setText(Html.fromHtml(string));
-
-
-            String percentStr = propertie.getStudent_reward();
-            String percentStr2 = propertie.getGrandson_reward();
-            String string2 = getResources().getString(R.string.my_code_tips2, percentStr, percentStr2);
-            tvTips2.setText(Html.fromHtml(string2));
-        }
-
-
     }
+
+
+
+
+
+
+
 
 
     @Override

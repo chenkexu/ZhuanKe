@@ -54,12 +54,13 @@ public class GuideActivity extends BasePermissionActivity {
             startActivity(new Intent(GuideActivity.this, MainActivity.class));
             finish();
         }
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 
     @Override
     protected void permissionFail() {
         super.permissionFail();
-        ToastUtils.showShort("授权失败");
+        ToastUtils.showShort("请开通相关权限，以免影响您的使用");
         finish();
     }
 }

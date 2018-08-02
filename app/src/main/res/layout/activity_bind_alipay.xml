@@ -43,7 +43,6 @@
             android:textStyle="bold" />
 
         <EditText
-            android:text="陈柯旭"
             android:id="@+id/etPayName"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -78,7 +77,6 @@
             android:textStyle="bold" />
 
         <EditText
-            android:text="18401512374"
             android:id="@+id/etPayAccount"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

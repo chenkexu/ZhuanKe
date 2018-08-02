@@ -36,7 +36,7 @@
                 android:id="@+id/tv_account"
                 android:textColor="@color/bg_red"
                 android:textStyle="bold"
-                android:text="ID:111345"
+                android:text="0"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
@@ -57,7 +57,7 @@
                 android:id="@+id/tv_all_withdraw"
                 android:textColor="@color/bg_red"
                 android:textStyle="bold"
-                android:text="ID:111345"
+                android:text="0"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>

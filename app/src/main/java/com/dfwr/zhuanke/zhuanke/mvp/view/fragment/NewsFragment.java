@@ -9,8 +9,8 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.dfwr.zhuanke.zhuanke.R;
+import com.dfwr.zhuanke.zhuanke.base.BaseLazyFragment;
 import com.dfwr.zhuanke.zhuanke.base.BaseTwoFragment;
-import com.dfwr.zhuanke.zhuanke.base.LazyLoadFragment;
 import com.dfwr.zhuanke.zhuanke.bean.ProjectClassifyData;
 import com.dfwr.zhuanke.zhuanke.bean.Propertie;
 import com.dfwr.zhuanke.zhuanke.mvp.contract.NewsView;
@@ -44,7 +44,7 @@ public class NewsFragment extends BaseTwoFragment<NewsView, NewsPresent<NewsView
 
 //    private int currentPage;
 
-    private ArrayList<LazyLoadFragment> mFragments = new ArrayList<>();
+    private ArrayList<BaseLazyFragment> mFragments = new ArrayList<>();
 
 
     private int currentPage;
@@ -93,10 +93,12 @@ public class NewsFragment extends BaseTwoFragment<NewsView, NewsPresent<NewsView
     private void initViewPagerAndTabLayout() {
         Bundle arguments = getArguments();
         Propertie propertie = (Propertie) arguments.getSerializable(Systems.propertie);
-        for (ProjectClassifyData data : mData) {
-            NewsListFragment projectListFragment = NewsListFragment.getInstance(data.getType(), propertie.getShare_price(),propertie.getShare_host());
-            mFragments.add(projectListFragment);
-            channelIds.add(data.getId());
+        if (propertie!=null) {
+            for (ProjectClassifyData data : mData) {
+                NewsListFragment projectListFragment = NewsListFragment.getInstance(data.getType(), propertie.getShare_price(),propertie.getShare_host());
+                mFragments.add(projectListFragment);
+                channelIds.add(data.getId());
+            }
         }
         viewPager.setAdapter(new FragmentStatePagerAdapter(getChildFragmentManager()) {
             @Override
@@ -113,6 +115,7 @@ public class NewsFragment extends BaseTwoFragment<NewsView, NewsPresent<NewsView
             public CharSequence getPageTitle(int position) {
                 return mData.get(position).getType();
             }
+
         });
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -134,12 +137,6 @@ public class NewsFragment extends BaseTwoFragment<NewsView, NewsPresent<NewsView
         mTabLayout.setViewPager(viewPager);
         viewPager.setCurrentItem(Systems.TAB_ONE,false);
     }
-
-
-
-
-
-
 
 
 

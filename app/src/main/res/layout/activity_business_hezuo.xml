@@ -48,7 +48,7 @@
                 android:id="@+id/imageview"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
-                android:src="@mipmap/ic_launcher"
+                android:src="@mipmap/img_qq"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <TextView

@@ -32,12 +32,14 @@ public class NewsPresent<T> extends BasePresenter<NewsView> {
 
 
     public void getProjectClassifyData(){
+        mMsgView.showLoading();
         HashMap<String, Object> map = ParamsUtil.getMap();
         ApiManager.getInstence().getApiService().getArticType(ParamsUtil.getParams(map))
                 .compose(RxUtil.<ApiResponse<List<ProjectClassifyData>>>rxSchedulerHelper())
                 .subscribe(new BaseObserver<List<ProjectClassifyData>>() {
                     @Override
                     protected void onSuccees(ApiResponse<List<ProjectClassifyData>> t) {
+                        mMsgView.hideLoading();
                         if (t!=null) {
                             mMsgView.getProjectClassifyDataSuccess(t.getResult());
                         }
@@ -45,6 +47,7 @@ public class NewsPresent<T> extends BasePresenter<NewsView> {
 
                     @Override
                     protected void onFailure(String errorInfo, boolean isNetWorkError) {
+                        mMsgView.hideLoading();
                         ToastUtils.showShort(errorInfo);
                     }
                 });

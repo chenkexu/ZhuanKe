@@ -15,14 +15,18 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.dfwr.zhuanke.zhuanke.R;
 import com.dfwr.zhuanke.zhuanke.adapter.HomeAdapter;
+import com.dfwr.zhuanke.zhuanke.api.HttpContants;
 import com.dfwr.zhuanke.zhuanke.base.BaseTwoFragment;
 import com.dfwr.zhuanke.zhuanke.bean.HomeBean;
 import com.dfwr.zhuanke.zhuanke.bean.UserBaseInfo;
 import com.dfwr.zhuanke.zhuanke.bean.UserBean;
 import com.dfwr.zhuanke.zhuanke.mvp.contract.HomeMeView;
+import com.dfwr.zhuanke.zhuanke.mvp.event.ChooseFragmentEvent;
 import com.dfwr.zhuanke.zhuanke.mvp.presenter.HomeMePresent;
+import com.dfwr.zhuanke.zhuanke.mvp.view.MyWebView;
 import com.dfwr.zhuanke.zhuanke.mvp.view.activity.BusinessHezuoActivity;
 import com.dfwr.zhuanke.zhuanke.mvp.view.activity.RankActivity;
+import com.dfwr.zhuanke.zhuanke.util.ButtonUtils;
 import com.dfwr.zhuanke.zhuanke.util.GlideUtil;
 import com.dfwr.zhuanke.zhuanke.util.SharedPreferencesTool;
 import com.dfwr.zhuanke.zhuanke.util.SharedPreferencesUtil;
@@ -96,6 +100,7 @@ public class MeFragment extends BaseTwoFragment<HomeMeView,HomeMePresent<HomeMeV
     }
 
 
+
     @Override
     public void getUserInfo(UserBaseInfo userBaseInfo) {
         EventBus.getDefault().post(userBaseInfo);
@@ -119,7 +124,6 @@ public class MeFragment extends BaseTwoFragment<HomeMeView,HomeMePresent<HomeMeV
     protected void initView() {
         super.initView();
 
-
         UserBean userBean = UserDataManeger.getInstance().getUserBean();
 
         if (userBean != null) {
@@ -139,11 +143,17 @@ public class MeFragment extends BaseTwoFragment<HomeMeView,HomeMePresent<HomeMeV
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 switch (position){
                     case 0:
+                        EventBus.getDefault().post(new ChooseFragmentEvent());
                         break;
                     case 1:
                         startActivity(new Intent(getActivity(), RankActivity.class));
                         break;
                     case 2:
+                        Intent intent = new Intent(getActivity(), MyWebView.class);
+                        intent.putExtra("url", HttpContants.gonglue);
+                        if (!ButtonUtils.isFastDoubleClick(R.id.item_id)) {
+                            startActivity(intent);
+                        }
                         break;
                     case 3:
                         startActivity(new Intent(getActivity(), BusinessHezuoActivity.class));
@@ -155,11 +165,11 @@ public class MeFragment extends BaseTwoFragment<HomeMeView,HomeMePresent<HomeMeV
         initViewPager();
     }
 
+
     @Override
     protected void initData() {
         super.initData();
         setData();
-
     }
 
     @Override

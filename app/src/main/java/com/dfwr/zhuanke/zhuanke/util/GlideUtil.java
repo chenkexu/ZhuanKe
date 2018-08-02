@@ -132,6 +132,7 @@ public class GlideUtil {
         if (isFade) {
             Glide.with(context)
                     .load(imgUrl)
+                    .asBitmap().centerCrop()
                     .error(R.mipmap.icon_logo)
                     .placeholder(R.mipmap.ad_error)
                     .priority(Priority.NORMAL) //下载的优先级

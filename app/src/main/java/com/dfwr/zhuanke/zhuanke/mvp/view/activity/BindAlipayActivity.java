@@ -16,6 +16,8 @@ import com.dfwr.zhuanke.zhuanke.base.BaseActivity;
 import com.dfwr.zhuanke.zhuanke.base.BasePresenter;
 import com.dfwr.zhuanke.zhuanke.bean.UserBean;
 import com.dfwr.zhuanke.zhuanke.mvp.event.ChooseFragmentEvent;
+import com.dfwr.zhuanke.zhuanke.util.SharedPreferencesTool;
+import com.dfwr.zhuanke.zhuanke.util.SharedPreferencesUtil;
 import com.dfwr.zhuanke.zhuanke.util.UserDataManeger;
 import com.dfwr.zhuanke.zhuanke.widget.MyTitle;
 import com.dfwr.zhuanke.zhuanke.widget.Systems;
@@ -29,7 +31,6 @@ import butterknife.OnClick;
 /**
  * Created by ckx on 2018/7/17.
  */
-
 public class BindAlipayActivity extends BaseActivity {
 
 
@@ -66,8 +67,14 @@ public class BindAlipayActivity extends BaseActivity {
     private void initView() {
         myTitle.setImageBack(this);
         myTitle.setTitleName("完善支付宝信息");
-
+        String name = SharedPreferencesUtil.getStringData(this, SharedPreferencesTool.alipay_name);
+        String account = SharedPreferencesUtil.getStringData(this, SharedPreferencesTool.alipay_account);
+        if (name!=null && account !=null) {
+            etPayName.setText(name);
+            etPayAccount.setText(account);
+        }
     }
+
 
 
     private void initData() {
@@ -75,8 +82,9 @@ public class BindAlipayActivity extends BaseActivity {
         if (userBean!=null) {
             tvName.setText("昵称："+userBean.getUser().getWxName());
         }
-
     }
+
+
 
 
 
@@ -106,12 +114,14 @@ public class BindAlipayActivity extends BaseActivity {
                     }
                 }
 
+                SharedPreferencesUtil.putStringData(this, SharedPreferencesTool.alipay_account,payAccount);
+                SharedPreferencesUtil.putStringData(this, SharedPreferencesTool.alipay_name,payName);
+
                 intent = new Intent(this, GoWithDrawActivity.class);
                 intent.putExtra(Systems.payAccount,payAccount);
                 intent.putExtra(Systems.payName,payName);
                 intent.putExtra(Systems.withDrawType,Systems.alipay);
                 startActivity(intent);
-
                 break;
             case R.id.tv_go_makemoney:
                 ChooseFragmentEvent chooseFragmentEvent = new ChooseFragmentEvent();
@@ -121,6 +131,21 @@ public class BindAlipayActivity extends BaseActivity {
                 break;
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
