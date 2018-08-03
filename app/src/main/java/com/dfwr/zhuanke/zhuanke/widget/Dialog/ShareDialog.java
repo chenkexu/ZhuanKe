@@ -86,12 +86,14 @@ public class ShareDialog extends Dialog {
         hashMap.put("AppKey","zk1UKw4k8rB3RVus");
         hashMap.put("BypassApproval","false");
         hashMap.put("ShareByAppClient","true");
+
         switch (view.getId()) {
             case R.id.iv_close:
                 break;
             case R.id.iv_wechat:
                 shareUtil.shareToWeixinFriend(code,1);
                 break;
+
             case R.id.iv_wechat_circle:
                 shareUtil.shareToCircleOfFriends(context.getResources().getString(R.string.app_name),code,1);
                 break;

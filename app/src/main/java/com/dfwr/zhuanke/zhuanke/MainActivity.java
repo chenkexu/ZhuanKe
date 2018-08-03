@@ -14,10 +14,13 @@ import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.dfwr.zhuanke.zhuanke.api.ApiManager;
 import com.dfwr.zhuanke.zhuanke.api.BaseObserver;
+import com.dfwr.zhuanke.zhuanke.api.HttpContants;
 import com.dfwr.zhuanke.zhuanke.api.param.ParamsUtil;
 import com.dfwr.zhuanke.zhuanke.api.response.ApiResponse;
 import com.dfwr.zhuanke.zhuanke.base.BaseActivity;
+import com.dfwr.zhuanke.zhuanke.bean.BannerBean;
 import com.dfwr.zhuanke.zhuanke.bean.Propertie;
+import com.dfwr.zhuanke.zhuanke.bean.UpdateBean;
 import com.dfwr.zhuanke.zhuanke.mvp.contract.IMsgView;
 import com.dfwr.zhuanke.zhuanke.mvp.event.ChooseFragmentEvent;
 import com.dfwr.zhuanke.zhuanke.mvp.presenter.MsgPresent;
@@ -27,10 +30,12 @@ import com.dfwr.zhuanke.zhuanke.mvp.view.fragment.NewsFragment;
 import com.dfwr.zhuanke.zhuanke.mvp.view.fragment.WithDrawFragment;
 import com.dfwr.zhuanke.zhuanke.util.AppManager;
 import com.dfwr.zhuanke.zhuanke.util.CProgressDialogUtils;
+import com.dfwr.zhuanke.zhuanke.util.GsonUtils;
 import com.dfwr.zhuanke.zhuanke.util.OkGoUpdateHttpUtil;
 import com.dfwr.zhuanke.zhuanke.util.RxUtil;
 import com.dfwr.zhuanke.zhuanke.widget.Dialog.AdvertisementDialog;
 import com.dfwr.zhuanke.zhuanke.widget.Systems;
+import com.orhanobut.logger.Logger;
 import com.vector.update_app.UpdateAppBean;
 import com.vector.update_app.UpdateAppManager;
 import com.vector.update_app.UpdateCallback;
@@ -40,11 +45,8 @@ import com.vector.update_app.utils.AppUpdateUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -75,29 +77,6 @@ public class MainActivity extends BaseActivity<IMsgView, MsgPresent<IMsgView>> i
             default:
         }
     }
-    /**
-     * 最简方式
-     *
-     * @param
-     */
-    public void updateApp() {
-        new UpdateAppManager
-                .Builder()
-                //当前Activity
-                .setActivity(this)
-                //更新地址
-                .setUpdateUrl(mUpdateUrl)
-                .handleException(new ExceptionHandler() {
-                    @Override
-                    public void onException(Exception e) {
-                        e.printStackTrace();
-                    }
-                })
-                //实现httpManager接口的对象
-                .setHttpManager(new OkGoUpdateHttpUtil())
-                .build()
-                .update();
-    }
 
 
     @BindView(R.id.content)
@@ -118,27 +97,15 @@ public class MainActivity extends BaseActivity<IMsgView, MsgPresent<IMsgView>> i
     private WithDrawFragment withDrawFragment;
     private MeFragment meFragment;
 
-
     private Propertie propertie;
 
 
     /**
-     * 自定义接口协议
+     * 更新APP版本
      *
      * @param
      */
     public void updateDiy() {
-
-//        String path = Environment.getExternalStorageDirectory().getAbsolutePath();
-
-        Map<String, String> params = new HashMap<String, String>();
-
-        params.put("appKey", "ab55ce55Ac4bcP408cPb8c1Aaeac179c5f6f");
-        params.put("appVersion", AppUpdateUtils.getVersionName(this));
-        params.put("key1", "value2");
-        params.put("key2", "value3");
-
-
         new UpdateAppManager
                 .Builder()
                 //必须设置，当前Activity
@@ -146,7 +113,7 @@ public class MainActivity extends BaseActivity<IMsgView, MsgPresent<IMsgView>> i
                 //必须设置，实现httpManager接口的对象
                 .setHttpManager(new OkGoUpdateHttpUtil())
                 //必须设置，更新地址
-                .setUpdateUrl(mUpdateUrl)
+                .setUpdateUrl(HttpContants.get_version)
                 //全局异常捕获
                 .handleException(new ExceptionHandler() {
                     @Override
@@ -154,25 +121,9 @@ public class MainActivity extends BaseActivity<IMsgView, MsgPresent<IMsgView>> i
                         e.printStackTrace();
                     }
                 })
-                //以下设置，都是可选
-                //设置请求方式，默认get
-                .setPost(false)
-                //不显示通知栏进度条
-//                .dismissNotificationProgress()
-                //是否忽略版本
-//                .showIgnoreVersion()
-                //添加自定义参数，默认version=1.0.0（app的versionName）；apkKey=唯一表示（在AndroidManifest.xml配置）
-                .setParams(params)
-                //设置点击升级后，消失对话框，默认点击升级后，对话框显示下载进度，如果是强制更新，则设置无效
-//                .hideDialogOnDownloading()
-                //设置头部，不设置显示默认的图片，设置图片后自动识别主色调，然后为按钮，进度条设置颜色
                 .setTopPic(R.mipmap.top_8)
                 //为按钮，进度条设置颜色。
                 .setThemeColor(0xffffac5d)
-                //设置apk下砸路径，默认是在下载到sd卡下/Download/1.0.0/test.apk
-//                .setTargetPath(path)
-                //设置appKey，默认从AndroidManifest.xml获取，如果，使用自定义参数，则此项无效
-//                .setAppKey("ab55ce55Ac4bcP408cPb8c1Aaeac179c5f6f")
                 .setUpdateDialogFragmentListener(new IUpdateDialogFragmentListener() {
                     @Override
                     public void onUpdateNotifyDialogCancel(UpdateAppBean updateApp) {
@@ -181,7 +132,7 @@ public class MainActivity extends BaseActivity<IMsgView, MsgPresent<IMsgView>> i
                     }
                 })
                 //不自动，获取
-//                .setIgnoreDefParams(true)
+                .setIgnoreDefParams(true)
                 .build()
                 //检测是否有新版本
                 .checkNewApp(new UpdateCallback() {
@@ -193,40 +144,34 @@ public class MainActivity extends BaseActivity<IMsgView, MsgPresent<IMsgView>> i
                      */
                     @Override
                     protected UpdateAppBean parseJson(String json) {
+                        Logger.d("版本更新的json:"+json);
                         UpdateAppBean updateAppBean = new UpdateAppBean();
                         try {
-                            JSONObject jsonObject = new JSONObject(json);
-                            final String newVersion = jsonObject.optString("new_version");
-//                            double aDouble = Double.parseDouble(newVersion);
-//                            Logger.d("aDouble:"+aDouble);
-                            if (AppUtils.getAppVersionName().equals(newVersion))  {
-                                updateAppBean.setUpdate("no");
-                            }else{
+                            UpdateBean updateBean = GsonUtils.parseJsonToBean(json, UpdateBean.class);
+                            String versionNum = updateBean.getResult().getVersionNum();
+                            versionNum = versionNum.replace(".", "");
+                            int versionCode = Integer.parseInt(versionNum);
+                            if (AppUtils.getAppVersionCode() < versionCode)  {
                                 updateAppBean.setUpdate("Yes");
+                            }else{
+                                updateAppBean.setUpdate("no");
+                            }
+                            if (updateBean.getResult().getForceUpdate() == 0) {
+                                updateAppBean.setConstraint(false);
+                            }else{
+                                updateAppBean.setConstraint(true);
                             }
                             updateAppBean
                                     //（必须）是否更新Yes,No
                                     //（必须）新版本号，
-                                    .setNewVersion(newVersion)
+                                    .setNewVersion(updateBean.getResult().getVersionNum())
                                     //（必须）下载地址
-                                    .setApkFileUrl(jsonObject.optString("apk_file_url"))
-                                    //测试下载路径是重定向路径
-//                                    .setApkFileUrl("http://openbox.mobilem.360.cn/index/d/sid/3282847")
-//                                    .setUpdateDefDialogTitle(String.format("AppUpdate 是否升级到%s版本？", newVersion))
-                                    //（必须）更新内容
-//                                    .setUpdateLog(jsonObject.optString("update_log"))
-                                    //测试内容过度
-//                                    .setUpdateLog("测试")
-                                    .setUpdateLog("更新了新的版本，解决了若干个bug")
-//                                    .setUpdateLog("今天我们来聊一聊程序员枯燥的编程生活，相对于其他行业来说今天我们来聊一聊程序员枯燥的编程生活，相对于其他行业来说今天我们来聊一聊程序员枯燥的编程生活，今天我们来聊一聊程序员枯燥的编程生活，相对于其他行业来说今天我们来聊一聊程序员枯燥的编程生活，相对于其他行业来说今天我们来聊一聊程序员枯燥的编程生活，今天我们来聊一聊程序员枯燥的编程生活，相对于其他行业来说今天我们来聊一聊程序员枯燥的编程生活，相对于其他行业来说今天我们来聊一聊程序员枯燥的编程生活，今天我们来聊一聊程序员枯燥的编程生活，相对于其他行业来说今天我们来聊一聊程序员枯燥的编程生活，相对于其他行业来说今天我们来聊一聊程序员枯燥的编程生活，今天我们来聊一聊程序员枯燥的编程生活，相对于其他行业来说今天我们来聊一聊程序员枯燥的编程生活，相对于其他行业来说今天我们来聊一聊程序员枯燥的编程生活，今天我们来聊一聊程序员枯燥的编程生活，相对于其他行业来说今天我们来聊一聊程序员枯燥的编程生活，相对于其他行业来说今天我们来聊一聊程序员枯燥的编程生活，今天我们来聊一聊程序员枯燥的编程生活，相对于其他行业来说今天我们来聊一聊程序员枯燥的编程生活，相对于其他行业来说今天我们来聊一聊程序员枯燥的编程生活，今天我们来聊一聊程序员枯燥的编程生活，相对于其他行业来说今天我们来聊一聊程序员枯燥的编程生活，相对于其他行业来说今天我们来聊一聊程序员枯燥的编程生活，今天我们来聊一聊程序员枯燥的编程生活，相对于其他行业来说今天我们来聊一聊程序员枯燥的编程生活，相对于其他行业来说今天我们来聊一聊程序员枯燥的编程生活，今天我们来聊一聊程序员枯燥的编程生活，相对于其他行业来说今天我们来聊一聊程序员枯燥的编程生活，相对于其他行业来说今天我们来聊一聊程序员枯燥的编程生活，今天我们来聊一聊程序员枯燥的编程生活，相对于其他行业来说今天我们来聊一聊程序员枯燥的编程生活，相对于其他行业来说今天我们来聊一聊程序员枯燥的编程生活，相对于其他行业来说今天我们来聊一聊程序员枯燥的编程生活，相对于其他行业来说今天我们来聊一聊程序员枯燥的编程生活，相对于其他行业来说相对于其他行业来说今天我们来聊一聊程序员枯燥的编程生活，相对于其他行业来说相对于其他行业来说今天我们来聊一聊程序员枯燥的编程生活，相对于其他行业来说\r\n")
+                                    .setApkFileUrl(updateBean.getResult().getLink())
+                                    .setUpdateLog("版本更新："+updateBean.getResult().getDesc())
                                     //大小，不设置不显示大小，可以不设置
-                                    .setTargetSize(jsonObject.optString("target_size"))
+                                    .setTargetSize(updateBean.getResult().getPackageSize()+"M");
                                     //是否强制更新，可以不设置
-                                    .setConstraint(false)
-                                    //设置md5，可以不设置
-                                    .setNewMd5(jsonObject.optString("new_md5"));
-
-                        } catch (JSONException e) {
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
                         return updateAppBean;
@@ -271,9 +216,8 @@ public class MainActivity extends BaseActivity<IMsgView, MsgPresent<IMsgView>> i
         ButterKnife.bind(this);
         //获取全局属性
         getProperties();
-        showAdDialog();
+        getBanner();
         updateDiy();
-//        updateApp();
     }
 
 
@@ -283,6 +227,30 @@ public class MainActivity extends BaseActivity<IMsgView, MsgPresent<IMsgView>> i
         selectedFragment(0);
         tabSelected(llHome);
     }
+
+
+
+    //获取公告
+    public void getBanner(){
+        HashMap<String, Object> map = ParamsUtil.getMap();
+        ApiManager.getInstence().getApiService().get_home_img_url(ParamsUtil.getParams(map))
+                .compose(RxUtil.<ApiResponse<BannerBean>>rxSchedulerHelper())
+                .subscribe(new BaseObserver<BannerBean>() {
+                    @Override
+                    protected void onSuccees(ApiResponse<BannerBean> t) {
+                        if (t.getResult().getVal()!=null) {
+                            AdvertisementDialog advertisementDialog = new AdvertisementDialog(MainActivity.this,t.getResult().getVal());
+                            advertisementDialog.showDialog();
+                        }
+                    }
+                    @Override
+                    protected void onFailure(String errorInfo, boolean isNetWorkError) {
+                        ToastUtils.showShort(errorInfo);
+                    }
+                });
+    }
+
+
 
 
 
@@ -311,11 +279,6 @@ public class MainActivity extends BaseActivity<IMsgView, MsgPresent<IMsgView>> i
 
 
 
-    //显示广告弹窗
-    private void showAdDialog() {
-        AdvertisementDialog advertisementDialog = new AdvertisementDialog(this);
-        advertisementDialog.showDialog();
-    }
 
 
 

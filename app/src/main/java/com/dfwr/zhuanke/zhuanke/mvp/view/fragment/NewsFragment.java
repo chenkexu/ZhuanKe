@@ -48,6 +48,7 @@ public class NewsFragment extends BaseTwoFragment<NewsView, NewsPresent<NewsView
 
 
     private int currentPage;
+    private NewsListFragment projectListFragment;
 
     @Override
     protected int setLayoutId() {
@@ -95,7 +96,11 @@ public class NewsFragment extends BaseTwoFragment<NewsView, NewsPresent<NewsView
         Propertie propertie = (Propertie) arguments.getSerializable(Systems.propertie);
         if (propertie!=null) {
             for (ProjectClassifyData data : mData) {
-                NewsListFragment projectListFragment = NewsListFragment.getInstance(data.getType(), propertie.getShare_price(),propertie.getShare_host());
+                if (data.getType().equals("推荐")) {
+                    projectListFragment = NewsListFragment.getInstance("其他", propertie.getShare_price(),propertie.getShare_host());
+                }else{
+                    projectListFragment = NewsListFragment.getInstance(data.getType(), propertie.getShare_price(),propertie.getShare_host());
+                }
                 mFragments.add(projectListFragment);
                 channelIds.add(data.getId());
             }

@@ -4,6 +4,7 @@ package com.dfwr.zhuanke.zhuanke.api;
 import com.dfwr.zhuanke.zhuanke.api.response.ApiResponse;
 import com.dfwr.zhuanke.zhuanke.api.response.BaseResponse;
 import com.dfwr.zhuanke.zhuanke.bean.Article;
+import com.dfwr.zhuanke.zhuanke.bean.BannerBean;
 import com.dfwr.zhuanke.zhuanke.bean.CheckWithDrawBean;
 import com.dfwr.zhuanke.zhuanke.bean.MyProfit;
 import com.dfwr.zhuanke.zhuanke.bean.ProjectClassifyData;
@@ -165,5 +166,11 @@ public interface ApiService {
     // TODO: 2018/7/26 获取收徒链接
     @GET("/download/get_student_share_url")
     Observable<ApiResponse<String>> get_student_share_url(@QueryMap HashMap<String, Object> map);
+
+
+    //获取公告
+    @GET("/properties/home_img_url")
+    Observable<ApiResponse<BannerBean>> get_home_img_url(@QueryMap HashMap<String, Object> map);
+
 
 }

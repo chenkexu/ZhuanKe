@@ -16,18 +16,21 @@ import com.dfwr.zhuanke.zhuanke.R;
 
 public class AdvertisementDialog extends Dialog implements View.OnClickListener {
     private  Context context;
-    private  String imageUrl = "https://raw.githubusercontent.com/yipianfengye/android-adDialog/master/images/testImage2.png";
-    public AdvertisementDialog(Context context) {
+    private  String imageUrl = "";
+
+
+    public AdvertisementDialog(Context context,String imageUrl) {
         super(context, R.style.RemindDialog);
         this.context = context;
+        this.imageUrl = imageUrl;
         setContentView(R.layout.view_dialog_advertisement);
-
         //设置点击布局外则Dialog消失
         setCanceledOnTouchOutside(true);
     }
 
     public void showDialog() {
         ImageView imageView = findViewById(R.id.iv_advertisement);
+        ImageView iv_close = findViewById(R.id.iv_close);
         Glide.with(context)
                 .load(imageUrl)
                 .crossFade()
@@ -47,9 +50,10 @@ public class AdvertisementDialog extends Dialog implements View.OnClickListener 
         lp.width = (int) (d.widthPixels * 0.8); // 高度设置为屏幕的0.8
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
         dialogWindow.setAttributes(lp);
+        iv_close.setVisibility(View.VISIBLE);
         show();
         findViewById(R.id.iv_advertisement).setOnClickListener(this);
-        findViewById(R.id.iv_close).setOnClickListener(this);
+        iv_close.setOnClickListener(this);
     }
 
 

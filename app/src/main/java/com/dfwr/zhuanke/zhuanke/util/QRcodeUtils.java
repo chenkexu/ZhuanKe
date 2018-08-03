@@ -23,7 +23,8 @@ public class QRcodeUtils {
 
 	public static Bitmap Create2DCode(String str) throws WriterException {
 		Logger.d("二维码链接是:" + str);
-		BitMatrix matrix = new MultiFormatWriter().encode(str, BarcodeFormat.QR_CODE, 650, 650);
+
+		BitMatrix matrix = new MultiFormatWriter().encode(str, BarcodeFormat.QR_CODE, UIUtils.dip2px(250), UIUtils.dip2px(250));
 		int width = matrix.getWidth();
 		int height = matrix.getHeight();
 		int[] pixels = new int[(width * height)];
@@ -38,11 +39,16 @@ public class QRcodeUtils {
 		bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
 		return bitmap;
 	}
+
+
+
+
+
 
 
 	public static Bitmap Create2DCodeMin(String str) throws WriterException {
 		Logger.d("二维码链接是:" + str);
-		BitMatrix matrix = new MultiFormatWriter().encode(str, BarcodeFormat.QR_CODE, 650, 650);
+		BitMatrix matrix = new MultiFormatWriter().encode(str, BarcodeFormat.QR_CODE, UIUtils.dip2px(250), UIUtils.dip2px(250));
 		int width = matrix.getWidth();
 		int height = matrix.getHeight();
 		int[] pixels = new int[(width * height)];
@@ -57,6 +63,7 @@ public class QRcodeUtils {
 		bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
 		return bitmap;
 	}
+
 
 
 

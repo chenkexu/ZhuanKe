@@ -113,8 +113,10 @@ public class LoginActivity extends BaseActivity {
                 Logger.d("channel = " + channel);
                 if (channel == null) {
                     channel = "";
+                    map.put("teacherName", channel);
+                }else{
+                    map.put("teacherName", "lexiangzhuan_"+channel);
                 }
-                map.put("teacherName", "lexiangzhuan_"+channel);
 
                 ApiManager.getInstence().getApiService().login(ParamsUtil.getParams(map))
                         .compose(RxUtil.<ApiResponse<UserBean>>rxSchedulerHelper())

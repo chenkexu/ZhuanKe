@@ -59,9 +59,7 @@ public class MyCodeActivity extends BaseActivity {
             tvName.setText(userBean.getUser().getWxName());
             GlideUtil.getInstance().loadHeadImage(this, ivHead, userBean.getUser().getImgId(), true);
         }
-
         String studentLink = SharedPreferencesUtil.getStringData(this, SharedPreferencesUtil.student_link);
-
         if (studentLink == null) {
             ToastUtils.showShort("收徒链接不存在");
         }else{
@@ -71,8 +69,6 @@ public class MyCodeActivity extends BaseActivity {
             } catch (WriterException e) {
                 e.printStackTrace();
             }
-
-
             Intent intent = getIntent();
             Propertie propertie = (Propertie) intent.getSerializableExtra(Systems.propertie);
 

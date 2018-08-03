@@ -224,8 +224,6 @@ public class GoWithDrawActivity extends BaseActivity<MeWithDrawView,MeWithDrawPr
                     }
                 }
             }
-
-
         }
     }
 

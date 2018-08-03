@@ -72,11 +72,13 @@ public class MasterFragment extends BaseTwoFragment<IHomeView,HomePresent<IHomeV
     private ShareDialog shareDialog;
 
 
+
+
+
     @Override
     protected int setLayoutId() {
         return R.layout.fragment_master;
     }
-
 
 
     @Override

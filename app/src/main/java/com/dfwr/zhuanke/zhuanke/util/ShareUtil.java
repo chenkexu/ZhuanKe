@@ -3,13 +3,14 @@ package com.dfwr.zhuanke.zhuanke.util;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Bitmap.CompressFormat;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v4.content.FileProvider;
+import android.util.Log;
+import android.view.View;
 
 import com.dfwr.zhuanke.zhuanke.R;
 import com.dfwr.zhuanke.zhuanke.wechatshare.AppConfig;
@@ -17,6 +18,7 @@ import com.google.zxing.WriterException;
 import com.mob.tools.utils.BitmapHelper;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -36,6 +38,7 @@ public class ShareUtil {
 
 
 
+
     public void shareToWeixinFriend(String code, int type) {
         Intent send = new Intent();
         send.setAction("android.intent.action.SEND");
@@ -50,8 +53,40 @@ public class ShareUtil {
     }
 
 
+    public void shareToWeixinFriend(Bitmap bitmap, int type) {
+        Intent send = new Intent();
+        send.setAction("android.intent.action.SEND");
+        if (type == 1) {
+            send.putExtra("android.intent.extra.STREAM", savaBitmapUri(bitmap));
+        } else {
+            send.putExtra("android.intent.extra.STREAM", savaBitmapUri(bitmap));
+        }
+        send.setType("image/*");
+        send.setClassName("com.tencent.mm", "com.tencent.mm.ui.tools.ShareImgUI");
+        this.context.startActivity(send);
+    }
 
-    public void shareToCircleOfFriends(String str, String code, int type) {
+
+
+
+    public Uri savaBitmapUri(Bitmap bitmap){
+        Uri imageUri;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            imageUri = FileProvider.getUriForFile(context, "com.dfwr.zhuanke.zhuanke.fileProvider",
+                    new File(this.share_img_path));
+        } else {
+            imageUri = Uri.fromFile(new File(this.share_img_path));
+        }
+        saveBitmap(bitmap, this.share_img_path);
+
+        return imageUri;
+    }
+
+
+
+
+
+    public void  shareToCircleOfFriends(String str, String code, int type) {
         Intent send = new Intent();
         send.setAction("android.intent.action.SEND");
         send.putExtra("Kdescription", str);
@@ -64,6 +99,26 @@ public class ShareUtil {
         send.setClassName("com.tencent.mm", "com.tencent.mm.ui.tools.ShareToTimeLineUI");
         this.context.startActivity(send);
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -83,7 +138,7 @@ public class ShareUtil {
             Bitmap bmp = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Config.ARGB_4444);
             Canvas canvas = new Canvas(bmp);
             canvas.drawBitmap(bitmap, 0.0f, 0.0f, null);
-            canvas.drawBitmap(codeBitmap, (float) ((bitmap.getWidth() - codeBitmap.getWidth()) / 2), 850.0f, null);
+            canvas.drawBitmap(codeBitmap, (float) ((bitmap.getWidth() - codeBitmap.getWidth()) / 2), (float) ((bitmap.getHeight() - codeBitmap.getHeight()) / 2) + (codeBitmap.getHeight() / 2) , null);
 //            canvas.save(31);
             // TODO: 2018/7/30
             canvas.save(Canvas.ALL_SAVE_FLAG);
@@ -94,6 +149,21 @@ public class ShareUtil {
         }
         return imageUri;
     }
+
+
+    public  Bitmap convertViewToBitmap(View view) {
+
+        view.destroyDrawingCache();
+        view.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+//        view.setBackgroundColor(Color.WHITE);
+        view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
+        view.setDrawingCacheEnabled(true);
+        return view.getDrawingCache(true);
+    }
+
+
+
 
 
 
@@ -107,7 +177,7 @@ public class ShareUtil {
             Bitmap bmp = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Config.ARGB_4444);
             Canvas canvas = new Canvas(bmp);
             canvas.drawBitmap(bitmap, 0.0f, 0.0f, null);
-            canvas.drawBitmap(codeBitmap, (float) ((bitmap.getWidth() - codeBitmap.getWidth()) / 2), 850.0f, null);
+            canvas.drawBitmap(codeBitmap, (float) ((bitmap.getWidth() - codeBitmap.getWidth()) / 2), (float) ((bitmap.getHeight() - codeBitmap.getHeight()) / 2), null);
             canvas.save(Canvas.ALL_SAVE_FLAG);
             canvas.restore();
         } catch (WriterException e) {
@@ -115,6 +185,10 @@ public class ShareUtil {
         }
         return codeBitmap;
     }
+
+
+
+
 
 
     public Uri drawBitmap(String url) {
@@ -144,7 +218,37 @@ public class ShareUtil {
 
 
 
-    private void saveBitmap(Bitmap bitmap, String path) throws IOException {
+
+
+
+
+    private static String saveBitmap(Bitmap bm, String path) {
+        try {
+            File f = new File(path);
+            Log.i("999", "---->path=" + path);
+            if (!f.exists()) {
+                f.getParentFile().mkdirs();
+                f.createNewFile();
+            }
+
+            FileOutputStream out = new FileOutputStream(f);
+            bm.compress(Bitmap.CompressFormat.PNG, 90, out);
+            out.flush();
+            out.close();
+            Log.i("999", "保存成功：path=" + path);
+            return f.getAbsolutePath();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+
+
+
+   /* private void saveBitmap(Bitmap bitmap, String path) throws IOException {
         File file = new File(path);
         if (file.exists()) {
             file.delete();
@@ -158,5 +262,5 @@ public class ShareUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    }*/
 }

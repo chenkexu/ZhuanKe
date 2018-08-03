@@ -106,6 +106,29 @@ public class CommonWebView extends BaseActivity {
             }
         });
 
+      /*   final String headImg = article.getHeadImg();
+         new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    httpBitmap = UIUtils.getHttpBitmap(headImg);
+                } catch (Throwable throwable) {
+                    throwable.printStackTrace();
+                }
+            }
+        }).start();*/
+
+        articleLink = share_host + HttpContants.share;
+        UserBean userBean = UserDataManeger.getInstance().getUserBean();
+        if (userBean!=null) {
+            articleLink = articleLink + "UID=" + userBean.getUser().getUid() + "&AID=" + article.getAid();
+        }
+    }
+
+
+
+    @OnClick({R.id.ivWechat, R.id.ivWechatFriend})
+    public void onViewClicked(View view) {
         final String headImg = article.getHeadImg();
         new Thread(new Runnable() {
             @Override
@@ -117,18 +140,6 @@ public class CommonWebView extends BaseActivity {
                 }
             }
         }).start();
-
-        articleLink = share_host + HttpContants.share;
-        UserBean userBean = UserDataManeger.getInstance().getUserBean();
-        if (userBean!=null) {
-            articleLink = articleLink + "UID=" + userBean.getUser().getUid() + "&AID=" + article.getAid();
-        }
-
-    }
-
-
-    @OnClick({R.id.ivWechat, R.id.ivWechatFriend})
-    public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ivWechat:
                 share(article.getTitle(),article.getTitle(),SendMessageToWX.Req.WXSceneSession,httpBitmap,articleLink);
@@ -146,13 +157,12 @@ public class CommonWebView extends BaseActivity {
 
     //分享
     private void share(String title,String content,int type,Bitmap bitmap,String clickUrl) {
-        Logger.d("clickUrl:"+clickUrl);
+        Logger.d("clickUrl:" +clickUrl+title + content +bitmap + clickUrl);
         int wxSceneSession = SendMessageToWX.Req.WXSceneSession; //聊天界面
         int wxSceneTimeline = SendMessageToWX.Req.WXSceneTimeline;//朋友圈
         ShareUtils.shareWXReady(new WeakReference(this), title, content, clickUrl, type, bitmap, new GetResultListener() {
             @Override
             public void onError() {
-
             }
 
             @Override
@@ -167,11 +177,11 @@ public class CommonWebView extends BaseActivity {
         public class WebChromeClient extends android.webkit.WebChromeClient {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
-                if (newProgress == 100) {
-                    hideDefaultLoading();
-                } else {
-                    showDefaultLoading();
-                }
+//                if (newProgress == 100) {
+//                    hideDefaultLoading();
+//                } else {
+//                    showDefaultLoading();
+//                }
                 super.onProgressChanged(view, newProgress);
             }
 

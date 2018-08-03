@@ -106,7 +106,7 @@ public class MeFragment extends BaseTwoFragment<HomeMeView,HomeMePresent<HomeMeV
         EventBus.getDefault().post(userBaseInfo);
         tvAccount.setText("余额（元）："+userBaseInfo.getAccount().getBalance());
         tvAllPupil.setText("总收徒（人）："+userBaseInfo.getStudentNum());
-        tvTodayProfit.setText(userBaseInfo.getAccount().getTodayMoney()+"");
+        tvTodayProfit.setText(userBaseInfo.getTodayProfit()+"");
         tvArticalMoney.setText(userBaseInfo.getAccount().getArticleMoney()+"");
         tvTodayPupil.setText(userBaseInfo.getTodayStudentNum()+"");
         SharedPreferencesUtil.putStringData(getActivity(), SharedPreferencesTool.balance,userBaseInfo.getAccount().getBalance()+"");

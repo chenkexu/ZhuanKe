@@ -28,7 +28,6 @@
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <!-- 友盟分享 -->
-    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
@@ -43,7 +42,6 @@
 
 
     <application
-
         android:name=".application.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/icon_logo"
@@ -72,10 +70,7 @@
         <activity android:name=".mvp.view.activity.AttentionWechatNumberActivity"/>
         <activity android:name=".mvp.view.activity.MyCodeActivity"/>
         <activity android:name=".mvp.view.MyWebView"/>
-        <activity
-            android:name="com.tencent.bugly.beta.ui.BetaActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize|locale"
-            android:theme="@android:style/Theme.Translucent" />
+
         <!-- 适配7.0 -->
         <provider
             android:name="android.support.v4.content.FileProvider"

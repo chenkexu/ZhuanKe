@@ -9,7 +9,7 @@ public class HttpContants {
 //    public static final String HOST_URL = "http://www.wanandroid.com/";
 
     //海涛的地址
-    public static final String HOST_URL = "http://192.168.3.50:8080/";
+    public static final String HOST_URL = "http://lxz.qisu100.com:18000/";
 
 
     //文涛的地址
@@ -26,5 +26,10 @@ public class HttpContants {
 
     //攻略地址
     public static final String gonglue = HOST_URL + "gl.html";
+
+
+    //版本更新的地址
+    public static final String get_version  = HOST_URL + "properties/get_version ";
+
 
 }

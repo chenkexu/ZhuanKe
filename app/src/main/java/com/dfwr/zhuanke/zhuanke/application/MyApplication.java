@@ -5,7 +5,6 @@ import android.content.Context;
 
 import com.blankj.utilcode.util.Utils;
 import com.dfwr.zhuanke.zhuanke.bean.UserBean;
-import com.dfwr.zhuanke.zhuanke.util.BuglyUtil;
 import com.dfwr.zhuanke.zhuanke.util.SharedPreferencesTool;
 import com.dfwr.zhuanke.zhuanke.util.SharedPreferencesUtil;
 import com.dfwr.zhuanke.zhuanke.widget.Systems;
@@ -47,7 +46,6 @@ public class MyApplication extends Application {
         //工具类库
         Utils.init(this);
         SharedPreferencesTool.getInstance().init(this);
-        BuglyUtil.init(this);
         FormatStrategy formatStrategy = PrettyFormatStrategy.newBuilder()
                 .showThreadInfo(false)  // (Optional) Whether to show thread info or not. Default true
                 .methodCount(0)         // (Optional) How many method line to show. Default 2

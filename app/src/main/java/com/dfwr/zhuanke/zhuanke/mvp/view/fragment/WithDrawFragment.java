@@ -142,7 +142,6 @@ public class WithDrawFragment extends BaseTwoFragment<HomeWithDrawView, HomeWith
     @Override
     public void getUserInfo(UserBaseInfo userBaseInfo) {
         tvBalance.setText(userBaseInfo.getAccount().getBalance() + "");
-        tvAllWithDraw.setText(userBaseInfo.getUser().getBalance() + "");
         tvAllWithDraw.setText(userBaseInfo.getAllWithDrawMoney() + "");
         SharedPreferencesUtil.putStringData(getActivity(), SharedPreferencesTool.balance, userBaseInfo.getAccount().getBalance() + "");
     }

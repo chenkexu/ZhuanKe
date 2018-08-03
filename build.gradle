@@ -11,6 +11,8 @@ buildscript {
         // 注册MobSDK
         classpath 'com.mob.sdk:MobSDK:+'
         classpath 'com.meituan.android.walle:plugin:1.1.6'
+        //添加下面这行代码就OK了
+        classpath 'com.novoda:bintray-release:0.3.4'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }

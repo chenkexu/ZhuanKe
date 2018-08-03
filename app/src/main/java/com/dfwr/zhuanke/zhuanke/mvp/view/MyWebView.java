@@ -103,11 +103,11 @@ public class MyWebView extends BaseActivity {
     public class WebChromeClient extends android.webkit.WebChromeClient {
         @Override
         public void onProgressChanged(WebView view, int newProgress) {
-            if (newProgress == 100) {
-                hideDefaultLoading();
-            } else {
-                showDefaultLoading();
-            }
+//            if (newProgress == 100) {
+//                hideDefaultLoading();
+//            } else {
+//                showDefaultLoading();
+//            }
             super.onProgressChanged(view, newProgress);
         }
 

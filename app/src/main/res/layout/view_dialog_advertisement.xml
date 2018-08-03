@@ -13,6 +13,7 @@
         android:src="@mipmap/ad" />
 
     <ImageView
+        android:visibility="invisible"
         android:padding="10dp"
         android:layout_marginTop="20dp"
         android:id="@+id/iv_close"
