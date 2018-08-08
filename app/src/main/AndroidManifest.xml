@@ -49,27 +49,34 @@
         android:roundIcon="@mipmap/icon_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
-
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".mvp.view.activity.GuideActivity">
+
+        <activity android:name=".mvp.view.activity.GuideActivity"  android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".mvp.view.activity.LoginActivity"/>
-        <activity android:name=".mvp.view.CommonWebView"/>
-        <activity android:name=".mvp.view.activity.BusinessHezuoActivity"/>
-        <activity android:name=".mvp.view.activity.GoWithDrawActivity"/>
-        <activity android:name=".mvp.view.activity.BindAlipayActivity"/>
-        <activity android:name=".mvp.view.activity.BindPhoneActivity"/>
-        <activity android:name=".mvp.view.activity.PhoneWithDrawActivity"/>
-        <activity android:name=".mvp.view.activity.RankActivity"/>
-        <activity android:name=".mvp.view.activity.AttentionWechatNumberActivity"/>
-        <activity android:name=".mvp.view.activity.MyCodeActivity"/>
-        <activity android:name=".mvp.view.MyWebView"/>
+
+
+        <activity android:name=".mvp.view.activity.LoginActivity"  android:screenOrientation="portrait"/>
+        <activity android:name=".mvp.view.CommonWebView"  android:screenOrientation="portrait"/>
+        <activity android:name=".mvp.view.activity.BusinessHezuoActivity"  android:screenOrientation="portrait"/>
+        <activity android:name=".mvp.view.activity.GoWithDrawActivity"  android:screenOrientation="portrait"/>
+        <activity android:name=".mvp.view.activity.BindAlipayActivity"  android:screenOrientation="portrait"/>
+        <activity android:name=".mvp.view.activity.BindPhoneActivity"  android:screenOrientation="portrait"/>
+        <activity android:name=".mvp.view.activity.PhoneWithDrawActivity"  android:screenOrientation="portrait"/>
+        <activity android:name=".mvp.view.activity.RankActivity"  android:screenOrientation="portrait"/>
+        <activity android:name=".mvp.view.activity.AttentionWechatNumberActivity"  android:screenOrientation="portrait"/>
+        <activity android:name=".mvp.view.activity.MyCodeActivity"  android:screenOrientation="portrait"/>
+        <activity android:name=".mvp.view.MyWebView"  android:screenOrientation="portrait"/>
+        <activity android:name=".mvp.view.activity.MyStudentListActivity"  android:screenOrientation="portrait"/>
+        <activity android:name=".mvp.view.activity.BlackNameActivity"  android:screenOrientation="portrait"/>
+
+
 
         <!-- 适配7.0 -->
         <provider

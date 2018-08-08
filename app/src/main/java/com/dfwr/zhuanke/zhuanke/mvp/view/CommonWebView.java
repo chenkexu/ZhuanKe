@@ -2,13 +2,13 @@ package com.dfwr.zhuanke.zhuanke.mvp.view;
 
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 
 import com.dfwr.zhuanke.zhuanke.R;
 import com.dfwr.zhuanke.zhuanke.api.HttpContants;
@@ -21,6 +21,7 @@ import com.dfwr.zhuanke.zhuanke.util.UserDataManeger;
 import com.dfwr.zhuanke.zhuanke.wechatshare.GetResultListener;
 import com.dfwr.zhuanke.zhuanke.wechatshare.ShareUtils;
 import com.dfwr.zhuanke.zhuanke.widget.MyTitle;
+import com.dfwr.zhuanke.zhuanke.widget.ProgressWebView;
 import com.dfwr.zhuanke.zhuanke.widget.Systems;
 import com.orhanobut.logger.Logger;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
@@ -42,12 +43,13 @@ public class CommonWebView extends BaseActivity {
     MyTitle myTitle;
 
 
-    private WebView webView;
+    private ProgressWebView webView;
     private String share_host;
     private String url = "";
     private Article article;
     private Bitmap httpBitmap;
     private String articleLink;
+    private String headImg;
 
 
     @Override
@@ -66,8 +68,8 @@ public class CommonWebView extends BaseActivity {
 
 
     private void initView() {
-        webView = (WebView) findViewById(R.id.webView);
-        webView.getSettings().setDefaultTextEncodingName("utf-8");
+        webView = (ProgressWebView) findViewById(R.id.webView);
+/*        webView.getSettings().setDefaultTextEncodingName("utf-8");
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setAllowFileAccess(true);
         webView.getSettings().setAllowFileAccessFromFileURLs(true);
@@ -84,27 +86,14 @@ public class CommonWebView extends BaseActivity {
         // 设置允许JS弹窗
         webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
         WebSettings webSettings = webView.getSettings();
-        webSettings.setBuiltInZoomControls(false);
+        webSettings.setBuiltInZoomControls(false);*/
+
         webView.loadUrl(HttpContants.article_details + article.getAid());
 
 
 
-        webView.setWebViewClient(new WebViewClient() {
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                return true;
-            }
 
-            @Override
-            public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                super.onPageStarted(view, url, favicon);
-            }
 
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                super.onPageFinished(view, url);
-            }
-        });
 
       /*   final String headImg = article.getHeadImg();
          new Thread(new Runnable() {
@@ -118,34 +107,75 @@ public class CommonWebView extends BaseActivity {
             }
         }).start();*/
 
+
         articleLink = share_host + HttpContants.share;
         UserBean userBean = UserDataManeger.getInstance().getUserBean();
         if (userBean!=null) {
             articleLink = articleLink + "UID=" + userBean.getUser().getUid() + "&AID=" + article.getAid();
         }
+        headImg = article.getHeadImg();
     }
 
 
 
     @OnClick({R.id.ivWechat, R.id.ivWechatFriend})
     public void onViewClicked(View view) {
-        final String headImg = article.getHeadImg();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    httpBitmap = UIUtils.getHttpBitmap(headImg);
-                } catch (Throwable throwable) {
-                    throwable.printStackTrace();
-                }
-            }
-        }).start();
         switch (view.getId()) {
             case R.id.ivWechat:
-                share(article.getTitle(),article.getTitle(),SendMessageToWX.Req.WXSceneSession,httpBitmap,articleLink);
+//
+//                new Thread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        try{
+//                            httpBitmap = Glide.with(CommonWebView.this)
+//                                    .load(headImg)
+//                                    .asBitmap() //必须
+//                                    .centerCrop()
+//                                    .into(300, 300)
+//                                    .get();
+//                        }catch (Exception e){
+//                            Logger.d("图片解析异常: "+e.getMessage());
+//                            Resources res = getResources();
+//                            httpBitmap = BitmapFactory.decodeResource(res, R.mipmap.ic_launcher);
+//                        }
+//                    }
+//                }).start();
+//
+//                share(article.getTitle(),article.getTitle(),SendMessageToWX.Req.WXSceneSession,httpBitmap,articleLink);
+
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            httpBitmap = UIUtils.netPicToBmp(headImg);
+                            if (httpBitmap == null) {
+                                Resources res = getResources();
+                                httpBitmap = BitmapFactory.decodeResource(res, R.mipmap.ic_launcher);
+                            }
+                            share(article.getTitle(),article.getTitle(),SendMessageToWX.Req.WXSceneSession,httpBitmap,articleLink);
+                        } catch (Throwable throwable) {
+                            throwable.printStackTrace();
+                        }
+                    }
+                }).start();
                 break;
             case R.id.ivWechatFriend:
-                share(article.getTitle(),article.getTitle(),SendMessageToWX.Req.WXSceneTimeline,httpBitmap,articleLink);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            httpBitmap = UIUtils.netPicToBmp(headImg);
+                            if (httpBitmap == null) {
+                                Resources res = getResources();
+                                httpBitmap = BitmapFactory.decodeResource(res, R.mipmap.ic_launcher);
+                            }
+                            share(article.getTitle(),article.getTitle(),SendMessageToWX.Req.WXSceneTimeline,httpBitmap,articleLink);
+                        } catch (Throwable throwable) {
+                            throwable.printStackTrace();
+                        }
+                    }
+                }).start();
                 break;
         }
     }
@@ -157,17 +187,18 @@ public class CommonWebView extends BaseActivity {
 
     //分享
     private void share(String title,String content,int type,Bitmap bitmap,String clickUrl) {
-        Logger.d("clickUrl:" +clickUrl+title + content +bitmap + clickUrl);
+        Logger.d("clickUrl:" +clickUrl+title + content + "bitmap: "+bitmap);
         int wxSceneSession = SendMessageToWX.Req.WXSceneSession; //聊天界面
         int wxSceneTimeline = SendMessageToWX.Req.WXSceneTimeline;//朋友圈
         ShareUtils.shareWXReady(new WeakReference(this), title, content, clickUrl, type, bitmap, new GetResultListener() {
             @Override
             public void onError() {
+                Logger.d("分享失败");
             }
 
             @Override
             public void onSuccess(Object object) {
-
+                Logger.d("分享成功");
             }
         });
     }

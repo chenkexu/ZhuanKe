@@ -29,7 +29,7 @@ public class ProfitAdapter extends BaseQuickAdapter<MyProfit, BaseViewHolder> {
     protected void convert(BaseViewHolder helper, MyProfit item) {
         switch (type) {
             case 1: //文章收益
-                helper.setText(R.id.tv_name, helper.getLayoutPosition()+1+"");
+                helper.setText(R.id.tv_name, helper.getLayoutPosition()+1+"."+item.getArticle().getTitle());
                 break;
             case 2: //收徒收益
                 helper.setText(R.id.tv_name, helper.getLayoutPosition()+1+"."+item.getUser().getWxName());
@@ -38,7 +38,6 @@ public class ProfitAdapter extends BaseQuickAdapter<MyProfit, BaseViewHolder> {
                 helper.setText(R.id.tv_name, helper.getLayoutPosition()+1+"."+item.getUser().getWxName());
                 break;
         }
-
         String date = DateTool.stampToDate(item.getCreateDate());
         helper.setText(R.id.tv_date,date+"");
         helper.setText(R.id.tv_money, "+"+item.getMoney()+"元");

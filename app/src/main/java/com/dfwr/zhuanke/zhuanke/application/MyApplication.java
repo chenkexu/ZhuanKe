@@ -12,7 +12,6 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheEntity;
 import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.interceptor.HttpLoggingInterceptor;
-import com.meituan.android.walle.WalleChannelReader;
 import com.mob.MobSDK;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.FormatStrategy;
@@ -38,8 +37,6 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        String channel = WalleChannelReader.getChannel(this.getApplicationContext());
-        Logger.d("channel = " + channel);
         initOkGo();
         MobSDK.init(this,"1ea90b79ee1c3","3ad9421238237570c51625a436d4b85e");
         applicationContext = MyApplication.this.getApplicationContext();

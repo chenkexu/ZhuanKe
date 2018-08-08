@@ -52,6 +52,7 @@ public class BindAlipayActivity extends BaseActivity {
     private Intent intent;
 
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -131,18 +132,6 @@ public class BindAlipayActivity extends BaseActivity {
                 break;
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

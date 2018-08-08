@@ -107,7 +107,6 @@ public class NewsListFragment extends BaseLazyFragment<NewsListView, NewsListPre
     }
 
 
-
     //下拉刷新
     @Override
     public void onRefresh() {
@@ -115,9 +114,6 @@ public class NewsListFragment extends BaseLazyFragment<NewsListView, NewsListPre
         newsAdapter.setEnableLoadMore(false);//这里的作用是防止下拉刷新的时候还可以上拉加载
         mPresent.getProjectListData(type,currentPage, PAGE_SIZE);
     }
-
-
-
 
 
     //加载更多

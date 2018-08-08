@@ -8,6 +8,7 @@ import android.content.Intent;
 import com.blankj.utilcode.util.ToastUtils;
 import com.dfwr.zhuanke.zhuanke.api.response.ApiResponse;
 import com.dfwr.zhuanke.zhuanke.application.MyApplication;
+import com.dfwr.zhuanke.zhuanke.mvp.view.activity.BlackNameActivity;
 import com.dfwr.zhuanke.zhuanke.mvp.view.activity.LoginActivity;
 import com.orhanobut.logger.Logger;
 
@@ -79,17 +80,47 @@ public  abstract class BaseObserver<T> implements Observer<ApiResponse<T>> {
 
     // 返回成功了,但是code错误
     protected void onCodeError(ApiResponse<T> t){
-     //   onFailure("msgText="+t.getMsgText(),false);
         if (t.getCode() == -100) {
             startError(101, t.getMessage());
-        }else{
+        }else if(t.getCode() == 110){
+            onFailure("账户异常!!!",false);
+            showErrorDialog();
+        } else{
             ToastUtils.showShort(t.getMessage());
             onFailure(t.getMessage()+"",false);
         }
         onFailure(t.getMessage()+"",false);
     }
 
-   //返回成功
+
+
+    /**
+     * 跳转登录页面
+     */
+    private void showErrorDialog() {
+        Intent intent = new Intent(MyApplication.getContext(), BlackNameActivity.class);
+        ActivityManager manager = (ActivityManager) MyApplication.getContext().getSystemService(Context.ACTIVITY_SERVICE);
+        ActivityManager.RunningTaskInfo info = manager.getRunningTasks(1).get(0);
+        String shortClassName = info.topActivity.getShortClassName(); //类名
+        if (!".ui.login.LoginActivity".equals(shortClassName)) {
+            intent.setClass(MyApplication.getContext(), BlackNameActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            MyApplication.getContext().startActivity(intent);
+        }
+    }
+
+//    //展示错误弹窗
+//    private  void showErrorDialog(){
+//        AlertDialog.Builder builder = new AlertDialog.Builder(MyApplication.getContext());
+//        builder.setMessage("您的账号被封！！，请联系客服！");
+//        AlertDialog alertDialog = builder.create();
+//        alertDialog.setCancelable(false);
+//        alertDialog.show();
+//
+//    }
+
+
+    //返回成功
     protected abstract void onSuccees(ApiResponse<T> t);
 
     //返回失败

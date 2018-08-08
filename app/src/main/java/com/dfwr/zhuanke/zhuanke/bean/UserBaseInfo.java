@@ -11,60 +11,48 @@ public class UserBaseInfo implements Serializable {
 
 
         /**
-         * todayProfit : 0.0
-         * todayStudentPofit : 0.0
-         * allWithDrawMoney : 120.0
+         * todayProfit : 0.42
+         * todayStudentPofit : 2.8
+         * allWithDrawMoney : 0
          * todayStudentNum : 0
-         * studentPofit : 0.0
-         * user : {"createDate":1533202583394,"imgId":"http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLMR8PF1W7ITA88viaxicgjRFTicy5jEAdhpSYIZgd5NI9ibboetJfnl9aKibYvfM7zqopBa53FoJMFLWg/132","num":0,"phone":"18401512374","sex":"m","status":0,"uid":22,"unionid":"ospLiwjbEZe50hjJE5RS0TBz4wnw","userBalance":0,"wxId":"oGDHv08Ey3edzVpCB2sAAioxmqFQ","wxName":"垚垚旭"}
-         * studentNum : 1
-         * account : {"articleMoney":0,"balance":9640,"frozenAmount":138,"id":12,"shareMoney":0,"todayMoney":0,"uid":22}
+         * articleMoney : 0.84
+         * studentPofit : 1.95
+         * user : {"createDate":1533545880748,"imgId":"http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLMR8PF1W7ITA88viaxicgjRFTicy5jEAdhpSYIZgd5NI9ibboetJfnl9aKibYvfM7zqopBa53FoJMFLWg/132","num":0,"phone":"18401512374","sex":"m","status":0,"uid":1,"unionid":"ospLiwjbEZe50hjJE5RS0TBz4wnw","userBalance":0,"wxId":"oGDHv08Ey3edzVpCB2sAAioxmqFQ","wxName":"垚垚旭"}
+         * studentNum : 3
+         * account : {"articleMoney":0,"balance":2.84,"frozenAmount":0,"id":1,"shareMoney":0,"todayMoney":0,"uid":1}
          */
 
-
-        private double todayProfit;        //今日收益
-        private double allWithDrawMoney;     //累计提现
-
-
-        private double todayStudentPofit;    //今日徒弟提成
-        private double studentPofit;  //累计徒弟提成
-
-
-
-        private int todayStudentNum;   //今日收徒数量
-        private int studentNum;     //累计收徒数量
-
-
-
-
-
-
+        private String todayProfit;
+        private String todayStudentPofit;
+        private String allWithDrawMoney;
+        private int todayStudentNum;
+        private String articleMoney;
+        private String studentPofit;
         private UserBean user;
+        private int studentNum;
         private AccountBean account;
 
-
-
-        public double getTodayProfit() {
+        public String getTodayProfit() {
             return todayProfit;
         }
 
-        public void setTodayProfit(double todayProfit) {
+        public void setTodayProfit(String todayProfit) {
             this.todayProfit = todayProfit;
         }
 
-        public double getTodayStudentPofit() {
+        public String getTodayStudentPofit() {
             return todayStudentPofit;
         }
 
-        public void setTodayStudentPofit(double todayStudentPofit) {
+        public void setTodayStudentPofit(String todayStudentPofit) {
             this.todayStudentPofit = todayStudentPofit;
         }
 
-        public double getAllWithDrawMoney() {
+        public String getAllWithDrawMoney() {
             return allWithDrawMoney;
         }
 
-        public void setAllWithDrawMoney(double allWithDrawMoney) {
+        public void setAllWithDrawMoney(String allWithDrawMoney) {
             this.allWithDrawMoney = allWithDrawMoney;
         }
 
@@ -76,11 +64,19 @@ public class UserBaseInfo implements Serializable {
             this.todayStudentNum = todayStudentNum;
         }
 
-        public double getStudentPofit() {
+        public String getArticleMoney() {
+            return articleMoney;
+        }
+
+        public void setArticleMoney(String articleMoney) {
+            this.articleMoney = articleMoney;
+        }
+
+        public String getStudentPofit() {
             return studentPofit;
         }
 
-        public void setStudentPofit(double studentPofit) {
+        public void setStudentPofit(String studentPofit) {
             this.studentPofit = studentPofit;
         }
 
@@ -110,13 +106,13 @@ public class UserBaseInfo implements Serializable {
 
         public static class UserBean {
             /**
-             * createDate : 1533202583394
+             * createDate : 1533545880748
              * imgId : http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLMR8PF1W7ITA88viaxicgjRFTicy5jEAdhpSYIZgd5NI9ibboetJfnl9aKibYvfM7zqopBa53FoJMFLWg/132
              * num : 0
              * phone : 18401512374
              * sex : m
              * status : 0
-             * uid : 22
+             * uid : 1
              * unionid : ospLiwjbEZe50hjJE5RS0TBz4wnw
              * userBalance : 0.0
              * wxId : oGDHv08Ey3edzVpCB2sAAioxmqFQ
@@ -224,20 +220,19 @@ public class UserBaseInfo implements Serializable {
             }
         }
 
-
         public static class AccountBean {
             /**
              * articleMoney : 0.0
-             * balance : 9640.0
-             * frozenAmount : 138.0
-             * id : 12
+             * balance : 2.84
+             * frozenAmount : 0.0
+             * id : 1
              * shareMoney : 0.0
              * todayMoney : 0.0
-             * uid : 22
+             * uid : 1
              */
 
             private double articleMoney;
-            private double balance; //余额
+            private double balance;
             private double frozenAmount;
             private int id;
             private double shareMoney;

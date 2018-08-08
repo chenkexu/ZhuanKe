@@ -181,6 +181,9 @@ public class GoWithDrawActivity extends BaseActivity<MeWithDrawView,MeWithDrawPr
     @Override
     public void withdrawSuccess(Object object) {
         ToastUtils.showShort("提交成功");
+        ChooseFragmentEvent chooseFragmentEvent = new ChooseFragmentEvent();
+        chooseFragmentEvent.fragmentStr = "1";
+        EventBus.getDefault().post(chooseFragmentEvent);
         closeActivity(GoWithDrawActivity.class,BindPhoneActivity.class,BindAlipayActivity.class,AttentionWechatNumberActivity.class);
     }
 
@@ -226,25 +229,6 @@ public class GoWithDrawActivity extends BaseActivity<MeWithDrawView,MeWithDrawPr
             }
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

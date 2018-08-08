@@ -32,13 +32,13 @@ public class WithDrawHistoryAdapter extends BaseQuickAdapter<WithDrawHistory, Ba
         int status = item.getStatus();
         switch (status) {
             case 1:
-                helper.setText(R.id.tv_name, helper.getLayoutPosition()+1+".未处理");
+                helper.setText(R.id.tv_name, helper.getLayoutPosition()+1+".已提现");
                 break;
             case 2:
-                helper.setText(R.id.tv_name, helper.getLayoutPosition()+1+".处理中");
+                helper.setText(R.id.tv_name, helper.getLayoutPosition()+1+".已提现");
                 break;
             case 3:
-                helper.setText(R.id.tv_name, helper.getLayoutPosition()+1+".已提现");
+                helper.setText(R.id.tv_name, helper.getLayoutPosition()+1+".已结算");
                 break;
 
         }

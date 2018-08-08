@@ -41,10 +41,13 @@ public class ShareDialog extends Dialog {
     private final HashMap<String, Object> hashMap;
 
 
-    public ShareDialog(Context context,String code) {
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public ShareDialog(Context context) {
         super(context, R.style.RemindDialog);// 必须调用父类的构造函数
         this.context = context;
-        this.code = code;
         hashMap = new HashMap<>();
         shareUtil = new ShareUtil(context);
         View contentView = LayoutInflater.from(context).inflate(R.layout.dialog_share, null);
@@ -93,7 +96,6 @@ public class ShareDialog extends Dialog {
             case R.id.iv_wechat:
                 shareUtil.shareToWeixinFriend(code,1);
                 break;
-
             case R.id.iv_wechat_circle:
                 shareUtil.shareToCircleOfFriends(context.getResources().getString(R.string.app_name),code,1);
                 break;

@@ -45,7 +45,9 @@ public final class Systems {
     public static final String wechat = "wechat";
     public static final String alipay = "alipay";
 
-    public static final String link = "alipay";
+    public static final String link = "link";
+
+    public static final String my_student_type = "my_student_type";
 
 
     /**

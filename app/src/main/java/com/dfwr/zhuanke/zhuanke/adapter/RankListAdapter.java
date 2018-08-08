@@ -61,7 +61,7 @@ public class RankListAdapter extends BaseQuickAdapter<RankBean, BaseViewHolder> 
         }
 
         if (type.equals("收入排行榜")){
-            helper.setText(R.id.tv_money,item.getBalance()+"元");
+            helper.setText(R.id.tv_money,item.getTotalMoney()+"元");
         }else{ //收徒排行榜
             helper.setText(R.id.tv_money,item.getNum()+"个");
         }

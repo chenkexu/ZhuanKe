@@ -91,6 +91,11 @@ public class WithDrawFragment extends BaseTwoFragment<HomeWithDrawView, HomeWith
         setData();
     }
 
+
+
+
+
+
     private void setData() {
         UserBean userBean = (UserBean) SharedPreferencesTool.getObjectFromShare(SharedPreferencesTool.user);
         mPresent.getUserInfo();
@@ -98,21 +103,7 @@ public class WithDrawFragment extends BaseTwoFragment<HomeWithDrawView, HomeWith
     }
 
 
-    @Override
-    protected HomeWithDrawPresent<HomeWithDrawView> createPresent() {
-        return new HomeWithDrawPresent<>(this);
-    }
 
-
-    @Override
-    public void showLoading() {
-        showDefaultLoading();
-    }
-
-    @Override
-    public void hideLoading() {
-        hideDefaultLoading();
-    }
 
 
 
@@ -120,10 +111,10 @@ public class WithDrawFragment extends BaseTwoFragment<HomeWithDrawView, HomeWith
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_withdraw_wechat:
-                mPresent.checkWithDraw();
+                mPresent.checkWithDraw("1");
                 break;
             case R.id.ll_withdraw_alipay:
-                startActivity(new Intent(getActivity(), BindAlipayActivity.class));
+                mPresent.checkWithDraw("2");
                 break;
             case R.id.ll_withdraw_phone:
                 startActivity(new Intent(getActivity(), PhoneWithDrawActivity.class));
@@ -147,7 +138,7 @@ public class WithDrawFragment extends BaseTwoFragment<HomeWithDrawView, HomeWith
     }
 
     @Override
-    public void getCheckWithDrawSuccess(CheckWithDrawBean checkWithDrawBean) {
+    public void getCheckWithDrawWeChatSuccess(CheckWithDrawBean checkWithDrawBean) {
         Intent intent1 = new Intent();
         intent1.putExtra(Systems.withDrawType, Systems.wechat);
         if (checkWithDrawBean.getNum() == 0) { //是否首次提现 0，没有提现记录
@@ -165,6 +156,19 @@ public class WithDrawFragment extends BaseTwoFragment<HomeWithDrawView, HomeWith
             intent1.setClass(getActivity(), GoWithDrawActivity.class);
             startActivity(intent1);
         }
+    }
+
+
+    @Override
+    public void getCheckWithDrawAlipaySuccess(CheckWithDrawBean object) {
+        Intent intent2 = new Intent();
+        intent2.putExtra(Systems.withDrawType, Systems.alipay);
+        if (object.getPhoneIsBinding() == 0) { //没绑定手机号
+            intent2.setClass(getActivity(), BindPhoneActivity.class);
+        }else{
+            intent2.setClass(getActivity(), BindAlipayActivity.class);
+        }
+        startActivity(intent2);
     }
 
 
@@ -231,5 +235,23 @@ public class WithDrawFragment extends BaseTwoFragment<HomeWithDrawView, HomeWith
     @Override
     public void onLoadMoreRequested() {
         mPresent.getWithDrawHistoryLoadMore(currentPage, PAGE_SIZE);
+    }
+
+
+
+    @Override
+    protected HomeWithDrawPresent<HomeWithDrawView> createPresent() {
+        return new HomeWithDrawPresent<>(this);
+    }
+
+
+    @Override
+    public void showLoading() {
+        showDefaultLoading();
+    }
+
+    @Override
+    public void hideLoading() {
+        hideDefaultLoading();
     }
 }

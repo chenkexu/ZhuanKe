@@ -7,10 +7,14 @@
     android:layout_height="match_parent">
 
     <ImageView
+        android:scaleType="centerCrop"
+        android:padding="10dp"
+        android:src="@mipmap/error"
+        android:layout_marginLeft="44dp"
+        android:layout_marginRight="44dp"
         android:id="@+id/iv_advertisement"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@mipmap/ad" />
+        android:layout_height="300dp" />
 
     <ImageView
         android:visibility="invisible"

@@ -25,12 +25,14 @@ import com.dfwr.zhuanke.zhuanke.mvp.event.ChooseFragmentEvent;
 import com.dfwr.zhuanke.zhuanke.mvp.presenter.HomeMePresent;
 import com.dfwr.zhuanke.zhuanke.mvp.view.MyWebView;
 import com.dfwr.zhuanke.zhuanke.mvp.view.activity.BusinessHezuoActivity;
+import com.dfwr.zhuanke.zhuanke.mvp.view.activity.MyStudentListActivity;
 import com.dfwr.zhuanke.zhuanke.mvp.view.activity.RankActivity;
 import com.dfwr.zhuanke.zhuanke.util.ButtonUtils;
 import com.dfwr.zhuanke.zhuanke.util.GlideUtil;
 import com.dfwr.zhuanke.zhuanke.util.SharedPreferencesTool;
 import com.dfwr.zhuanke.zhuanke.util.SharedPreferencesUtil;
 import com.dfwr.zhuanke.zhuanke.util.UserDataManeger;
+import com.dfwr.zhuanke.zhuanke.widget.Systems;
 import com.flyco.tablayout.SlidingTabLayout;
 
 import org.greenrobot.eventbus.EventBus;
@@ -92,12 +94,27 @@ public class MeFragment extends BaseTwoFragment<HomeMeView,HomeMePresent<HomeMeV
             R.mipmap.icon_guide, R.mipmap.icon_hezuo
     };
 
-    private String[] myStr = {"开始赚钱", "排行榜", "攻略",
+    private String[] myStr = {"开始赚钱", "排行榜", "赚钱攻略",
             "商务合作"};
     private String[] mTitles;
 
     public MeFragment() {
     }
+
+
+
+
+    @OnClick({R.id.ll_today_student})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.ll_today_student:
+                Intent intent = new Intent(getActivity(), MyStudentListActivity.class);
+                intent.putExtra(Systems.my_student_type, "today");
+                startActivity(intent);
+                break;
+        }
+    }
+
 
 
 
@@ -107,7 +124,7 @@ public class MeFragment extends BaseTwoFragment<HomeMeView,HomeMePresent<HomeMeV
         tvAccount.setText("余额（元）："+userBaseInfo.getAccount().getBalance());
         tvAllPupil.setText("总收徒（人）："+userBaseInfo.getStudentNum());
         tvTodayProfit.setText(userBaseInfo.getTodayProfit()+"");
-        tvArticalMoney.setText(userBaseInfo.getAccount().getArticleMoney()+"");
+        tvArticalMoney.setText(userBaseInfo.getArticleMoney()+"");
         tvTodayPupil.setText(userBaseInfo.getTodayStudentNum()+"");
         SharedPreferencesUtil.putStringData(getActivity(), SharedPreferencesTool.balance,userBaseInfo.getAccount().getBalance()+"");
     }
@@ -195,6 +212,8 @@ public class MeFragment extends BaseTwoFragment<HomeMeView,HomeMePresent<HomeMeV
         viewPager.setOffscreenPageLimit(0);
         tl5.setViewPager(viewPager);
     }
+
+
 
 
 

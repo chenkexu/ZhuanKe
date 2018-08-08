@@ -9,31 +9,30 @@ public class RankBean implements Serializable{
 
 
 		/**
-		 * balance : 3.0 金额
-		 * num : 0   收徒多少人
-		 * status : 0
-		 * uid : 17
-		 * wxId : 1
-		 * wxName : 22
 		 * imgId : http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLMR8PF1W7ITA88viaxicgjRFTicy5jEAdhpSYIZgd5NI9ibboetJfnl9aKibYvfM7zqopBa53FoJMFLWg/132
-		 * rank : 2
+		 * num : 0
+		 * status : 0
+		 * uid : 1
+		 * userBalance : 0.0
+		 * wxId : oGDHv08Ey3edzVpCB2sAAioxmqFQ
+		 * wxName : 垚垚旭
 		 */
 
-		private double balance;
+		private String imgId;
 		private int num;
 		private int status;
 		private int uid;
+		private double totalMoney;
 		private String wxId;
 		private String wxName;
-		private String imgId;
-		private String rank;
 
-		public double getBalance() {
-			return balance;
+
+		public String getImgId() {
+			return imgId;
 		}
 
-		public void setBalance(double balance) {
-			this.balance = balance;
+		public void setImgId(String imgId) {
+			this.imgId = imgId;
 		}
 
 		public int getNum() {
@@ -60,7 +59,15 @@ public class RankBean implements Serializable{
 			this.uid = uid;
 		}
 
-		public String getWxId() {
+		public double getTotalMoney() {
+			return totalMoney;
+		}
+
+		public void setTotalMoney(double totalMoney) {
+			this.totalMoney = totalMoney;
+		}
+
+	public String getWxId() {
 			return wxId;
 		}
 
@@ -74,21 +81,5 @@ public class RankBean implements Serializable{
 
 		public void setWxName(String wxName) {
 			this.wxName = wxName;
-		}
-
-		public String getImgId() {
-			return imgId;
-		}
-
-		public void setImgId(String imgId) {
-			this.imgId = imgId;
-		}
-
-		public String getRank() {
-			return rank;
-		}
-
-		public void setRank(String rank) {
-			this.rank = rank;
 		}
 	}

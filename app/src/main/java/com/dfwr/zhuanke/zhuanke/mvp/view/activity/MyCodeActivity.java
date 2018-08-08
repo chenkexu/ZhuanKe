@@ -17,7 +17,6 @@ import com.dfwr.zhuanke.zhuanke.bean.Propertie;
 import com.dfwr.zhuanke.zhuanke.bean.UserBean;
 import com.dfwr.zhuanke.zhuanke.util.GlideUtil;
 import com.dfwr.zhuanke.zhuanke.util.QRcodeUtils;
-import com.dfwr.zhuanke.zhuanke.util.SharedPreferencesUtil;
 import com.dfwr.zhuanke.zhuanke.util.UserDataManeger;
 import com.dfwr.zhuanke.zhuanke.widget.Systems;
 import com.google.zxing.WriterException;
@@ -59,7 +58,8 @@ public class MyCodeActivity extends BaseActivity {
             tvName.setText(userBean.getUser().getWxName());
             GlideUtil.getInstance().loadHeadImage(this, ivHead, userBean.getUser().getImgId(), true);
         }
-        String studentLink = SharedPreferencesUtil.getStringData(this, SharedPreferencesUtil.student_link);
+        Intent intent = getIntent();
+        String studentLink = intent.getStringExtra(Systems.link);
         if (studentLink == null) {
             ToastUtils.showShort("收徒链接不存在");
         }else{
@@ -69,7 +69,7 @@ public class MyCodeActivity extends BaseActivity {
             } catch (WriterException e) {
                 e.printStackTrace();
             }
-            Intent intent = getIntent();
+
             Propertie propertie = (Propertie) intent.getSerializableExtra(Systems.propertie);
 
             if (propertie!=null) {

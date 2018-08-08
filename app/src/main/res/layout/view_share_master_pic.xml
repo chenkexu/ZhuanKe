@@ -12,7 +12,7 @@
         android:layout_marginLeft="100dp"
         android:layout_marginRight="100dp"
         android:layout_gravity="center"
-        android:src="@mipmap/ad"
+        android:src="@mipmap/code"
         android:layout_marginTop="170dp"
         android:layout_width="300dp"
         android:layout_height="300dp" />

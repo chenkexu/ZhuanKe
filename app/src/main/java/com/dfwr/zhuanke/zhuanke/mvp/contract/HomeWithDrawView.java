@@ -15,7 +15,16 @@ import java.util.List;
 public interface HomeWithDrawView extends BaseView {
 
     void getUserInfo(UserBaseInfo objec);
-    void getCheckWithDrawSuccess(CheckWithDrawBean object);
+
+
+    void getCheckWithDrawWeChatSuccess(CheckWithDrawBean object);
+
+
+    void getCheckWithDrawAlipaySuccess(CheckWithDrawBean object);
+
+
+
+
 
 
 //    void getWithDrawHistory(List<WithDrawHistory> object);

@@ -26,14 +26,123 @@ public class MyProfit {
         private int type;
         private int uid;
         private UserBean user;
+        private Article article;
 
-        public double getBalance() {
-            return balance;
+
+        public Article getArticle() {
+            return article;
         }
 
-        public void setBalance(double balance) {
-            this.balance = balance;
+        public void setArticle(Article article) {
+            this.article = article;
         }
+
+    public static class Article {
+            private String title;
+
+            public String getTitle() {
+                return title == null ? "" : title;
+            }
+
+            public void setTitle(String title) {
+                this.title = title;
+            }
+        }
+
+
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+
+    public long getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(long createDate) {
+        this.createDate = createDate;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getMchOrderNo() {
+        return mchOrderNo == null ? "" : mchOrderNo;
+    }
+
+    public void setMchOrderNo(String mchOrderNo) {
+        this.mchOrderNo = mchOrderNo;
+    }
+
+    public double getMoney() {
+        return money;
+    }
+
+    public void setMoney(double money) {
+        this.money = money;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    public int getUid() {
+        return uid;
+    }
+
+    public void setUid(int uid) {
+        this.uid = uid;
+    }
+
+    public UserBean getUser() {
+        return user;
+    }
+
+    public void setUser(UserBean user) {
+        this.user = user;
+    }
+
+    public static class UserBean {
+        /**
+         * createDate : 1532590532000
+         * num : 0
+         * status : 4
+         * uid : 22
+         * unionid : 88888888888
+         * userBalance : 0.0
+         * wxId : 232222222
+         * wxName : 777777777777777
+         */
+
+        private long createDate;
+        private int num;
+        private int status;
+        private int uid;
+        private String unionid;
+        private double userBalance;
+        private String wxId;
+        private String wxName;
 
         public long getCreateDate() {
             return createDate;
@@ -43,28 +152,12 @@ public class MyProfit {
             this.createDate = createDate;
         }
 
-        public int getId() {
-            return id;
+        public int getNum() {
+            return num;
         }
 
-        public void setId(int id) {
-            this.id = id;
-        }
-
-        public String getMchOrderNo() {
-            return mchOrderNo;
-        }
-
-        public void setMchOrderNo(String mchOrderNo) {
-            this.mchOrderNo = mchOrderNo;
-        }
-
-        public double getMoney() {
-            return money;
-        }
-
-        public void setMoney(double money) {
-            this.money = money;
+        public void setNum(int num) {
+            this.num = num;
         }
 
         public int getStatus() {
@@ -75,14 +168,6 @@ public class MyProfit {
             this.status = status;
         }
 
-        public int getType() {
-            return type;
-        }
-
-        public void setType(int type) {
-            this.type = type;
-        }
-
         public int getUid() {
             return uid;
         }
@@ -91,97 +176,36 @@ public class MyProfit {
             this.uid = uid;
         }
 
-        public UserBean getUser() {
-            return user;
+        public String getUnionid() {
+            return unionid == null ? "" : unionid;
         }
 
-        public void setUser(UserBean user) {
-            this.user = user;
+        public void setUnionid(String unionid) {
+            this.unionid = unionid;
         }
 
-        public static class UserBean {
-            /**
-             * createDate : 1532590532000
-             * num : 0
-             * status : 4
-             * uid : 22
-             * unionid : 88888888888
-             * userBalance : 0.0
-             * wxId : 232222222
-             * wxName : 777777777777777
-             */
+        public double getUserBalance() {
+            return userBalance;
+        }
 
-            private long createDate;
-            private int num;
-            private int status;
-            private int uid;
-            private String unionid;
-            private double userBalance;
-            private String wxId;
-            private String wxName;
+        public void setUserBalance(double userBalance) {
+            this.userBalance = userBalance;
+        }
 
-            public long getCreateDate() {
-                return createDate;
-            }
+        public String getWxId() {
+            return wxId == null ? "" : wxId;
+        }
 
-            public void setCreateDate(long createDate) {
-                this.createDate = createDate;
-            }
+        public void setWxId(String wxId) {
+            this.wxId = wxId;
+        }
 
-            public int getNum() {
-                return num;
-            }
+        public String getWxName() {
+            return wxName == null ? "" : wxName;
+        }
 
-            public void setNum(int num) {
-                this.num = num;
-            }
-
-            public int getStatus() {
-                return status;
-            }
-
-            public void setStatus(int status) {
-                this.status = status;
-            }
-
-            public int getUid() {
-                return uid;
-            }
-
-            public void setUid(int uid) {
-                this.uid = uid;
-            }
-
-            public String getUnionid() {
-                return unionid;
-            }
-
-            public void setUnionid(String unionid) {
-                this.unionid = unionid;
-            }
-
-            public double getUserBalance() {
-                return userBalance;
-            }
-
-            public void setUserBalance(double userBalance) {
-                this.userBalance = userBalance;
-            }
-
-            public String getWxId() {
-                return wxId;
-            }
-
-            public void setWxId(String wxId) {
-                this.wxId = wxId;
-            }
-
-            public String getWxName() {
-                return wxName;
-            }
-
-            public void setWxName(String wxName) {
-                this.wxName = wxName;
-            }
+        public void setWxName(String wxName) {
+            this.wxName = wxName;
         }
     }
+}

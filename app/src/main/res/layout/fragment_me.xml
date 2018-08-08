@@ -47,7 +47,7 @@
                     android:textSize="13sp"
                     android:layout_marginTop="5dp"
                     android:textColor="@color/bg_white"
-                    android:text="余额（元）：100.00"
+                    android:text="余额（元）：0.00"
                     android:id="@+id/tv_account"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -87,7 +87,7 @@
                     android:textSize="13sp"
                     android:layout_marginTop="5dp"
                     android:textColor="@color/bg_white"
-                    android:text="总收徒(人)：5000"
+                    android:text="总收徒(人)：0"
                     android:id="@+id/tv_all_pupil"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -194,6 +194,7 @@
             </LinearLayout>
             <include layout="@layout/line_gray_vertical"/>
             <LinearLayout
+                android:id="@+id/ll_today_student"
                 android:gravity="center"
                 android:layout_weight="1"
                 android:orientation="vertical"

@@ -102,7 +102,6 @@ public class MainActivity extends BaseActivity<IMsgView, MsgPresent<IMsgView>> i
 
     /**
      * 更新APP版本
-     *
      * @param
      */
     public void updateDiy() {
@@ -203,7 +202,7 @@ public class MainActivity extends BaseActivity<IMsgView, MsgPresent<IMsgView>> i
                      */
                     @Override
                     public void noNewApp(String error) {
-                        Toast.makeText(MainActivity.this, "没有新版本", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(MainActivity.this, "没有新版本", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -224,11 +223,18 @@ public class MainActivity extends BaseActivity<IMsgView, MsgPresent<IMsgView>> i
     //定义处理接收的方法
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void chooseFragment(ChooseFragmentEvent chooseStr){
-        selectedFragment(0);
-        tabSelected(llHome);
+        if (chooseStr.fragmentStr.equals("0")) {
+            selectedFragment(0);
+            tabSelected(llHome);
+        }else{
+            selectedFragment(3);
+            tabSelected(llMine);
+        }
     }
 
 
+
+    
 
     //获取公告
     public void getBanner(){
@@ -238,7 +244,7 @@ public class MainActivity extends BaseActivity<IMsgView, MsgPresent<IMsgView>> i
                 .subscribe(new BaseObserver<BannerBean>() {
                     @Override
                     protected void onSuccees(ApiResponse<BannerBean> t) {
-                        if (t.getResult().getVal()!=null) {
+                        if (t.getResult().getVal()!=null && (!t.getResult().getVal().equals(""))) {
                             AdvertisementDialog advertisementDialog = new AdvertisementDialog(MainActivity.this,t.getResult().getVal());
                             advertisementDialog.showDialog();
                         }

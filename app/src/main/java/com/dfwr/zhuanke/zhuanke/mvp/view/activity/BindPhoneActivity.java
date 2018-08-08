@@ -20,6 +20,7 @@ import com.dfwr.zhuanke.zhuanke.mvp.event.UpdateSmsStateEvent;
 import com.dfwr.zhuanke.zhuanke.mvp.presenter.BindPhonePresent;
 import com.dfwr.zhuanke.zhuanke.util.UserDataManeger;
 import com.dfwr.zhuanke.zhuanke.widget.MyTitle;
+import com.dfwr.zhuanke.zhuanke.widget.Systems;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -124,15 +125,18 @@ public class BindPhoneActivity extends BaseActivity<BindPhoneView, BindPhonePres
 
 
 
-
-
-
-
     @Override
     public void bindPhoneSuccess(Object object) {
         Intent intent = getIntent();
-        intent.setClass(this, GoWithDrawActivity.class);
+        String withDrawType = intent.getStringExtra(Systems.withDrawType);
+        if (withDrawType.equals(Systems.alipay)) {
+            intent.setClass(this, BindAlipayActivity.class);
+        }else{
+            intent.setClass(this, AttentionWechatNumberActivity.class);
+        }
+
         startActivity(intent);
+        finish();
     }
 
 

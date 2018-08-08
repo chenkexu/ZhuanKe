@@ -61,17 +61,21 @@ public class HomeWithDrawPresent<T> extends BasePresenter<HomeWithDrawView> {
 
 
     //提现校验
-    public void checkWithDraw(){
+    public void checkWithDraw(final String type){
         mMsgView.showLoading();
         HashMap<String, Object> map = ParamsUtil.getMap();
-        map.put("type",  "1");
+        map.put("type",  type);
         ApiManager.getInstence().getApiService().takeMoneyCheck(ParamsUtil.getParams(map))
                 .compose(RxUtil.<ApiResponse<CheckWithDrawBean>>rxSchedulerHelper())
                 .subscribe(new BaseObserver<CheckWithDrawBean>() {
                     @Override
                     protected void onSuccees(ApiResponse<CheckWithDrawBean> t) {
                         if (t!=null) {
-                            mMsgView.getCheckWithDrawSuccess(t.getResult());
+                            if (type.equals("1")) {
+                                mMsgView.getCheckWithDrawWeChatSuccess(t.getResult());
+                            }else{
+                                mMsgView.getCheckWithDrawAlipaySuccess(t.getResult());
+                            }
                         }
                         mMsgView.hideLoading();
                     }

@@ -11,6 +11,7 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.net.Uri;
+import android.util.Log;
 import android.view.View;
 
 import com.dfwr.zhuanke.zhuanke.application.MyApplication;
@@ -18,6 +19,7 @@ import com.dfwr.zhuanke.zhuanke.application.MyApplication;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.SoftReference;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
@@ -149,6 +151,52 @@ public class UIUtils {
     }
 
 
+
+
+    /**
+     * 网络图片转换为Bitmap
+     *
+     * @Author: ChengBin
+     * @Time: 16/4/5 下午2:41
+     */
+    public static Bitmap netPicToBmp(String src) {
+        try {
+            Log.d("FileUtil", src);
+            URL url = new URL(src);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            Bitmap myBitmap = BitmapFactory.decodeStream(input);
+
+            //设置固定大小
+            //需要的大小
+            float newWidth = 100f;
+            float newHeigth = 100f;
+
+            //图片大小
+            int width = myBitmap.getWidth();
+            int height = myBitmap.getHeight();
+
+            //缩放比例
+            float scaleWidth = newWidth / width;
+            float scaleHeigth = newHeigth / height;
+            Matrix matrix = new Matrix();
+            matrix.postScale(scaleWidth, scaleHeigth);
+
+            Bitmap bitmap = Bitmap.createBitmap(myBitmap, 0, 0, width, height, matrix, true);
+            return bitmap;
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
+
+
+
+
+
+
     public static Bitmap getHttpBitmap(String shareImage) {
         URL url;
         Throwable th;
@@ -217,6 +265,18 @@ public class UIUtils {
         }
         return bitmap;
     }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

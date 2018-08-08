@@ -37,13 +37,13 @@
 
 
 
-        <WebView
+        <com.dfwr.zhuanke.zhuanke.widget.ProgressWebView
             android:layout_below="@id/layout_title"
             android:layout_above="@id/relative1"
             android:id="@+id/webView"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-        </WebView>
+        </com.dfwr.zhuanke.zhuanke.widget.ProgressWebView>
 
 
 
