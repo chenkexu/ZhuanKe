@@ -93,17 +93,11 @@ public class WithDrawFragment extends BaseTwoFragment<HomeWithDrawView, HomeWith
 
 
 
-
-
-
     private void setData() {
         UserBean userBean = (UserBean) SharedPreferencesTool.getObjectFromShare(SharedPreferencesTool.user);
         mPresent.getUserInfo();
         onRefresh();
     }
-
-
-
 
 
 
@@ -249,6 +243,7 @@ public class WithDrawFragment extends BaseTwoFragment<HomeWithDrawView, HomeWith
     public void showLoading() {
         showDefaultLoading();
     }
+
 
     @Override
     public void hideLoading() {

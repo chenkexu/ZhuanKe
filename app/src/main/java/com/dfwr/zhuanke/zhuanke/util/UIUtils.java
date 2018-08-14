@@ -164,11 +164,12 @@ public class UIUtils {
             Log.d("FileUtil", src);
             URL url = new URL(src);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setConnectTimeout(5 * 1000);
+            connection.setReadTimeout(5 * 1000);
             connection.setDoInput(true);
             connection.connect();
             InputStream input = connection.getInputStream();
             Bitmap myBitmap = BitmapFactory.decodeStream(input);
-
             //设置固定大小
             //需要的大小
             float newWidth = 100f;
@@ -269,17 +270,6 @@ public class UIUtils {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
     //首先传入两张图片
     private Bitmap mergeThumbnailBitmap(Bitmap firstBitmap, Bitmap secondBitmap) {
         //以其中一张图片的大小作为画布的大小，或者也可以自己自定义
@@ -312,5 +302,22 @@ public class UIUtils {
     }
 
 
+
+    /**
+     * 对单独某个View进行截图
+     * @param v
+     * @return
+     */
+    public static Bitmap loadBitmapFromView(View v) {
+        if (v == null) {
+            return null;
+        }
+        Bitmap screenshot;
+        screenshot = Bitmap.createBitmap(v.getWidth(), v.getHeight(), Bitmap.Config.RGB_565);
+        Canvas c = new Canvas(screenshot);
+        c.translate(-v.getScrollX(), -v.getScrollY());
+        v.draw(c);
+        return screenshot;
+    }
 
 }

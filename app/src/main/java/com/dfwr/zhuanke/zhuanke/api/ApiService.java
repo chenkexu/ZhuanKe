@@ -170,7 +170,6 @@ public interface ApiService {
     Observable<ApiResponse<String>> get_student_share_url(@QueryMap HashMap<String, Object> map);
 
 
-
     //获取公告
     @GET("/properties/home_img_url")
     Observable<ApiResponse<BannerBean>> get_home_img_url(@QueryMap HashMap<String, Object> map);
@@ -184,5 +183,6 @@ public interface ApiService {
     //获取今天的收徒
     @GET("/app/user/today_student_list")
     Observable<ApiResponse<List<MyStudentBean>>> today_student_count(@QueryMap HashMap<String, Object> map);
+
 
 }

@@ -78,13 +78,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp">
                 <LinearLayout
+                    android:id="@+id/ll_today"
                     android:gravity="center"
                     android:layout_weight="1"
                     android:orientation="vertical"
                     android:layout_width="0dp"
                     android:layout_height="match_parent">
                     <TextView
-
                         android:textColor="@color/black"
                         android:text="今日徒弟提成（元）"
                         android:layout_width="wrap_content"

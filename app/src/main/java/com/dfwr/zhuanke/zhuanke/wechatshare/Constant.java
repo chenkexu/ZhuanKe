@@ -9,6 +9,9 @@ public class Constant {
     public static final String WEIXINAPPKEYQQBROWSER = "wx64f9cf5b17af074d";
     public static final String WEIXINAPPKEYSINA = "wx299208e619de7026";
     public static final String WEIXINAPPKEYUC = "wx020a535dccd46c11";
+
+
+
     public static final String WEIXINAPPPACKAGEBAIDU = "com.baidu.searchbox";
     public static final String WEIXINAPPPACKAGENEWSTODAY = "com.ss.android.article.news";
     public static final String WEIXINAPPPACKAGEQQ = "com.tencent.mobileqq";

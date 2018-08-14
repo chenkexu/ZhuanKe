@@ -198,13 +198,12 @@ public class ShareUtils {
                 shareWX(weakReference, Constant.WEIXINAPPKEYUC, Constant.WEIXINAPPPACKAGEUC, shareTitle, share_word, shareUrl, type, bitmap, onShareLitener);
             } else if (AppUtils.checkApkExists(Constant.WEIXINAPPPACKAGEQQBROWSER)) {
                 shareWX(weakReference, Constant.WEIXINAPPKEYQQBROWSER, Constant.WEIXINAPPPACKAGEQQBROWSER, shareTitle, share_word, shareUrl, type, bitmap, onShareLitener);
-            } else if (AppUtils.checkApkExists(Constant.WEIXINAPPPACKAGENEWSTODAY)) {
-                shareWX(weakReference, Constant.WEIXINAPPKEYNEWSTODAY, Constant.WEIXINAPPPACKAGENEWSTODAY, shareTitle, share_word, shareUrl, type, bitmap, onShareLitener);
             } else if (AppUtils.checkApkExists(Constant.WEIXINAPPPACKAGEBAIDU)) {
                 shareWX(weakReference, Constant.WEIXINAPPKEYBAIDU, Constant.WEIXINAPPPACKAGEBAIDU, shareTitle, share_word, shareUrl, type, bitmap, onShareLitener);
             } else if (AppUtils.checkApkExists(Constant.WEIXINAPPPACKAGESINA)) {
                 shareWX(weakReference, Constant.WEIXINAPPKEYSINA, Constant.WEIXINAPPPACKAGESINA, shareTitle, share_word, shareUrl, type, bitmap, onShareLitener);
             } else {
+                ToastUtils.showShort("为保证您的文章正常分享，请先安装QQ");
                 onShareLitener.onError();
             }
         } catch (Exception e) {

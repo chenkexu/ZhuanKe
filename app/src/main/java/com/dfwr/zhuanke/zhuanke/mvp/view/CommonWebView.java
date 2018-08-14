@@ -92,9 +92,6 @@ public class CommonWebView extends BaseActivity {
 
 
 
-
-
-
       /*   final String headImg = article.getHeadImg();
          new Thread(new Runnable() {
             @Override
@@ -107,7 +104,6 @@ public class CommonWebView extends BaseActivity {
             }
         }).start();*/
 
-
         articleLink = share_host + HttpContants.share;
         UserBean userBean = UserDataManeger.getInstance().getUserBean();
         if (userBean!=null) {
@@ -118,31 +114,11 @@ public class CommonWebView extends BaseActivity {
 
 
 
+
     @OnClick({R.id.ivWechat, R.id.ivWechatFriend})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ivWechat:
-//
-//                new Thread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        try{
-//                            httpBitmap = Glide.with(CommonWebView.this)
-//                                    .load(headImg)
-//                                    .asBitmap() //必须
-//                                    .centerCrop()
-//                                    .into(300, 300)
-//                                    .get();
-//                        }catch (Exception e){
-//                            Logger.d("图片解析异常: "+e.getMessage());
-//                            Resources res = getResources();
-//                            httpBitmap = BitmapFactory.decodeResource(res, R.mipmap.ic_launcher);
-//                        }
-//                    }
-//                }).start();
-//
-//                share(article.getTitle(),article.getTitle(),SendMessageToWX.Req.WXSceneSession,httpBitmap,articleLink);
-
 
                 new Thread(new Runnable() {
                     @Override

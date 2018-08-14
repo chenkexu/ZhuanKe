@@ -47,9 +47,12 @@ public  abstract class BaseObserver<T> implements Observer<ApiResponse<T>> {
         if (tApiResponse.getCode() == 200) {
                 onSuccees(tApiResponse);
         } else {
-                onCodeError(tApiResponse);
+            Logger.d("success，但是code配置错误");
+            onCodeError(tApiResponse);
         }
     }
+
+
 
     @Override
     public void onError(Throwable e) {
@@ -58,19 +61,23 @@ public  abstract class BaseObserver<T> implements Observer<ApiResponse<T>> {
         PrintWriter printWriter = new PrintWriter(result);
         e.printStackTrace(printWriter);
         Logger.d("异常信息是: "+result.toString());
-
         if (e instanceof ConnectException
                 || e instanceof TimeoutException
                 || e instanceof NetworkErrorException
                 || e instanceof UnknownHostException
                 || e instanceof SocketTimeoutException) {
-            ToastUtils.showShort(e.getMessage());
-            onFailure(e.getMessage(),true);
+
+            onFailure("网络连接异常，请检查网络",false);
+            Logger.d("SocketTimeoutException");
         } else {
-            ToastUtils.showShort("网络异常");
-            onFailure("网络异常",false);
+            ToastUtils.showShort("网络连接异常，请检查网络连接");
+            onFailure("网络连接异常，请检查网络连接",false);
         }
     }
+
+
+
+
 
     @Override
     public void onComplete() {

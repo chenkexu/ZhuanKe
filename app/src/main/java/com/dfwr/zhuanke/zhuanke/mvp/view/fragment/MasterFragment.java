@@ -4,7 +4,6 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
@@ -15,9 +14,14 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.dfwr.zhuanke.zhuanke.R;
 import com.dfwr.zhuanke.zhuanke.adapter.HomeAdapter;
+import com.dfwr.zhuanke.zhuanke.api.ApiManager;
+import com.dfwr.zhuanke.zhuanke.api.BaseObserver;
+import com.dfwr.zhuanke.zhuanke.api.param.ParamsUtil;
+import com.dfwr.zhuanke.zhuanke.api.response.ApiResponse;
 import com.dfwr.zhuanke.zhuanke.base.BaseTwoFragment;
 import com.dfwr.zhuanke.zhuanke.bean.HomeBean;
 import com.dfwr.zhuanke.zhuanke.bean.Propertie;
@@ -26,6 +30,7 @@ import com.dfwr.zhuanke.zhuanke.mvp.contract.IHomeView;
 import com.dfwr.zhuanke.zhuanke.mvp.presenter.HomePresent;
 import com.dfwr.zhuanke.zhuanke.mvp.view.activity.MyCodeActivity;
 import com.dfwr.zhuanke.zhuanke.mvp.view.activity.MyStudentListActivity;
+import com.dfwr.zhuanke.zhuanke.util.RxUtil;
 import com.dfwr.zhuanke.zhuanke.util.SharedPreferencesTool;
 import com.dfwr.zhuanke.zhuanke.util.SharedPreferencesUtil;
 import com.dfwr.zhuanke.zhuanke.widget.Dialog.ShareDialog;
@@ -33,6 +38,7 @@ import com.dfwr.zhuanke.zhuanke.widget.Systems;
 import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -95,7 +101,7 @@ public class MasterFragment extends BaseTwoFragment<IHomeView,HomePresent<IHomeV
 
 
 
-    @OnClick({R.id.ll_today_student, R.id.ll_all_student})
+    @OnClick({R.id.ll_today_student, R.id.ll_all_student,R.id.ll_today})
     public void onViewClicked(View view) {
         Intent intent = new Intent(getActivity(), MyStudentListActivity.class);
         switch (view.getId()) {
@@ -105,6 +111,10 @@ public class MasterFragment extends BaseTwoFragment<IHomeView,HomePresent<IHomeV
             case R.id.ll_all_student:
                 intent.putExtra(Systems.my_student_type, "all");
                 break;
+//            case R.id.ll_today:
+//                intent.setClass(getActivity(), TestActivity.class);
+//                break;
+
         }
         startActivity(intent);
     }
@@ -119,11 +129,14 @@ public class MasterFragment extends BaseTwoFragment<IHomeView,HomePresent<IHomeV
 
 
 
+
     public void getUserData() {
-        Bundle arguments = getArguments();
-        propertie = (Propertie) arguments.getSerializable(Systems.propertie);
+//        Bundle arguments = getArguments();
+//        propertie = (Propertie) arguments.getSerializable(Systems.propertie);
         mPresent.getUserInfo();
     }
+
+
 
 
 
@@ -177,11 +190,9 @@ public class MasterFragment extends BaseTwoFragment<IHomeView,HomePresent<IHomeV
                 }
             }
         });
-
-        initPrice();
+        getProperties();
+//        initPrice();
     }
-
-
 
 
     @Override
@@ -208,7 +219,7 @@ public class MasterFragment extends BaseTwoFragment<IHomeView,HomePresent<IHomeV
                 shareDialog.setQQ();
                 shareDialog.show();
                 break;
-            case "2":
+            case "2":   //二维码收徒
                 Intent intent = new Intent(getActivity(), MyCodeActivity.class);
                 intent.putExtra(Systems.propertie,propertie);
                 intent.putExtra(link,studentLink);
@@ -233,7 +244,29 @@ public class MasterFragment extends BaseTwoFragment<IHomeView,HomePresent<IHomeV
     }
 
 
-    private void initPrice() {
+
+    //获取各个单价
+    public void getProperties(){
+        HashMap<String, Object> map = ParamsUtil.getMap();
+        ApiManager.getInstence().getApiService().getProperties(ParamsUtil.getParams(map))
+                .compose(RxUtil.<ApiResponse<Propertie>>rxSchedulerHelper())
+                .subscribe(new BaseObserver<Propertie>() {
+                    @Override
+                    protected void onSuccees(ApiResponse<Propertie> t) {
+                        if (t!=null) {
+                            Propertie result = t.getResult();
+                            propertie = result;
+                            initPrice(result);
+                        }
+                    }
+                    @Override
+                    protected void onFailure(String errorInfo, boolean isNetWorkError) {
+                        ToastUtils.showShort(errorInfo);
+                    }
+                });
+    }
+
+    private void initPrice(Propertie propertie) {
         if (propertie!=null) {
             String masterPrice = propertie.getStudent_reward_n_to_teacher();
             String strIntegration = getResources().getString(R.string.master_reward_tips, masterPrice);

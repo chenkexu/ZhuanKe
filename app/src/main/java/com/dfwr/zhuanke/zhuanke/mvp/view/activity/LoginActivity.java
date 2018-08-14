@@ -105,7 +105,7 @@ public class LoginActivity extends BaseActivity {
                 HashMap<String, Object> map = ParamsUtil.getMap();
                 map.put("wxId", wechatBean.getOpenid());
                 map.put("wxName", platform.getDb().getUserName());
-                map.put("sex", platform.getDb().getUserGender());
+                map.put("sex", platform.getDb().getUserGender() == null ? "m" : platform.getDb().getUserGender());
                 map.put("imgId", platform.getDb().getUserIcon());
                 map.put("unionid", wechatBean.getUnionid());
 

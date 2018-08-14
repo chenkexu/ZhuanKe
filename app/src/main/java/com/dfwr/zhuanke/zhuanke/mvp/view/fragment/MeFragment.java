@@ -160,7 +160,9 @@ public class MeFragment extends BaseTwoFragment<HomeMeView,HomeMePresent<HomeMeV
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 switch (position){
                     case 0:
-                        EventBus.getDefault().post(new ChooseFragmentEvent());
+                        ChooseFragmentEvent chooseFragmentEvent = new ChooseFragmentEvent();
+                        chooseFragmentEvent.fragmentStr = "0";
+                        EventBus.getDefault().post(chooseFragmentEvent);
                         break;
                     case 1:
                         startActivity(new Intent(getActivity(), RankActivity.class));

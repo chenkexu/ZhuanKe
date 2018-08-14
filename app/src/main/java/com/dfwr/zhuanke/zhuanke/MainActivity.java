@@ -1,18 +1,16 @@
 package com.dfwr.zhuanke.zhuanke;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.dfwr.zhuanke.zhuanke.api.ApiManager;
+import com.dfwr.zhuanke.zhuanke.api.ApiManager2;
 import com.dfwr.zhuanke.zhuanke.api.BaseObserver;
 import com.dfwr.zhuanke.zhuanke.api.HttpContants;
 import com.dfwr.zhuanke.zhuanke.api.param.ParamsUtil;
@@ -33,6 +31,7 @@ import com.dfwr.zhuanke.zhuanke.util.CProgressDialogUtils;
 import com.dfwr.zhuanke.zhuanke.util.GsonUtils;
 import com.dfwr.zhuanke.zhuanke.util.OkGoUpdateHttpUtil;
 import com.dfwr.zhuanke.zhuanke.util.RxUtil;
+import com.dfwr.zhuanke.zhuanke.util.SharedPreferencesUtil;
 import com.dfwr.zhuanke.zhuanke.widget.Dialog.AdvertisementDialog;
 import com.dfwr.zhuanke.zhuanke.widget.Systems;
 import com.orhanobut.logger.Logger;
@@ -41,7 +40,6 @@ import com.vector.update_app.UpdateAppManager;
 import com.vector.update_app.UpdateCallback;
 import com.vector.update_app.listener.ExceptionHandler;
 import com.vector.update_app.listener.IUpdateDialogFragmentListener;
-import com.vector.update_app.utils.AppUpdateUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -62,26 +60,25 @@ public class MainActivity extends BaseActivity<IMsgView, MsgPresent<IMsgView>> i
     private String mApkFileUrl = "https://raw.githubusercontent.com/WVector/AppUpdateDemo/master/apk/sample-debug.apk";
 
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d(TAG, "onActivityResult() called with: requestCode = [" + requestCode + "], resultCode = [" + resultCode + "], data = [" + data + "]");
-        switch (resultCode) {
-            case Activity.RESULT_CANCELED:
-                switch (requestCode){
-                    // 得到通过UpdateDialogFragment默认dialog方式安装，用户取消安装的回调通知，以便用户自己去判断，比如这个更新如果是强制的，但是用户下载之后取消了，在这里发起相应的操作
-                    case AppUpdateUtils.REQ_CODE_INSTALL_APP:
-                        Toast.makeText(this,"用户取消了安装包的更新", Toast.LENGTH_LONG).show();
-                        break;
-                }
-                break;
-            default:
-        }
-    }
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        Log.d(TAG, "onActivityResult() called with: requestCode = [" + requestCode + "], resultCode = [" + resultCode + "], data = [" + data + "]");
+//        switch (resultCode) {
+//            case Activity.RESULT_CANCELED:
+//                switch (requestCode){
+//                    // 得到通过UpdateDialogFragment默认dialog方式安装，用户取消安装的回调通知，以便用户自己去判断，比如这个更新如果是强制的，但是用户下载之后取消了，在这里发起相应的操作
+//                    case AppUpdateUtils.REQ_CODE_INSTALL_APP:
+//                        Toast.makeText(this,"用户取消了安装包的更新", Toast.LENGTH_LONG).show();
+//                        break;
+//                }
+//                break;
+//            default:
+//        }
+//    }
 
 
     @BindView(R.id.content)
     FrameLayout content;
-
     @BindView(R.id.ll_home)
     LinearLayout llHome;
     @BindView(R.id.ll_category)
@@ -208,13 +205,17 @@ public class MainActivity extends BaseActivity<IMsgView, MsgPresent<IMsgView>> i
 
     }
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         //获取全局属性
-        getProperties();
+//        getProperties();
+        selectedFragment(0);
+        tabSelected(llHome);
         getBanner();
         updateDiy();
     }
@@ -252,6 +253,26 @@ public class MainActivity extends BaseActivity<IMsgView, MsgPresent<IMsgView>> i
                     @Override
                     protected void onFailure(String errorInfo, boolean isNetWorkError) {
                         ToastUtils.showShort(errorInfo);
+                        getTest();
+                    }
+                });
+    }
+
+
+
+    //获取公告
+    public void getTest(){
+        HashMap<String, Object> map = ParamsUtil.getMap();
+        ApiManager2.getInstence().getApiService().get_home_img_url(ParamsUtil.getParams(map))
+                .compose(RxUtil.<ApiResponse<BannerBean>>rxSchedulerHelper())
+                .subscribe(new BaseObserver<BannerBean>() {
+                    @Override
+                    protected void onSuccees(ApiResponse<BannerBean> t) {
+
+                    }
+                    @Override
+                    protected void onFailure(String errorInfo, boolean isNetWorkError) {
+                        ToastUtils.showLong("8080也请求失败,异常信息是："+errorInfo);
                     }
                 });
     }
@@ -342,8 +363,8 @@ public class MainActivity extends BaseActivity<IMsgView, MsgPresent<IMsgView>> i
                 if (newsFragment == null) {
                     newsFragment = new NewsFragment();
                     Bundle bundle = new Bundle();
-                    bundle.putSerializable(Systems.propertie,propertie);
-                    newsFragment.setArguments(bundle);
+//                    bundle.putSerializable(Systems.propertie,propertie);
+//                    newsFragment.setArguments(bundle);
                     transaction.add(R.id.content, newsFragment);
                 } else
                     transaction.show(newsFragment);
@@ -352,8 +373,8 @@ public class MainActivity extends BaseActivity<IMsgView, MsgPresent<IMsgView>> i
                 if (masterFragment == null) {
                     masterFragment = new MasterFragment();
                     Bundle bundle = new Bundle();
-                    bundle.putSerializable(Systems.propertie,propertie);
-                    masterFragment.setArguments(bundle);
+//                    bundle.putSerializable(Systems.propertie,propertie);
+//                    masterFragment.setArguments(bundle);
                     transaction.add(R.id.content, masterFragment);
                 } else
                     transaction.show(masterFragment);
@@ -402,6 +423,7 @@ public class MainActivity extends BaseActivity<IMsgView, MsgPresent<IMsgView>> i
         //显示在：发现Fragment
         long nowTime = System.currentTimeMillis();
         if((nowTime - exitTime) <= 2000){
+            SharedPreferencesUtil.removeData(this, SharedPreferencesUtil.student_link);
             AppManager.getAppManager().AppExit(this);
         }else{
             ToastUtils.showShort("再按一次退出APP！");

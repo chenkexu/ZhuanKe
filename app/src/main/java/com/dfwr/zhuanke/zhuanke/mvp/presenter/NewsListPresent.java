@@ -64,7 +64,9 @@ public class NewsListPresent<T> extends BasePresenter<NewsListView> {
                     @Override
                     protected void onSuccees(ApiResponse<List<Article>> t) {
                         mMsgView.hideLoading();
-                        mMsgView.getArticleListSuccess(t.getResult());
+                        if (t.getResult()!=null) {
+                            mMsgView.getArticleListSuccess(t.getResult());
+                        }
                     }
 
                     @Override

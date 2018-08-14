@@ -42,6 +42,7 @@
 
 
     <application
+        android:vmSafeMode="true"
         android:name=".application.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/icon_logo"
@@ -75,6 +76,7 @@
         <activity android:name=".mvp.view.MyWebView"  android:screenOrientation="portrait"/>
         <activity android:name=".mvp.view.activity.MyStudentListActivity"  android:screenOrientation="portrait"/>
         <activity android:name=".mvp.view.activity.BlackNameActivity"  android:screenOrientation="portrait"/>
+        <activity android:name=".mvp.view.activity.TestActivity"  android:screenOrientation="portrait"/>
 
 
 

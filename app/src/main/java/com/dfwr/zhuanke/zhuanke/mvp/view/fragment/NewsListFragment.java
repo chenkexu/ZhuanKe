@@ -54,8 +54,7 @@ public class NewsListFragment extends BaseLazyFragment<NewsListView, NewsListPre
     private static final int PAGE_SIZE = 20;
     private String price;
     private String share_host;
-
-
+    private static NewsListFragment fragment;
 
 
     @Override
@@ -64,6 +63,8 @@ public class NewsListFragment extends BaseLazyFragment<NewsListView, NewsListPre
         ButterKnife.bind(this, view);
         return view;
     }
+
+
 
     @Override
     protected void initData() {
@@ -170,6 +171,9 @@ public class NewsListFragment extends BaseLazyFragment<NewsListView, NewsListPre
     }
 
 
+
+
+
     @Override
     public void getArticleListMoreFail(String errorMsg) {
         newsAdapter.loadMoreFail();
@@ -177,7 +181,7 @@ public class NewsListFragment extends BaseLazyFragment<NewsListView, NewsListPre
 
 
     public static NewsListFragment getInstance(String param1, String param2,String param3 ) {
-        NewsListFragment fragment = new NewsListFragment();
+        fragment = new NewsListFragment();
         Bundle args = new Bundle();
         args.putString(Systems.ARG_PARAM1, param1);
         args.putString(Systems.ARG_PARAM2, param2);
@@ -201,6 +205,7 @@ public class NewsListFragment extends BaseLazyFragment<NewsListView, NewsListPre
     protected NewsListPresent<NewsListView> createPresent() {
         return new NewsListPresent<>(this);
     }
+
 
     @Override
     protected void loadData() {

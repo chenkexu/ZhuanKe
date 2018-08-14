@@ -86,13 +86,16 @@ dependencies {
     /*rotrofit*/
     //butterknife
     compile 'com.android.support:appcompat-v7:26.0.0-alpha1'
+
     compile 'io.reactivex.rxjava2:rxjava:2.0.7'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
-    compile 'com.squareup.retrofit2:retrofit:2.1.0'
-    compile 'com.squareup.retrofit2:adapter-rxjava2:2.2.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
-    compile 'com.squareup.okhttp3:okhttp:3.5.0'
-    compile 'com.squareup.okhttp3:logging-interceptor:3.6.0'
+    compile 'com.squareup.retrofit2:retrofit:2.3.0'
+    compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
+    compile 'com.squareup.okhttp3:okhttp:3.9.0'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.9.0'
+
+
     compile 'com.jakewharton:butterknife:8.4.0'
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
     compile 'com.blankj:utilcode:1.17.2'
@@ -112,14 +115,14 @@ dependencies {
     compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:1.1.6'
     //walle
     compile 'com.meituan.android.walle:library:1.1.6'
-//    //bugly
-//    compile 'com.tencent.bugly:crashreport_upgrade:latest.release'//其中latest.release指代最新版本号，也可以指定明确的版本号，例如1.2.0
-//    compile 'com.tencent.bugly:nativecrashreport:latest.release'
+    //    //bugly
+    //    compile 'com.tencent.bugly:crashreport_upgrade:latest.release'//其中latest.release指代最新版本号，也可以指定明确的版本号，例如1.2.0
+    //    compile 'com.tencent.bugly:nativecrashreport:latest.release'
     //更新
-    compile 'com.qianwen:update-app:3.5.2'
+    //    compile 'com.qianwen:update-app:3.5.2'
     //okgo
     compile 'com.lzy.net:okgo:3.0.4'
-
+    compile project(':update-app')
 }
 
 // 在MobSDK的扩展中注册ShareSDK的相关信息

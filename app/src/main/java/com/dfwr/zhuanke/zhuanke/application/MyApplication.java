@@ -49,8 +49,8 @@ public class MyApplication extends Application {
                 .methodOffset(7)        // (Optional) Hides internal method calls up to offset. Default 5
                 .tag("okgo")   // (Optional) Global tag for every log. Default PRETTY_LOGGER
                 .build();
-
         Logger.addLogAdapter(new AndroidLogAdapter(formatStrategy) {
+            
         });
 
 //        registerToWX();
