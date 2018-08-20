@@ -1,6 +1,7 @@
 package com.dfwr.zhuanke.zhuanke.mvp.view.fragment;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -55,7 +56,7 @@ public class NewsListFragment extends BaseLazyFragment<NewsListView, NewsListPre
     private String price;
     private String share_host;
     private static NewsListFragment fragment;
-
+    private View errorView;
 
     @Override
     protected View initView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -93,7 +94,16 @@ public class NewsListFragment extends BaseLazyFragment<NewsListView, NewsListPre
             }
         });
         Logger.d("initView");
-        setRefreshing(true);
+        if (getActivity() != null) {
+            LayoutInflater inflater = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            errorView  = inflater.inflate(R.layout.view_retry, (ViewGroup) recyclerView.getParent(), false);
+            errorView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onRefresh();
+                }
+            });
+        }
         onRefresh();
     }
 
@@ -111,6 +121,7 @@ public class NewsListFragment extends BaseLazyFragment<NewsListView, NewsListPre
     //下拉刷新
     @Override
     public void onRefresh() {
+        setRefreshing(true);
         currentPage = 1;
         newsAdapter.setEnableLoadMore(false);//这里的作用是防止下拉刷新的时候还可以上拉加载
         mPresent.getProjectListData(type,currentPage, PAGE_SIZE);
@@ -145,6 +156,7 @@ public class NewsListFragment extends BaseLazyFragment<NewsListView, NewsListPre
 
     @Override
     public void getArticleListSuccess(List<Article> projectListData) {
+        setRefreshing(false);
         Logger.d("getArticleListSuccess ");
         if (projectListData == null || projectListData.size() == 0) {
             newsAdapter.setNewData(null);
@@ -154,15 +166,16 @@ public class NewsListFragment extends BaseLazyFragment<NewsListView, NewsListPre
             setData(true, mData);
             newsAdapter.setEnableLoadMore(true);
         }
-        refreshLayout.setRefreshing(false);
-
     }
 
     @Override
     public void getArticleListRefreshError(String msg) {
         newsAdapter.setEnableLoadMore(true);
-        refreshLayout.setRefreshing(false);
+        setRefreshing(false);
+        newsAdapter.setEmptyView(errorView);
     }
+
+
 
     @Override
     public void getArticleListMoreSuccess(List<Article> projectListData) {

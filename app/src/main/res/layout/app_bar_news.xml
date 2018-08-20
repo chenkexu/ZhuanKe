@@ -7,8 +7,10 @@
     android:clipToPadding="true">
 
 
+    <include layout="@layout/view_retry" android:id="@+id/view_retry"/>
 
-        <RelativeLayout
+
+    <RelativeLayout
             android:paddingBottom="5dp"
             android:gravity="center_vertical"
             android:id="@+id/ll_title"
@@ -44,8 +46,6 @@
                 android:maxHeight="?attr/actionBarSize"
                 android:src="@mipmap/ic_add"/>
         </RelativeLayout>
-
-
     <com.dfwr.zhuanke.zhuanke.widget.CustomViewPager
         android:layout_below="@id/ll_title"
         android:id="@+id/view_pager"

@@ -48,6 +48,7 @@ public class NewsPresent<T> extends BasePresenter<NewsView> {
                     @Override
                     protected void onFailure(String errorInfo, boolean isNetWorkError) {
                         mMsgView.hideLoading();
+                        mMsgView.getProjectClassifyDataError(errorInfo);
                         ToastUtils.showShort(errorInfo);
                     }
                 });

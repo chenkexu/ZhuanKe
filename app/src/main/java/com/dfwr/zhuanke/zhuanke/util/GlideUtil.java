@@ -133,7 +133,7 @@ public class GlideUtil {
             Glide.with(context)
                     .load(imgUrl)
                     .asBitmap().centerCrop()
-                    .error(R.mipmap.icon_logo)
+                    .error(R.mipmap.news_icon)
                     .placeholder(R.mipmap.ad_error)
                     .priority(Priority.NORMAL) //下载的优先级
                     //all:缓存源资源和转换后的资源 none:不作任何磁盘缓存

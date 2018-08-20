@@ -81,6 +81,7 @@ public class MyStudentListActivity extends BaseActivity<MyStudentView, MyStudent
         recyclerView.setAdapter(newsAdapter);
     }
 
+
     @Override
     public void onRefresh() {
         currentPage = 1;
@@ -89,11 +90,11 @@ public class MyStudentListActivity extends BaseActivity<MyStudentView, MyStudent
     }
 
 
-
     @Override
     public void onLoadMoreRequested() {
         mPresent.getMyStudentLoadMore(currentPage, PAGE_SIZE,type);
     }
+
 
     @Override
     public void getStudentList(List<MyStudentBean> projectListData) {

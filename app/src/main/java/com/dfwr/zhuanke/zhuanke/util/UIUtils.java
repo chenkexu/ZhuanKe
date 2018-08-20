@@ -18,9 +18,12 @@ import com.dfwr.zhuanke.zhuanke.application.MyApplication;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.lang.ref.SoftReference;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -37,6 +40,42 @@ import static com.blankj.utilcode.util.ActivityUtils.startActivity;
 
 public class UIUtils {
 
+
+    /**
+     * 字符串换成UTF-8
+     *
+     * @param str
+     * @return
+     */
+    public static String stringToUtf8(String str) {
+        String result = null;
+        try {
+            result = URLEncoder.encode(str, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+
+
+    /**
+     * utf-8换成字符串
+     *
+     * @param str
+     * @return
+     */
+    public static String utf8ToString(String str) {
+        String result = null;
+        try {
+            result = URLDecoder.decode(str, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return result;
+    }
 
 
     public static String readChannelFromApkMetaInfo(Context context) {

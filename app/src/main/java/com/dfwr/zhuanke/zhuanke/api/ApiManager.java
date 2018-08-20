@@ -2,6 +2,7 @@ package com.dfwr.zhuanke.zhuanke.api;
 
 import android.util.Log;
 
+import com.blankj.utilcode.util.NetworkUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.orhanobut.logger.Logger;
@@ -10,6 +11,7 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.annotations.NonNull;
+import okhttp3.CacheControl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -26,7 +28,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ApiManager {
 
 
+    private static final String TAG = "RetrofitConfig";
 
+    //设缓存有效期为1天
+    static final long CACHE_STALE_SEC = 60 * 60 * 24 * 1;
+    //查询缓存的Cache-Control设置，为if-only-cache时只查询缓存而不会请求服务器，max-stale可以配合设置缓存失效时间
+    private static final String CACHE_CONTROL_CACHE = "only-if-cached, max-stale=" + CACHE_STALE_SEC;
     private static ApiManager mRetrofitManager;
     private Retrofit mRetrofit;
     private ApiService mApiService;
@@ -52,15 +59,19 @@ public class ApiManager {
     private void initRetrofit() {
         Logger.d("initRetrofit----------");
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
-        builder.writeTimeout(5, TimeUnit.SECONDS);
-        builder.connectTimeout(5, TimeUnit.SECONDS);
-        builder.readTimeout(5, TimeUnit.SECONDS);
-        builder.addInterceptor(getHttpLoggingInterceptor());
+        builder.writeTimeout(20, TimeUnit.SECONDS);
+        builder.connectTimeout(20, TimeUnit.SECONDS);
+        builder.readTimeout(20, TimeUnit.SECONDS);
 
-        // TODO: 2018/8/14 添加重连次数
-        builder.addInterceptor(new Retry(2));
         builder.retryOnConnectionFailure(true);
+        builder.addInterceptor(getHttpLoggingInterceptor());
+        // TODO: 2018/8/14 添加重连次数
+        builder.addInterceptor(new Retry(5));
 
+        // TODO: 2018/8/16 添加缓存拦截器 
+//        builder.addInterceptor(ApiManager.sRewriteCacheControlInterceptor);
+//        builder.addNetworkInterceptor(ApiManager.sRewriteCacheControlInterceptor);
+        
         OkHttpClient client = builder.build();
 
         mRetrofit = new Retrofit.Builder()
@@ -100,6 +111,40 @@ public class ApiManager {
 
 
 
+
+
+
+
+    /**
+     * 云端响应头拦截器，用来配置缓存策略
+     * Dangerous interceptor that rewrites the server's cache-control header.
+     */
+    public  static Interceptor sRewriteCacheControlInterceptor = new Interceptor() {
+
+        @Override
+        public Response intercept(Chain chain) throws IOException {
+            Request request = chain.request();
+            if (!NetworkUtils.isConnected()) {
+                request = request.newBuilder().cacheControl(CacheControl.FORCE_CACHE).build();
+                Log.e(TAG, "no network");
+            }
+            Response originalResponse = chain.proceed(request);
+
+            if (!NetworkUtils.isConnected()) {
+                //有网的时候读接口上的@Headers里的配置，你可以在这里进行统一的设置
+                String cacheControl = request.cacheControl().toString();
+                return originalResponse.newBuilder()
+                        .header("Cache-Control", cacheControl)
+                        .removeHeader("Pragma")
+                        .build();
+            } else {
+                return originalResponse.newBuilder()
+                        .header("Cache-Control", "public, " + CACHE_CONTROL_CACHE)
+                        .removeHeader("Pragma")
+                        .build();
+            }
+        }
+    };
 
 
     /**

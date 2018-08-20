@@ -81,9 +81,12 @@ public class MyCodeActivity extends BaseActivity {
                 String string = getResources().getString(R.string.my_code_tips, price1, price2);
                 tvTips.setText(Html.fromHtml(string));
 
-                String percentStr = propertie.getStudent_reward();
-                String percentStr2 = propertie.getGrandson_reward();
-                String string2 = getResources().getString(R.string.my_code_tips2, percentStr, percentStr2);
+                String percentStr = propertie.getStudent_reward().replace("%","");
+                String percentStr2 = propertie.getGrandson_reward().replace("%","");
+
+                int str = Integer.parseInt(percentStr) + Integer.parseInt(percentStr2);
+//                String percentStr2 = propertie.getGrandson_reward();
+                String string2 = getResources().getString(R.string.my_code_tips2, str+"%");
                 tvTips2.setText(Html.fromHtml(string2));
             }
 

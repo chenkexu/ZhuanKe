@@ -123,6 +123,9 @@ dependencies {
     //okgo
     compile 'com.lzy.net:okgo:3.0.4'
     compile project(':update-app')
+    //表情库
+//    compile "com.android.support:support-emoji:26.0.0-beta1"
+//    compile 'io.github.rockerhieu:emojicon:1.4.0'
 }
 
 // 在MobSDK的扩展中注册ShareSDK的相关信息

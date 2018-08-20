@@ -23,12 +23,15 @@
     </string>
 
 
-    <string name="my_code_tips2"><![CDATA[
+    <!--<string name="my_code_tips2"><![CDATA[
     \n\n最高奖励<font color="#f8891d"><big><big>%1$s</big></big></font>徒弟收益+<font color="#f8891d"><big><big>%2$s</big></big></font>徒孙收益哦
     ]]>
+    </string>-->
+
+    <string name="my_code_tips2"><![CDATA[
+    \n\n最高奖励<font color="#f8891d"><big><big>%1$s</big></big></font>徒弟收益和徒孙收益哦
+    ]]>
     </string>
-
-
 
 
 </resources>

@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.dfwr.zhuanke.zhuanke.R;
@@ -43,8 +44,14 @@ public class NewsFragment extends BaseTwoFragment<NewsView, NewsPresent<NewsView
 
     @BindView(R.id.view_pager)
     CustomViewPager viewPager;
+
+
+
     @BindView(R.id.tl_5)
     SlidingTabLayout mTabLayout;
+
+    @BindView(R.id.ll_no_content)
+    LinearLayout llNoContent;
     private List<ProjectClassifyData> mData;
     private List<Integer> channelIds = new ArrayList<>();
 
@@ -80,19 +87,23 @@ public class NewsFragment extends BaseTwoFragment<NewsView, NewsPresent<NewsView
         super.initData();
         // TODO: 2018/7/18 请求新闻数据 
         setData();
+        llNoContent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setData();
+            }
+        });
     }
-
-
-
 
 
     @Override
     public void getProjectClassifyDataSuccess(List<ProjectClassifyData> projectClassifyDatas) {
+        llNoContent.setVisibility(View.GONE);
         mData = projectClassifyDatas;
         addChannelIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ChannelDialog channelDialog = new ChannelDialog(getActivity(),mData);
+                ChannelDialog channelDialog = new ChannelDialog(getActivity(), mData);
                 channelDialog.SetOnChannelClick(new ChannelDialog.SetOnChannelClickInterFace() {
                     @Override
                     public void itemOnclick(final int position) {
@@ -112,19 +123,27 @@ public class NewsFragment extends BaseTwoFragment<NewsView, NewsPresent<NewsView
     }
 
 
+    @Override
+    public void getProjectClassifyDataError(String error) {
+        ToastUtils.showShort(error);
+        llNoContent.setVisibility(View.VISIBLE);
+    }
+
+
     //获取各个单价
-    public void getProperties(){
+    public void getProperties() {
         HashMap<String, Object> map = ParamsUtil.getMap();
         ApiManager.getInstence().getApiService().getProperties(ParamsUtil.getParams(map))
                 .compose(RxUtil.<ApiResponse<Propertie>>rxSchedulerHelper())
                 .subscribe(new BaseObserver<Propertie>() {
                     @Override
                     protected void onSuccees(ApiResponse<Propertie> t) {
-                        if (t!=null) {
+                        if (t != null) {
                             Propertie result = t.getResult();
                             initViewPagerAndTabLayout(result);
                         }
                     }
+
                     @Override
                     protected void onFailure(String errorInfo, boolean isNetWorkError) {
                         ToastUtils.showShort(errorInfo);
@@ -137,53 +156,53 @@ public class NewsFragment extends BaseTwoFragment<NewsView, NewsPresent<NewsView
 //        Bundle arguments = getArguments();
 //        Propertie propertie = (Propertie) arguments.getSerializable(Systems.propertie);
 
-        if (propertie!=null) {
+        if (propertie != null) {
             for (ProjectClassifyData data : mData) {
-                if (data.getType().equals("推荐")) {
-                    projectListFragment = NewsListFragment.getInstance("其他", propertie.getShare_price(),propertie.getShare_host());
-                }else{
-                    projectListFragment = NewsListFragment.getInstance(data.getType(), propertie.getShare_price(),propertie.getShare_host());
-                }
+//                if (data.getType().equals("养生")) {
+//                    projectListFragment = NewsListFragment.getInstance("健康", propertie.getShare_price(), propertie.getShare_host());
+//                } else {
+//                }
+                projectListFragment = NewsListFragment.getInstance(data.getType(), propertie.getShare_price(), propertie.getShare_host());
                 mFragments.add(projectListFragment);
                 channelIds.add(data.getId());
             }
 
-        viewPager.setAdapter(new FragmentStatePagerAdapter(getChildFragmentManager()) {
-            @Override
-            public Fragment getItem(int position) {
-                return mFragments.get(position);
-            }
+            viewPager.setAdapter(new FragmentStatePagerAdapter(getChildFragmentManager()) {
+                @Override
+                public Fragment getItem(int position) {
+                    return mFragments.get(position);
+                }
 
-            @Override
-            public int getCount() {
-                return mData == null? 0 : mData.size();
-            }
+                @Override
+                public int getCount() {
+                    return mData == null ? 0 : mData.size();
+                }
 
-            @Override
-            public CharSequence getPageTitle(int position) {
-                return mData.get(position).getType();
-            }
+                @Override
+                public CharSequence getPageTitle(int position) {
+                    return mData.get(position).getType();
+                }
 
-        });
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            });
+            viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-            }
+                }
 
-            @Override
-            public void onPageSelected(int position) {
-                currentPage = position;
-            }
+                @Override
+                public void onPageSelected(int position) {
+                    currentPage = position;
+                }
 
-            @Override
-            public void onPageScrollStateChanged(int state) {
+                @Override
+                public void onPageScrollStateChanged(int state) {
 
-            }
-        });
-        viewPager.setOffscreenPageLimit(2);
-        mTabLayout.setViewPager(viewPager);
-        viewPager.setCurrentItem(Systems.TAB_ONE,false);
+                }
+            });
+            viewPager.setOffscreenPageLimit(2);
+            mTabLayout.setViewPager(viewPager);
+            viewPager.setCurrentItem(Systems.TAB_ONE, false);
         }
     }
 
@@ -202,6 +221,7 @@ public class NewsFragment extends BaseTwoFragment<NewsView, NewsPresent<NewsView
     public void hideLoading() {
         hideDefaultLoading();
     }
+
 
 
 }

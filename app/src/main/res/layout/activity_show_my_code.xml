@@ -13,96 +13,104 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <LinearLayout
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <ImageView
-            android:id="@+id/iv_back"
-            android:padding="20dp"
-            android:layout_gravity="left"
-            android:src="@mipmap/me_icon_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/iv_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:padding="20dp"
+                android:src="@mipmap/me_icon_back" />
 
 
-        <TextView
-            android:textSize="30sp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="20dp"
-            android:text="@string/app_name"
-            android:textColor="@color/bg_white"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/app_name"
+                android:textColor="@color/bg_white"
+                android:textSize="25sp" />
 
 
-        <android.support.v7.widget.CardView
-            style="@style/order_cardView_style"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="40dp">
-            <LinearLayout
-                android:padding="10dp"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+            <android.support.v7.widget.CardView
+                style="@style/order_cardView_style"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp">
 
                 <LinearLayout
-                    android:gravity="center"
-                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/iv_head"
-                        app:civ_border_width="1dp"
-                        app:civ_border_color="@color/bg_white"
-                        android:src="@mipmap/head_default"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp" />
-                    <TextView
-                        android:id="@+id/tv_name"
-                        android:layout_marginLeft="10dp"
-                        android:text="@string/app_name"
-                        android:textColor="@color/black"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/iv_head"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:src="@mipmap/head_default"
+                            app:civ_border_color="@color/bg_white"
+                            app:civ_border_width="1dp" />
+
+                        <TextView
+                            android:id="@+id/tv_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:text="@string/app_name"
+                            android:textColor="@color/black" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/iv_code"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="8dp"
+                        android:src="@mipmap/code" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="扫描二维码立即加入乐享转赚钱"
+                        android:textColor="@color/black" />
                 </LinearLayout>
-                <ImageView
-                    android:id="@+id/iv_code"
-                    android:layout_marginTop="10dp"
-                    android:layout_gravity="center"
-                    android:src="@mipmap/code"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-                <TextView
-                    android:layout_marginTop="10dp"
-                    android:text="扫描二维码立即加入乐享转赚钱"
-                    android:textColor="@color/black"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
 
-        </android.support.v7.widget.CardView>
-        <TextView
+            </android.support.v7.widget.CardView>
 
-            android:id="@+id/tv_tips"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="20dp"
-            android:text="注册即送1元，3元就可以提现秒到账"
-            android:textColor="@color/bg_white"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <TextView
 
-        <TextView
-            android:id="@+id/tv_tips2"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="5dp"
-            android:text="最高奖励20%徒弟收益+10%徒孙收益哦"
-            android:textColor="@color/bg_white"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+                android:id="@+id/tv_tips"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="20dp"
+                android:text="注册即送1元，3元就可以提现秒到账"
+                android:textColor="@color/bg_white" />
+
+            <TextView
+                android:id="@+id/tv_tips2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="5dp"
+                android:text="最高奖励20%徒弟收益+10%徒孙收益哦"
+                android:textColor="@color/bg_white" />
+        </LinearLayout>
 
     </ScrollView>
     <!--<TextView

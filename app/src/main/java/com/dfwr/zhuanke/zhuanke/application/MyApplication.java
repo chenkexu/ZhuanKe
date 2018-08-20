@@ -34,6 +34,7 @@ public class MyApplication extends Application {
     private UserBean loginBean;
     public static IWXAPI mWxApi;
 
+
     @Override
     public void onCreate() {
         super.onCreate();

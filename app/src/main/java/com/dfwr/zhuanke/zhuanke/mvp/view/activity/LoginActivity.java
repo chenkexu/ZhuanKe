@@ -104,6 +104,7 @@ public class LoginActivity extends BaseActivity {
 
                 HashMap<String, Object> map = ParamsUtil.getMap();
                 map.put("wxId", wechatBean.getOpenid());
+//                String stringToUnicode = ConvertCodeUtil.stringToUnicode(platform.getDb().getUserName());
                 map.put("wxName", platform.getDb().getUserName());
                 map.put("sex", platform.getDb().getUserGender() == null ? "m" : platform.getDb().getUserGender());
                 map.put("imgId", platform.getDb().getUserIcon());
@@ -125,6 +126,8 @@ public class LoginActivity extends BaseActivity {
                             protected void onSuccees(ApiResponse<UserBean> t) {
                                 hideDefaultLoading();
                                 UserBean result = t.getResult();
+
+                                // TODO: 2018/8/15 判断返回的user的ID是否为空？
                                 SharedPreferencesTool.getInstance().setObject(result, SharedPreferencesTool.user);
                                 // 这里授权成功跳转到程序主界面了
                                 SharedPreferencesTool.getInstance().putBoolean(SharedPreferencesTool.USER_LOGOUT, false);

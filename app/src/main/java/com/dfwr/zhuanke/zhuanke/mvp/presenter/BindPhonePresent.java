@@ -54,7 +54,6 @@ public class BindPhonePresent<T> extends BasePresenter<BindPhoneView> {
                     protected void onFailure(String errorInfo, boolean isNetWorkError) {
                         rankView.hideLoading();
                         ToastUtils.showShort(errorInfo);
-
                     }
                 });
     }

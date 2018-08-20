@@ -15,5 +15,7 @@ public interface NewsView extends BaseView {
 
     void getProjectClassifyDataSuccess(List<ProjectClassifyData> projectClassifyDatas);
 
+    void getProjectClassifyDataError(String error);
+
 
 }

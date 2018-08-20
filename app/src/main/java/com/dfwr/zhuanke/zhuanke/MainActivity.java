@@ -253,7 +253,7 @@ public class MainActivity extends BaseActivity<IMsgView, MsgPresent<IMsgView>> i
                     @Override
                     protected void onFailure(String errorInfo, boolean isNetWorkError) {
                         ToastUtils.showShort(errorInfo);
-                        getTest();
+//                        getTest();
                     }
                 });
     }

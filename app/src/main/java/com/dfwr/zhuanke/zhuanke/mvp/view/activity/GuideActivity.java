@@ -15,6 +15,8 @@ import com.dfwr.zhuanke.zhuanke.util.SharedPreferencesTool;
 
 
 
+
+
 /**
  * 欢迎界面、快闪页面
  */
@@ -32,7 +34,7 @@ public class GuideActivity extends BasePermissionActivity {
                 @Override
                 public void run() {
                     requestPermission(new String[]{
-                            Manifest.permission.READ_PHONE_STATE,
+//                            Manifest.permission.READ_PHONE_STATE,
                             Manifest.permission.WRITE_EXTERNAL_STORAGE,
                             Manifest.permission.READ_EXTERNAL_STORAGE
 
@@ -40,8 +42,8 @@ public class GuideActivity extends BasePermissionActivity {
 
                 }
             }, 1000);
-
         }
+
 
     @Override
     protected void permissionSuccess() {
@@ -56,6 +58,8 @@ public class GuideActivity extends BasePermissionActivity {
         }
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
+
+
 
     @Override
     protected void permissionFail() {

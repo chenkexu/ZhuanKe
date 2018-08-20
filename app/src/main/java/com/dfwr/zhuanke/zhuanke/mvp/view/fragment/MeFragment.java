@@ -69,8 +69,7 @@ public class MeFragment extends BaseTwoFragment<HomeMeView,HomeMePresent<HomeMeV
     RecyclerView recyclerView;
     @BindView(R.id.iv_head)
     CircleImageView ivHead;
-    @BindView(R.id.tv_add_qq)
-    TextView tvAddQq;
+
     @BindView(R.id.tv_id)
     TextView tvId;
     @BindView(R.id.tv_artical_money)
@@ -229,6 +228,8 @@ public class MeFragment extends BaseTwoFragment<HomeMeView,HomeMePresent<HomeMeV
     public void onViewClicked() {
         joinQQGroup();
     }
+
+
 
     /****************
      * 发起添加群流程。群号：乐享转官方群(826248193) 的 key 为： qDmYFkk2XtU903xEk2vrPayicCb-lAeh

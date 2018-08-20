@@ -62,20 +62,17 @@ public  abstract class BaseObserver<T> implements Observer<ApiResponse<T>> {
         e.printStackTrace(printWriter);
         Logger.d("异常信息是: "+result.toString());
         if (e instanceof ConnectException
-                || e instanceof TimeoutException
                 || e instanceof NetworkErrorException
-                || e instanceof UnknownHostException
-                || e instanceof SocketTimeoutException) {
-
+                || e instanceof UnknownHostException) {
             onFailure("网络连接异常，请检查网络",false);
             Logger.d("SocketTimeoutException");
-        } else {
+        }else if((e instanceof SocketTimeoutException) || (e instanceof TimeoutException)){
+            onFailure("连接超时，请刷新",false);
+        }else {
             ToastUtils.showShort("网络连接异常，请检查网络连接");
             onFailure("网络连接异常，请检查网络连接",false);
         }
     }
-
-
 
 
 
@@ -89,10 +86,14 @@ public  abstract class BaseObserver<T> implements Observer<ApiResponse<T>> {
     protected void onCodeError(ApiResponse<T> t){
         if (t.getCode() == -100) {
             startError(101, t.getMessage());
-        }else if(t.getCode() == 110){
+        }else if(t.getCode() == 110){ //拉入黑名单
             onFailure("账户异常!!!",false);
             showErrorDialog();
-        } else{
+        }else if(t.getCode() == 101){  //用户不存在
+            onFailure("账户异常!!!",false);
+            showErrorDialog();
+        }
+        else{
             ToastUtils.showShort(t.getMessage());
             onFailure(t.getMessage()+"",false);
         }

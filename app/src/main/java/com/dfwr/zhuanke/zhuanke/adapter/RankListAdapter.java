@@ -65,6 +65,11 @@ public class RankListAdapter extends BaseQuickAdapter<RankBean, BaseViewHolder> 
         }else{ //收徒排行榜
             helper.setText(R.id.tv_money,item.getNum()+"个");
         }
+
+//        EmojiconTextView textView = helper.getView(R.id.tv_name);
+//        textView.setText(item.getWxName());
+
+//        String wxName = ConvertCodeUtil.unicode2String(item.getWxName());
         helper.setText(R.id.tv_name,item.getWxName());
 
         CircleImageView view = helper.getView(R.id.iv_head);

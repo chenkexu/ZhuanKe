@@ -101,7 +101,7 @@ public class MasterFragment extends BaseTwoFragment<IHomeView,HomePresent<IHomeV
 
 
 
-    @OnClick({R.id.ll_today_student, R.id.ll_all_student,R.id.ll_today})
+    @OnClick({R.id.ll_today_student, R.id.ll_all_student})
     public void onViewClicked(View view) {
         Intent intent = new Intent(getActivity(), MyStudentListActivity.class);
         switch (view.getId()) {
@@ -279,7 +279,8 @@ public class MasterFragment extends BaseTwoFragment<IHomeView,HomePresent<IHomeV
 
             int masterwithDrawProfit = Integer.parseInt(student_get_balance_to_teacher) + Integer.parseInt(register_reward) + Integer.parseInt(student_reward_to_teacher);
 
-            String pricePercent = "30%";
+
+            String pricePercent = "40%";
 
             String string = getResources().getString(R.string.master_profit_tips, masterwithDrawProfit, pricePercent);
             tvMasterTipsStr.setText(Html.fromHtml(string));
