@@ -54,6 +54,7 @@ public class MyApplication extends Application {
             
         });
 
+
 //        registerToWX();
     }
 

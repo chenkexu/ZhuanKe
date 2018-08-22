@@ -260,6 +260,8 @@ public class MainActivity extends BaseActivity<IMsgView, MsgPresent<IMsgView>> i
 
 
 
+
+
     //获取公告
     public void getTest(){
         HashMap<String, Object> map = ParamsUtil.getMap();

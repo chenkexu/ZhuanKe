@@ -1,12 +1,17 @@
 package com.dfwr.zhuanke.zhuanke.mvp.view.fragment;
 
+import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.dfwr.zhuanke.zhuanke.R;
 import com.dfwr.zhuanke.zhuanke.adapter.RankListAdapter;
+import com.dfwr.zhuanke.zhuanke.base.BaseLazyFragment;
 import com.dfwr.zhuanke.zhuanke.base.LazyLoadFragment;
 import com.dfwr.zhuanke.zhuanke.bean.RankBean;
 import com.dfwr.zhuanke.zhuanke.mvp.contract.RankView;
@@ -15,36 +20,35 @@ import com.dfwr.zhuanke.zhuanke.mvp.presenter.RankPresent;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by ckx on 2018/7/12.
  */
 
-public class RankListFragment extends LazyLoadFragment<RankView, RankPresent<RankView>> implements
+public class RankListFragment extends BaseLazyFragment<RankView, RankPresent<RankView>> implements
         SwipeRefreshLayout.OnRefreshListener, RankView {
 
 
     private ArrayList<LazyLoadFragment> mFragments = new ArrayList<>();
 
 
-    RecyclerView recyclerView;
-
-    SwipeRefreshLayout refreshLayout;
-
     RankListAdapter newsAdapter;
     private List<RankBean> mData = new ArrayList<>();
 
+    @BindView(R.id.recyclerView) RecyclerView recyclerView;
+    @BindView(R.id.refreshLayout) SwipeRefreshLayout refreshLayout;
 
-
-
-    @Override
-    protected int setLayoutId() {
-        return R.layout.fragment_rank_list;
-    }
+//
+//    @Override
+//    protected int setLayoutId() {
+//        return R.layout.fragment_rank_list;
+//    }
 
 
     public static RankListFragment getInstance() {
         RankListFragment sf = new RankListFragment();
-
         return sf;
     }
 
@@ -55,13 +59,36 @@ public class RankListFragment extends LazyLoadFragment<RankView, RankPresent<Ran
         return new RankPresent<>(this);
     }
 
+    @Override
+    protected void loadData() {
 
+    }
+
+
+//    @Override
+//    protected void lazyLoad() {
+//        initView();
+//        onRefresh();
+//    }
 
     @Override
-    protected void lazyLoad() {
-        initView();
+    protected View initView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_rank_list, container, false);
+        ButterKnife.bind(this, view);
+        return view;
+    }
+
+    @Override
+    protected void initData() {
+        mData = new ArrayList<>();
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        refreshLayout.setOnRefreshListener(this);//刷新
+        newsAdapter = new RankListAdapter(mData,"1");
+        newsAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
+        recyclerView.setAdapter(newsAdapter);
         onRefresh();
     }
+
 
 
 
@@ -94,8 +121,6 @@ public class RankListFragment extends LazyLoadFragment<RankView, RankPresent<Ran
 
     private void initView() {
         mData = new ArrayList<>();
-        recyclerView = findViewById(R.id.recyclerView);
-        refreshLayout = findViewById(R.id.refreshLayout);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         refreshLayout.setOnRefreshListener(this);//刷新
         newsAdapter = new RankListAdapter(mData,"1");

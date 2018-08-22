@@ -36,10 +36,13 @@ public  abstract class BaseObserver<T> implements Observer<ApiResponse<T>> {
     }
 
     public BaseObserver() {
+
     }
+
 
     @Override
     public void onSubscribe(Disposable d) {
+
     }
 
     @Override
@@ -51,7 +54,6 @@ public  abstract class BaseObserver<T> implements Observer<ApiResponse<T>> {
             onCodeError(tApiResponse);
         }
     }
-
 
 
     @Override
@@ -75,11 +77,17 @@ public  abstract class BaseObserver<T> implements Observer<ApiResponse<T>> {
     }
 
 
-
     @Override
     public void onComplete() {
-
     }
+
+
+
+
+
+
+
+
 
 
     // 返回成功了,但是code错误

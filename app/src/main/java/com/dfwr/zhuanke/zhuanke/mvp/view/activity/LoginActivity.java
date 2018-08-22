@@ -21,6 +21,7 @@ import com.dfwr.zhuanke.zhuanke.base.BaseActivity;
 import com.dfwr.zhuanke.zhuanke.base.BasePresenter;
 import com.dfwr.zhuanke.zhuanke.bean.UserBean;
 import com.dfwr.zhuanke.zhuanke.bean.WechatBean;
+import com.dfwr.zhuanke.zhuanke.util.ButtonUtils;
 import com.dfwr.zhuanke.zhuanke.util.GsonUtils;
 import com.dfwr.zhuanke.zhuanke.util.RxUtil;
 import com.dfwr.zhuanke.zhuanke.util.SharedPreferencesTool;
@@ -49,6 +50,9 @@ public class LoginActivity extends BaseActivity {
     @BindView(R.id.activity_guide)
     RelativeLayout activityGuide;
 
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +63,13 @@ public class LoginActivity extends BaseActivity {
         ButterKnife.bind(this);
         tvVersion.setText("版本"+AppUtils.getAppVersionName());
     }
+
+
+
+
+
+
+
 
 
 
@@ -100,14 +111,12 @@ public class LoginActivity extends BaseActivity {
                 String json = platform.getDb().exportData();
 
                 WechatBean wechatBean = GsonUtils.parseJsonToBean(json, WechatBean.class);
-
-
                 HashMap<String, Object> map = ParamsUtil.getMap();
                 map.put("wxId", wechatBean.getOpenid());
 //                String stringToUnicode = ConvertCodeUtil.stringToUnicode(platform.getDb().getUserName());
-                map.put("wxName", platform.getDb().getUserName());
+                map.put("wxName", platform.getDb().getUserName() == null ? "" : platform.getDb().getUserName());
                 map.put("sex", platform.getDb().getUserGender() == null ? "m" : platform.getDb().getUserGender());
-                map.put("imgId", platform.getDb().getUserIcon());
+                map.put("imgId", platform.getDb().getUserIcon() == null ? "" : platform.getDb().getUserIcon());
                 map.put("unionid", wechatBean.getUnionid());
 
                 String channel = WalleChannelReader.getChannel(LoginActivity.this);
@@ -124,24 +133,22 @@ public class LoginActivity extends BaseActivity {
                         .subscribe(new BaseObserver<UserBean>() {
                             @Override
                             protected void onSuccees(ApiResponse<UserBean> t) {
-                                hideDefaultLoading();
                                 UserBean result = t.getResult();
-
                                 // TODO: 2018/8/15 判断返回的user的ID是否为空？
                                 SharedPreferencesTool.getInstance().setObject(result, SharedPreferencesTool.user);
                                 // 这里授权成功跳转到程序主界面了
                                 SharedPreferencesTool.getInstance().putBoolean(SharedPreferencesTool.USER_LOGOUT, false);
+                                hideDefaultLoading();
                                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
                                 finish();
                             }
 
                             @Override
                             protected void onFailure(String errorInfo, boolean isNetWorkError) {
-                                hideDefaultLoading();
                                 ToastUtils.showShort(errorInfo);
+                                hideDefaultLoading();
                             }
                         });
-
             }
 
             @Override
@@ -166,8 +173,14 @@ public class LoginActivity extends BaseActivity {
     }
 
 
+
     @OnClick(R.id.iv_login)
     public void onViewClicked() {
-        loginWeChat();
+        if (!ButtonUtils.isFastDoubleClick()) {
+            loginWeChat();
+        }else{
+            ToastUtils.showShort("请勿重复点击");
+        }
     }
+
 }

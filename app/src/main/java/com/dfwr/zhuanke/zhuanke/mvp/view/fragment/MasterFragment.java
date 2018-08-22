@@ -101,6 +101,7 @@ public class MasterFragment extends BaseTwoFragment<IHomeView,HomePresent<IHomeV
 
 
 
+
     @OnClick({R.id.ll_today_student, R.id.ll_all_student})
     public void onViewClicked(View view) {
         Intent intent = new Intent(getActivity(), MyStudentListActivity.class);
@@ -121,6 +122,8 @@ public class MasterFragment extends BaseTwoFragment<IHomeView,HomePresent<IHomeV
 
 
 
+
+
     @Override
     protected void fragmentToUserVisible() {
         super.fragmentToUserVisible();
@@ -131,6 +134,7 @@ public class MasterFragment extends BaseTwoFragment<IHomeView,HomePresent<IHomeV
 
 
     public void getUserData() {
+        SharedPreferencesUtil.removeData(getActivity(), SharedPreferencesUtil.student_link);
 //        Bundle arguments = getArguments();
 //        propertie = (Propertie) arguments.getSerializable(Systems.propertie);
         mPresent.getUserInfo();
@@ -195,6 +199,11 @@ public class MasterFragment extends BaseTwoFragment<IHomeView,HomePresent<IHomeV
     }
 
 
+
+
+
+
+
     @Override
     public void getStudentLink(String link) {
         Logger.d("接收到的studentLink是："+link);
@@ -240,8 +249,11 @@ public class MasterFragment extends BaseTwoFragment<IHomeView,HomePresent<IHomeV
                         }).create().show();
                 break;
         }
-
     }
+
+
+
+
 
 
 
@@ -266,6 +278,12 @@ public class MasterFragment extends BaseTwoFragment<IHomeView,HomePresent<IHomeV
                 });
     }
 
+
+
+
+
+
+
     private void initPrice(Propertie propertie) {
         if (propertie!=null) {
             String masterPrice = propertie.getStudent_reward_n_to_teacher();
@@ -281,8 +299,7 @@ public class MasterFragment extends BaseTwoFragment<IHomeView,HomePresent<IHomeV
 
 
             String pricePercent = "40%";
-
-            String string = getResources().getString(R.string.master_profit_tips, masterwithDrawProfit, pricePercent);
+            String string = getResources().getString(R.string.master_profit_tips, masterwithDrawProfit-1, pricePercent);
             tvMasterTipsStr.setText(Html.fromHtml(string));
         }
     }
@@ -303,6 +320,8 @@ public class MasterFragment extends BaseTwoFragment<IHomeView,HomePresent<IHomeV
     public void hideLoading() {
         hideDefaultLoading();
     }
+
+
 
 
 
