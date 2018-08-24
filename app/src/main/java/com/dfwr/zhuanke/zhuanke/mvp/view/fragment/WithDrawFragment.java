@@ -27,6 +27,7 @@ import com.dfwr.zhuanke.zhuanke.mvp.view.activity.PhoneWithDrawActivity;
 import com.dfwr.zhuanke.zhuanke.util.SharedPreferencesTool;
 import com.dfwr.zhuanke.zhuanke.util.SharedPreferencesUtil;
 import com.dfwr.zhuanke.zhuanke.widget.Systems;
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +39,6 @@ import butterknife.OnClick;
  * Created by ckx on 2018/7/12.
  * 提现
  */
-
 public class WithDrawFragment extends BaseTwoFragment<HomeWithDrawView, HomeWithDrawPresent<HomeWithDrawView>> implements HomeWithDrawView
         ,SwipeRefreshLayout.OnRefreshListener,BaseQuickAdapter.RequestLoadMoreListener{
 
@@ -59,11 +59,15 @@ public class WithDrawFragment extends BaseTwoFragment<HomeWithDrawView, HomeWith
     RecyclerView recyclerView;
     @BindView(R.id.refreshLayout)
     SwipeRefreshLayout refreshLayout;
+
+
+
     private List<WithDrawHistory> mData;
     private WithDrawHistoryAdapter newsAdapter;
     private int currentPage;
     private String type;
     private static final int PAGE_SIZE = 20;
+
 
 
     @Override
@@ -76,6 +80,7 @@ public class WithDrawFragment extends BaseTwoFragment<HomeWithDrawView, HomeWith
     protected void initData() {
         super.initData();
     }
+
 
 
     @Override
@@ -94,6 +99,7 @@ public class WithDrawFragment extends BaseTwoFragment<HomeWithDrawView, HomeWith
 
 
     private void setData() {
+        Logger.d("提现之和返回的。");
         UserBean userBean = (UserBean) SharedPreferencesTool.getObjectFromShare(SharedPreferencesTool.user);
         mPresent.getUserInfo();
         onRefresh();
@@ -115,6 +121,8 @@ public class WithDrawFragment extends BaseTwoFragment<HomeWithDrawView, HomeWith
                 break;
         }
     }
+
+
 
 
 
@@ -179,6 +187,9 @@ public class WithDrawFragment extends BaseTwoFragment<HomeWithDrawView, HomeWith
         refreshLayout.setRefreshing(false);
     }
 
+
+
+
     @Override
     public void getWithDrawHistoryRefreshError(String msg) {
         newsAdapter.setEnableLoadMore(true);
@@ -221,6 +232,7 @@ public class WithDrawFragment extends BaseTwoFragment<HomeWithDrawView, HomeWith
 
     @Override
     public void onRefresh() {
+        Logger.d("提现之和返回的onRefresh()。");
         currentPage = 1;
         newsAdapter.setEnableLoadMore(false);//这里的作用是防止下拉刷新的时候还可以上拉加载
         mPresent.getWithDrawHistory(currentPage, PAGE_SIZE);

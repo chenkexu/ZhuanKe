@@ -28,6 +28,7 @@ import com.dfwr.zhuanke.zhuanke.bean.Propertie;
 import com.dfwr.zhuanke.zhuanke.bean.UserBaseInfo;
 import com.dfwr.zhuanke.zhuanke.mvp.contract.IHomeView;
 import com.dfwr.zhuanke.zhuanke.mvp.presenter.HomePresent;
+import com.dfwr.zhuanke.zhuanke.mvp.view.activity.LoginActivity;
 import com.dfwr.zhuanke.zhuanke.mvp.view.activity.MyCodeActivity;
 import com.dfwr.zhuanke.zhuanke.mvp.view.activity.MyStudentListActivity;
 import com.dfwr.zhuanke.zhuanke.util.RxUtil;
@@ -102,7 +103,7 @@ public class MasterFragment extends BaseTwoFragment<IHomeView,HomePresent<IHomeV
 
 
 
-    @OnClick({R.id.ll_today_student, R.id.ll_all_student})
+    @OnClick({R.id.ll_today_student, R.id.ll_all_student,R.id.ll_today})
     public void onViewClicked(View view) {
         Intent intent = new Intent(getActivity(), MyStudentListActivity.class);
         switch (view.getId()) {
@@ -112,10 +113,9 @@ public class MasterFragment extends BaseTwoFragment<IHomeView,HomePresent<IHomeV
             case R.id.ll_all_student:
                 intent.putExtra(Systems.my_student_type, "all");
                 break;
-//            case R.id.ll_today:
-//                intent.setClass(getActivity(), TestActivity.class);
-//                break;
-
+            case R.id.ll_today:
+                intent.setClass(getActivity(), LoginActivity.class);
+                break;
         }
         startActivity(intent);
     }

@@ -58,6 +58,8 @@ public class NewsListFragment extends BaseLazyFragment<NewsListView, NewsListPre
     private static NewsListFragment fragment;
     private View errorView;
 
+
+
     @Override
     protected View initView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_news_list, container, false);
@@ -88,7 +90,7 @@ public class NewsListFragment extends BaseLazyFragment<NewsListView, NewsListPre
                 Intent intent = new Intent(getActivity(), CommonWebView.class);
                 intent.putExtra(Systems.share_host, share_host);
                 intent.putExtra(Systems.articleData, feedArticleData);
-                if (!ButtonUtils.isFastDoubleClick(R.id.item_id)) {
+                if (!ButtonUtils.isFastDoubleClick()) {
                     startActivity(intent);
                 }
             }

@@ -59,9 +59,9 @@ public class ApiManager {
     private void initRetrofit() {
         Logger.d("initRetrofit----------");
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
-        builder.writeTimeout(20, TimeUnit.SECONDS);
-        builder.connectTimeout(20, TimeUnit.SECONDS);
-        builder.readTimeout(20, TimeUnit.SECONDS);
+        builder.writeTimeout(200, TimeUnit.SECONDS);
+        builder.connectTimeout(200, TimeUnit.SECONDS);
+        builder.readTimeout(200, TimeUnit.SECONDS);
 
         builder.retryOnConnectionFailure(true);
         builder.addInterceptor(getHttpLoggingInterceptor());

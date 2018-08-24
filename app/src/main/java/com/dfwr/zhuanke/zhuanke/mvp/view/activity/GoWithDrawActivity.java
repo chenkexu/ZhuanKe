@@ -20,9 +20,11 @@ import com.dfwr.zhuanke.zhuanke.bean.CheckWithDrawBean;
 import com.dfwr.zhuanke.zhuanke.mvp.contract.MeWithDrawView;
 import com.dfwr.zhuanke.zhuanke.mvp.event.ChooseFragmentEvent;
 import com.dfwr.zhuanke.zhuanke.mvp.presenter.MeWithDrawPresent;
+import com.dfwr.zhuanke.zhuanke.util.ButtonUtils;
 import com.dfwr.zhuanke.zhuanke.util.SharedPreferencesTool;
 import com.dfwr.zhuanke.zhuanke.util.SharedPreferencesUtil;
 import com.dfwr.zhuanke.zhuanke.widget.Systems;
+import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -66,6 +68,8 @@ public class GoWithDrawActivity extends BaseActivity<MeWithDrawView,MeWithDrawPr
     private String balance;//余额
     private TextView tv_title;
     private RelativeLayout rl_title;
+    private boolean flag;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -109,11 +113,12 @@ public class GoWithDrawActivity extends BaseActivity<MeWithDrawView,MeWithDrawPr
     }
 
 
+
+
     private void initData() {
         balance = SharedPreferencesUtil.getStringData(this, SharedPreferencesTool.balance);
         tvMyAccount.setText(balance);
         Intent intent = getIntent();
-
 
         if (intent!=null) {  //支付宝提现
             type = intent.getStringExtra(Systems.withDrawType);
@@ -133,7 +138,6 @@ public class GoWithDrawActivity extends BaseActivity<MeWithDrawView,MeWithDrawPr
                 }
             }
         }
-
     }
 
 
@@ -141,15 +145,18 @@ public class GoWithDrawActivity extends BaseActivity<MeWithDrawView,MeWithDrawPr
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_submit:
-                double doubleBalance = Double.parseDouble(balance);
-                if (doubleBalance < money) {
-                    ToastUtils.showShort("余额不足");
-                    return;
-                }
-                if (type.equals(Systems.alipay)) {
-                    mPresent.alipayTakeMoney(money,payName,payAccount);
-                }else{
-                    mPresent.weChatTakeMoney(money);
+                if (!ButtonUtils.isFastDoubleClick()) {
+                    Logger.d("点击了提现提交按钮");
+                    double doubleBalance = Double.parseDouble(balance);
+                    if (doubleBalance < money) {
+                        ToastUtils.showShort("余额不足");
+                        return;
+                    }
+                    if (type.equals(Systems.alipay)) {
+                        mPresent.alipayTakeMoney(money,payName,payAccount);
+                    }else{
+                        mPresent.weChatTakeMoney(money);
+                    }
                 }
 
                 break;
@@ -162,6 +169,10 @@ public class GoWithDrawActivity extends BaseActivity<MeWithDrawView,MeWithDrawPr
         }
     }
 
+
+
+
+
     //提现校验成功
     @Override
     public void getCheckWithDrawSuccess(CheckWithDrawBean checkWithDrawBean) {
@@ -173,7 +184,6 @@ public class GoWithDrawActivity extends BaseActivity<MeWithDrawView,MeWithDrawPr
             choosePosition = 1;
             isFirstWithDraw = false;
         }
-
         adaptersex.notifyDataSetChanged();
     }
 

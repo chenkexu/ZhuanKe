@@ -22,9 +22,6 @@ public class HttpContants {
     public static final String HOST_URL3 = "http://lxz.qisu100.com:80/";
 
 
-
-
-
 //    public static final String HOST_URL = "http://sms2.qisu100.com/netrun-app/";
 
 

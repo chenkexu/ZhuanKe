@@ -114,20 +114,17 @@ public class MeWithDrawPresent<T> extends BasePresenter<MeWithDrawView> {
                     protected void onFailure(String errorInfo, boolean isNetWorkError) {
                         rankView.hideLoading();
                         ToastUtils.showShort(errorInfo);
-
-
                     }
                 });
     }
 
 
-    //
+    //微信提现
     public void weChatTakeMoney(double money){
         Logger.d("微信提现金额:"+money);
         rankView.showLoading();
         HashMap<String, Object> map = ParamsUtil.getMap();
         map.put("money", money+"");
-        rankView.showLoading();
         ApiManager.getInstence().getApiService().weChatTakeMoney(ParamsUtil.getParams(map))
                 .compose(RxUtil.<ApiResponse<Object>>rxSchedulerHelper())
                 .subscribe(new BaseObserver<Object>() {
@@ -141,8 +138,6 @@ public class MeWithDrawPresent<T> extends BasePresenter<MeWithDrawView> {
                     protected void onFailure(String errorInfo, boolean isNetWorkError) {
                         rankView.hideLoading();
                         ToastUtils.showShort(errorInfo);
-
-
                     }
                 });
     }

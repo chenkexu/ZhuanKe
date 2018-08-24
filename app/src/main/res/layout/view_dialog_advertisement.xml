@@ -6,12 +6,11 @@
     android:id="@+id/ll"
     android:layout_height="match_parent">
 
+
     <ImageView
+        android:src="@mipmap/test3"
         android:scaleType="centerCrop"
         android:padding="10dp"
-        android:src="@mipmap/error"
-        android:layout_marginLeft="44dp"
-        android:layout_marginRight="44dp"
         android:id="@+id/iv_advertisement"
         android:layout_width="match_parent"
         android:layout_height="300dp" />

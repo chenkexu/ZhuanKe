@@ -40,6 +40,7 @@
 
 
 
+
     <application
         android:vmSafeMode="true"
         android:name=".application.MyApplication"

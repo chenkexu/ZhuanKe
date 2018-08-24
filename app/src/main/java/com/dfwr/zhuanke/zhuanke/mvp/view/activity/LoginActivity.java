@@ -21,6 +21,7 @@ import com.dfwr.zhuanke.zhuanke.base.BaseActivity;
 import com.dfwr.zhuanke.zhuanke.base.BasePresenter;
 import com.dfwr.zhuanke.zhuanke.bean.UserBean;
 import com.dfwr.zhuanke.zhuanke.bean.WechatBean;
+import com.dfwr.zhuanke.zhuanke.util.AppManager;
 import com.dfwr.zhuanke.zhuanke.util.ButtonUtils;
 import com.dfwr.zhuanke.zhuanke.util.GsonUtils;
 import com.dfwr.zhuanke.zhuanke.util.RxUtil;
@@ -62,6 +63,8 @@ public class LoginActivity extends BaseActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         tvVersion.setText("版本"+AppUtils.getAppVersionName());
+        SharedPreferencesTool.getInstance().putBoolean(SharedPreferencesTool.USER_LOGOUT, true);
+        SharedPreferencesTool.getInstance().setObject(null, SharedPreferencesTool.user);
     }
 
 
@@ -110,9 +113,12 @@ public class LoginActivity extends BaseActivity {
                 Log.d("ShareSDK", "onComplete ---->  登录成功" + platform.getDb().exportData());
                 String json = platform.getDb().exportData();
 
+                Logger.d(json);
                 WechatBean wechatBean = GsonUtils.parseJsonToBean(json, WechatBean.class);
                 HashMap<String, Object> map = ParamsUtil.getMap();
+
                 map.put("wxId", wechatBean.getOpenid());
+
 //                String stringToUnicode = ConvertCodeUtil.stringToUnicode(platform.getDb().getUserName());
                 map.put("wxName", platform.getDb().getUserName() == null ? "" : platform.getDb().getUserName());
                 map.put("sex", platform.getDb().getUserGender() == null ? "m" : platform.getDb().getUserGender());
@@ -181,6 +187,13 @@ public class LoginActivity extends BaseActivity {
         }else{
             ToastUtils.showShort("请勿重复点击");
         }
+    }
+
+
+
+    @Override
+    public void onBackPressed() {
+        AppManager.getAppManager().AppExit(this);
     }
 
 }

@@ -237,6 +237,7 @@ public class MainActivity extends BaseActivity<IMsgView, MsgPresent<IMsgView>> i
 
     
 
+
     //获取公告
     public void getBanner(){
         HashMap<String, Object> map = ParamsUtil.getMap();
@@ -245,10 +246,11 @@ public class MainActivity extends BaseActivity<IMsgView, MsgPresent<IMsgView>> i
                 .subscribe(new BaseObserver<BannerBean>() {
                     @Override
                     protected void onSuccees(ApiResponse<BannerBean> t) {
-                        if (t.getResult().getVal()!=null && (!t.getResult().getVal().equals(""))) {
-                            AdvertisementDialog advertisementDialog = new AdvertisementDialog(MainActivity.this,t.getResult().getVal());
-                            advertisementDialog.showDialog();
-                        }
+                        // TODO: 2018/8/24 接收后台提供的链接
+//                        if (t.getResult().getVal()!=null && (!t.getResult().getVal().equals(""))) {
+//                        }
+                        AdvertisementDialog advertisementDialog = new AdvertisementDialog(MainActivity.this,"http://pic.caigoubao.cc/606592/ad2.png");
+                        advertisementDialog.showDialog();
                     }
                     @Override
                     protected void onFailure(String errorInfo, boolean isNetWorkError) {
@@ -257,6 +259,11 @@ public class MainActivity extends BaseActivity<IMsgView, MsgPresent<IMsgView>> i
                     }
                 });
     }
+
+
+
+
+
 
 
 

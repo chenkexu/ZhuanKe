@@ -16,6 +16,7 @@ import com.dfwr.zhuanke.zhuanke.base.BaseActivity;
 import com.dfwr.zhuanke.zhuanke.base.BasePresenter;
 import com.dfwr.zhuanke.zhuanke.bean.UserBean;
 import com.dfwr.zhuanke.zhuanke.mvp.event.ChooseFragmentEvent;
+import com.dfwr.zhuanke.zhuanke.util.ButtonUtils;
 import com.dfwr.zhuanke.zhuanke.util.SharedPreferencesTool;
 import com.dfwr.zhuanke.zhuanke.util.SharedPreferencesUtil;
 import com.dfwr.zhuanke.zhuanke.util.UserDataManeger;
@@ -93,36 +94,37 @@ public class BindAlipayActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_submit:
+                if (!ButtonUtils.isFastDoubleClick()) {
 
-                String payAccount = etPayAccount.getText().toString();
-                String payName = etPayName.getText().toString();
+                    String payAccount = etPayAccount.getText().toString();
+                    String payName = etPayName.getText().toString();
 
-                if(TextUtils.isEmpty(payName)){
-                    ToastUtils.showShort("请输入收款人姓名");
-                    return;
-                }
-
-                if(TextUtils.isEmpty(payAccount)){
-                    ToastUtils.showShort("请输入支付宝账号");
-                    return;
-                }
-
-
-                if(!TextUtils.isEmpty(payAccount)){
-                    if(!RegexUtils.isMobileExact(payAccount)&&!RegexUtils.isEmail(payAccount)){
-                        ToastUtils.showShort("请输入有效的支付宝账号");
+                    if(TextUtils.isEmpty(payName)){
+                        ToastUtils.showShort("请输入收款人姓名");
                         return;
                     }
+
+                    if(TextUtils.isEmpty(payAccount)){
+                        ToastUtils.showShort("请输入支付宝账号");
+                        return;
+                    }
+
+                    if(!TextUtils.isEmpty(payAccount)){
+                        if(!RegexUtils.isMobileExact(payAccount)&&!RegexUtils.isEmail(payAccount)){
+                            ToastUtils.showShort("请输入有效的支付宝账号");
+                            return;
+                        }
+                    }
+
+                    SharedPreferencesUtil.putStringData(this, SharedPreferencesTool.alipay_account,payAccount);
+                    SharedPreferencesUtil.putStringData(this, SharedPreferencesTool.alipay_name,payName);
+                    intent = new Intent(this, GoWithDrawActivity.class);
+                    intent.putExtra(Systems.payAccount,payAccount);
+                    intent.putExtra(Systems.payName,payName);
+                    intent.putExtra(Systems.withDrawType,Systems.alipay);
+                    startActivity(intent);
                 }
 
-                SharedPreferencesUtil.putStringData(this, SharedPreferencesTool.alipay_account,payAccount);
-                SharedPreferencesUtil.putStringData(this, SharedPreferencesTool.alipay_name,payName);
-
-                intent = new Intent(this, GoWithDrawActivity.class);
-                intent.putExtra(Systems.payAccount,payAccount);
-                intent.putExtra(Systems.payName,payName);
-                intent.putExtra(Systems.withDrawType,Systems.alipay);
-                startActivity(intent);
                 break;
             case R.id.tv_go_makemoney:
                 ChooseFragmentEvent chooseFragmentEvent = new ChooseFragmentEvent();
