@@ -8,16 +8,13 @@ public class HttpContants {
 
 
     //正式环境
-//    public static final String HOST_URL = "http://210.209.93.211:18000/";
+    public static final String HOST_URL = "http://210.209.93.211:18000/";
 
 
-    public static final String HOST_URL = "http://192.168.2.85:18000/";
-
+//    public static final String HOST_URL = "http://192.168.2.85:18000/";
 
     //文涛的地址
     public static final String HOST_URL2 = "http://lxz.qisu100.com:80/";
-
-
 
     public static final String HOST_URL3 = "http://lxz.qisu100.com:80/";
 
@@ -30,6 +27,7 @@ public class HttpContants {
 
     //广告页面地址
     public static final String share = "/wzpt/bb.html?";
+
 
 
 

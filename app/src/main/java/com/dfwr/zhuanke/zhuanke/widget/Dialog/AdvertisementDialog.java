@@ -17,6 +17,7 @@ import com.dfwr.zhuanke.zhuanke.R;
 public class AdvertisementDialog extends Dialog implements View.OnClickListener {
     private  Context context;
     private  String imageUrl = "";
+    private ImageView iv_close;
 
 
     public AdvertisementDialog(Context context,String imageUrl) {
@@ -26,23 +27,25 @@ public class AdvertisementDialog extends Dialog implements View.OnClickListener 
         setContentView(R.layout.view_dialog_advertisement);
         //设置点击布局外则Dialog消失
         setCanceledOnTouchOutside(true);
-    }
-
-    public void showDialog() {
         ImageView imageView = findViewById(R.id.iv_advertisement);
-        ImageView iv_close = findViewById(R.id.iv_close);
+        iv_close = findViewById(R.id.iv_close);
         Glide.with(context)
                 .load(imageUrl)
                 .crossFade()
+//                .placeholder(R.mipmap.dialog_error)
                 .priority(Priority.NORMAL) //下载的优先级
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE) //缓存策略
                 .into(imageView);
+        findViewById(R.id.iv_advertisement).setOnClickListener(this);
+        iv_close.setOnClickListener(this);
+    }
 
+
+    public void showDialog() {
         Window window = getWindow();
         //设置弹窗动画
         window.setWindowAnimations(R.style.mypopwindow_anim_style);
         //设置Dialog背景色
-
         Window dialogWindow = getWindow();
         WindowManager.LayoutParams lp = dialogWindow.getAttributes();
         lp.gravity = Gravity.CENTER_HORIZONTAL | Gravity.CENTER;
@@ -50,12 +53,15 @@ public class AdvertisementDialog extends Dialog implements View.OnClickListener 
         lp.width = (int) (d.widthPixels * 0.8); // 高度设置为屏幕的0.8
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
         dialogWindow.setAttributes(lp);
-        iv_close.setVisibility(View.VISIBLE);
         show();
-        findViewById(R.id.iv_advertisement).setOnClickListener(this);
-        iv_close.setOnClickListener(this);
+        iv_close.setVisibility(View.VISIBLE);
     }
 
+
+
+    public void setCloseVisible(){
+        iv_close.setVisibility(View.VISIBLE);
+    }
 
 
     @Override

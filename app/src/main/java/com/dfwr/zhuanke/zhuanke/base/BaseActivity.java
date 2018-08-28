@@ -2,6 +2,8 @@ package com.dfwr.zhuanke.zhuanke.base;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -241,6 +243,20 @@ public abstract class  BaseActivity<V, T extends BasePresenter<V>> extends AppCo
     public void onPause() {
         super.onPause();
     }
+
+
+    //避免用户修改系统字体大小，造成的影响。
+    @Override
+    public Resources getResources() {
+        Resources res = super.getResources();
+        Configuration config=new Configuration();
+        config.setToDefaults();
+        res.updateConfiguration(config,res.getDisplayMetrics());
+        return res;
+    }
+
+
+
 
 
 

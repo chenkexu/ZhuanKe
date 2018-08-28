@@ -122,6 +122,15 @@ public class LoginActivity extends BaseActivity {
 //                String stringToUnicode = ConvertCodeUtil.stringToUnicode(platform.getDb().getUserName());
                 map.put("wxName", platform.getDb().getUserName() == null ? "" : platform.getDb().getUserName());
                 map.put("sex", platform.getDb().getUserGender() == null ? "m" : platform.getDb().getUserGender());
+
+                // TODO: 2018/8/27 性别传男女
+//                if (platform.getDb().getUserGender()==null) {
+//                    map.put("sex","男");
+//                }else{
+//                    map.put("sex", platform.getDb().getUserGender() == "m" ? "男" : "女");
+//                }
+
+
                 map.put("imgId", platform.getDb().getUserIcon() == null ? "" : platform.getDb().getUserIcon());
                 map.put("unionid", wechatBean.getUnionid());
 

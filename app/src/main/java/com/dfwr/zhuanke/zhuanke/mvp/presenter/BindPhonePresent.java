@@ -91,10 +91,6 @@ public class BindPhonePresent<T> extends BasePresenter<BindPhoneView> {
     }
 
 
-
-
-
-
     public void BindPhone(String phone,String code){
         rankView.showLoading();
         HashMap<String, Object> map = ParamsUtil.getMap();
